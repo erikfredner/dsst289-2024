@@ -3,7 +3,7 @@ title: DSST 289
 subtitle: Introduction to Data Science
 bibliography: /Users/erik/book/references.bib
 csl: /Users/erik/code/styles/chicago-fullnote-bibliography-short-title-subsequent.csl
-fontfamily: ebgaramond
+fontfamily: ebgaramond-maths
 fontsize: 12pt
 geometry: margin=1in
 papersize: letter
@@ -16,6 +16,15 @@ lang: en-US
 colorlinks: true
 linkcolor: blue
 urlcolor: blue
+nocite: |
+    @arnoldHumanitiesDataExploring2015,
+    @brucePracticalStatisticsData2020,
+    @cottonLearning2013
+    @grolemundHandsonProgramming2014
+    @jockersTextAnalysisStudents2020,
+    @kuhnTidyModelingFramework2022,
+    @silgeTextMiningTidy2017
+    @wickhamDataScienceImport2023,
 ---
 
 -----           -----
@@ -47,7 +56,7 @@ By the end of this course, students will be able to...
 - Articulate relationships between a dataset and analyses thereof.
 - Use programming language documentation and cookbooks to solve problems.
 - Understand key aspects of the [R programming language](https://www.r-project.org) and the [`tidyverse`](https://www.tidyverse.org).
-- Use the [RStudio]() integrated development environment.
+- Use the [RStudio](https://posit.co/products/open-source/rstudio/) integrated development environment.
 
 ## Prerequisites
 
@@ -206,7 +215,7 @@ Any of the above uses would be treated as violations of the honor code.
 - If you get stuck on a problem that you find you cannot solve by consulting the course notes or other resources, you may consult GenAI tools.
 - If you use GenAI tools like ChatGPT, you must **cite** your interaction with them.
   - [This page](https://help.openai.com/en/articles/7925741-chatgpt-shared-links-faq) explains how to share a link to a ChatGPT interaction.
-  - An adequate citation would be: "I got this help from ChatGPT to solve this problem: <https://chatgpt.com/share/2a4be40e-7b25-418d-b350-966a1915ac52>"
+  - An adequate citation would be: "I got [this help](https://chatgpt.com/share/2a4be40e-7b25-418d-b350-966a1915ac52) from ChatGPT to solve this problem."
 
 ## Communication
 
@@ -238,3 +247,13 @@ Students may consult librarians to assist with their research, which may be espe
 ### Counseling and Psychological Services
 
 Mental health is crucial for academic success. [Counseling and Psychological Services](https://caps.richmond.edu) at the University of Richmond supports student success and enhances student well-being by providing comprehensive clinical services to currently enrolled, full-time, degree-seeking students.
+
+## Acknowledgments
+
+The course builds on previous iterations of the course taught by [Taylor Arnold](https://math.richmond.edu/faculty/tarnold2/) and [Lilla Orr](https://math.richmond.edu/faculty/lorr2/).
+
+## Recommended Reading
+
+The books below are not required reading. However, students who want to learn more about the main ideas in this course may want to consult some or all of them.
+
+If you only look at one of these books, make it [*R for Data Science* (2023)](https://r4ds.hadley.nz/).
