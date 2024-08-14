@@ -47,6 +47,10 @@ To learn more about the land on which the University of Richmond exists, I recom
 
 I strive to make this course accessible. If you encounter barriers to accessibility, please let me know as soon as possible.
 
+## Course Description
+
+Topics will include techniques for collecting, organizing, analyzing, modeling, and presenting data. Applications to a variety of fields will be emphasized. Includes an extensive introduction to statistical programming. (See [course catalog](https://catalog.richmond.edu/courses/DSST289).)
+
 ## Learning Goals
 
 By the end of this course, students will be able to...
@@ -60,8 +64,8 @@ By the end of this course, students will be able to...
 
 ## Prerequisites
 
-- This course neither requires nor expects any prior experience with computer programming in R or any other language.
-- We will discuss some statistical concepts, but students only need experience with algebra.
+- This course neither requires nor expects any prior experience with computer programming.
+- While we discuss some statistical concepts, students only need experience with algebra.
 
 ## Structure
 
@@ -78,7 +82,6 @@ Unit        Aspect
 - Please bring a computer, pencil, and something to write on to each class.
 - Class materials can be found on the course Blackboard site.
 - You will submit assignments via Blackboard.
-- If you cannot access any these materials at any point during the semester, let me know as soon as possible.
 
 ## Inclusivity
 
@@ -88,13 +91,13 @@ I expect you to...
 - Support each other in your learning.
 - Be patient.
 
-If we spend time reviewing material that you already know, remember that it may be the first time some of your peers are learning this information. Different students come in to this class with different levels of knowledge. We all learn in different ways.
+If we spend time reviewing material that you already know, remember that it may be the first time some of your peers are learning this information. Students come to this class with different levels of knowledge. And everyone learns best in different ways.
 
 ## Help
 
 - We should have a lot of time during class to answer questions about course material.
   - I will also encourage you to collaborate with peers during class time.
-- Schedule a meeting during office hours for any questions or personal concerns that cannot be addressed in class.
+- Come to office hours or schedule a meeting for any questions or personal concerns that cannot be addressed in class.
   - To schedule, email me with your availability at least one day before you’d like to meet.
 - Note that I generally do not answer conceptual questions about homework before they are due. Just do your best, and we will discuss in class.
 
@@ -194,7 +197,7 @@ The final project will be due during the last week of class. The project will as
 
 ## Honor
 
-This course is taught in accordance with the University of Richmond Honor Code, which can be accessed via [The Honor Councils website](https://studentdevelopment.richmond.edu/student-handbook/honor/). You are encouraged to collaborate on homework, but each student must contribute work to the group. In my class, cheating includes, but is not limited to, viewing another’s work with or without their consent, or duplicating any portion of it. If you are found to have violated the Honor Code, you fail this course. If you ever have any questions about whether an action would be an honor violation, please ask.
+This course is taught in accordance with the University of Richmond Honor Code, which can be accessed via [The Honor Councils website](https://studentdevelopment.richmond.edu/student-handbook/honor/). You are encouraged to collaborate on homework, but each student must contribute work to the group. On exams, cheating includes, but is not limited to, viewing another’s work with or without their consent, or duplicating any portion of it. If you are found to have violated the Honor Code, you fail this course. If you ever have any questions about whether an action would be an honor violation, please ask.
 
 ### Generative Artificial Intelligence
 
