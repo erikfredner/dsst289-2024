@@ -33,13 +33,13 @@ Email           <erik.fredner@richmond.edu>
 Classroom       105 The Refectory
 Office          314 Carole Weinstein International Center
 Office Hours    Wed. 14:30-16:30
-Website         [Blackboard](TODO)
+Website         [Blackboard](https://blackboard.richmond.edu/webapps/blackboard/execute/courseMain?course_id=_56262_1)
 Updated         \today
 -----           -----
 
 ## Land Acknowledgment
 
-This class at the University of Richmond respectfully acknowledges the traditional custodians of the land we are on today, the Powhatan people, and pays respect to their elders past, present and emerging.
+This class at the University of Richmond respectfully acknowledges the traditional custodians of the land we are on today, the Powhatan people, and pays respect to their elders past, present, and emerging.
 
 To learn more about the land on which the University of Richmond exists, I recommend students read the report ["Knowledge of This Cannot Be Hidden" by Shelby M. Driskill and Dr. Lauranett L. Lee](https://www.richmond.edu/burying-ground/index.html), which discusses both the University's geographic connection to the Powhatan people, as well as the presence of a burying ground for enslaved laborers on campus.
 
@@ -135,7 +135,7 @@ F               0-69
 
 Date        Topic
 -----       -----
-08-26       Intro
+08-26       Introduction
 08-28       Tabular data
 09-02       Grammar of graphics
 09-04       Aesthetics and scales
@@ -234,14 +234,35 @@ The University of Richmond has many resources on campus that may help you succee
 
 ### Weinstein Learning Center
 
-[The Weinstein Learning Center](https://wlc.richmond.edu) provides academic support services in several areas:
+The Weinstein Learning Center is your go-to destination for academic support. Our services are tailored to help you achieve your academic goals throughout your time at University of Richmond. To learn more and view service schedules and appointment times, visit <https://wlc.richmond.edu>. Available services include:\
 
-- Academic skills
-- English language learning
-- Quantitative resources
-- Speech
-- Technology
-- Writing
+**Academic Skills Coaching**
+
+Meet with a professional staff member who will collaborate with you to assess and develop your academic and life skills (e.g., critical reading and thinking, information conceptualization, concentration, test preparation, time management, stress management, and more).\
+
+**Content Tutoring**
+
+Peer consultants offer assistance in specific courses and subject areas. They are available for appointments (in-person and virtual) and drop-in sessions. See schedules at <https://wlc.richmond.edu> for supported courses and drop-in times.\
+
+**English Language Learning**
+
+Attend one-on-one or group consultations, workshops, and other services focused on English, academic, and/or intercultural skills.\
+
+**Quantitative and Programming Resources**
+
+Peer consultants and professional staff offer workshops or one-on-one appointments to build quantitative and programming skills and provide statistical assistance for research projects.\
+
+**Speech and Communication**
+
+Prepare and practice for academic presentations, speaking engagements, and other occasions of public expression. Peer consultants offer recording, playback, and coaching for both individual and group presentations. Students can expect recommendations regarding clarity, organization, style, and delivery.\
+
+**Technology Learning**
+
+Visit our student lab dedicated to supporting digital media projects. Services include camera checkout, video/audio recording assistance, use of virtual reality equipment, poster printing, 3D printing and modeling, and consultation services on a variety of software.\
+
+**Writing**
+
+Assists student writers at all levels of experience, across all majors. Meet with peer consultants who can offer feedback on written work and suggest pre-writing, drafting, and revision strategies.
 
 ### Boatwright Library
 
