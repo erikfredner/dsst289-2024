@@ -1,0 +1,146 @@
+---
+title: "Introduction to \"Introduction to Data Science\""
+author: "Erik Fredner"
+date: 2024-08-26
+format: 
+  revealjs:
+    #incremental: true
+    theme: default
+    transition: slide
+    logo: "images/by-sa.png"
+    footer: "https://fredner.org"
+---
+
+# Outline
+
+1. Getting to know each other
+2. Course overview
+3. Syllabus
+4. Install stuff
+5. Next time
+
+# Getting to know each other
+
+## Introductions
+
+1. Preferred name
+2. Pronouns
+3. Something you *dislike*
+
+### Example:
+
+1. Professor Fredner
+2. He/him
+3. Gushers
+
+## Introduce *me* to UR
+
+- This is my first semester at UR!
+  - If you want to learn more about who I am: <https://fredner.org>
+- How would you describe the culture of UR?
+  - Discuss with the people next to you.
+
+## Anonymous survey
+
+Please complete this brief **anonymous** survey:
+<https://richmond.ca1.qualtrics.com/jfe/form/SV_8vsOr6mRZGypJVc>
+
+This will help me design the class.
+
+# Course Overview
+
+## What do we mean by "data science?"
+
+- We will learn and practice a series of **methods for organizing, collecting, visualizing, manipulating, and exploring different kinds of data**.
+- We focus on the creation of data and application of methods, not theoretical or foundational questions.
+- This is not a mathematics course, nor will it resemble a traditional introductory statistics class. We will spend the entire semester writing code to apply data science concepts.
+
+## Why do data science?
+
+- There is too much information in the world.
+  - e.g., every minute, approximately 500 hours of video are uploaded to YouTube.
+- People value *useful* information and new knowledge.
+  - Almost none of those 500 hours are worth your finite time.
+- Data science transforms data into useful information.
+
+## How do people do data science?
+
+- **R** and **Python** are the two most popular programming languages for data science.
+- We will be using R in this class.
+- However, the main learning goal of this class **is not R**.
+- The main learning goal is to understand:
+  - what good data is
+  - how to ask good questions of data
+  - how we can use good data to answer good questions
+
+## An effective example
+
+{{< video https://www.youtube.com/watch?v=Z8t4k0Q8e8Y
+width="800"
+height="600" >}}
+
+# Syllabus
+
+- Go to the course [Blackboard site](https://blackboard.richmond.edu/webapps/blackboard/execute/courseMain?course_id=_56262_1) and click on Syllabus.
+
+## Questions about syllabus?
+
+# Install stuff
+
+## Step 1: R
+
+Install the version for your operating system:
+<https://cloud.r-project.org>
+
+If you already have R installed, install the newest version.
+
+If you have a Mac that was made in 2020 or later, choose "Apple Silicon."
+
+## Step 2: RStudio
+
+Install the free version of RStudio Desktop:
+<https://posit.co/downloads/>
+
+If you already have RStudio installed, install the newest version.
+
+## Step 3: Test it
+
+1. Open RStudio.
+2. Type the following in the Console:
+
+```r
+print("Hello, world!")
+```
+
+3. Press Enter
+
+This should return:
+
+```r
+[1] "Hello, world!"
+```
+
+## Step 4: Install the `tidyverse`
+
+Type the following in the console:
+
+``` r
+install.packages("tidyverse")
+```
+A bunch of things should happen.
+
+You only need to let me know if you get an `Error`.
+
+## Debugging
+
+- If you ran into a problem during the installation, raise your hand.
+- If you finished installing everything successfully and think you can help others, go to the closest person with their hand up.
+
+# For next time
+
+1. Read `notes01.Rmd`. (All notes will be numbered sequentially.)
+2. Complete the questions at the end of `notes01.Rmd`.
+3. Complete the questions in `notebook01.Rmd`.
+4. Upload your completed `notebook01.Rmd` to Blackboard before class.
+
+Time permitting, you can start on this now.
