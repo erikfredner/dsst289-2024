@@ -2,13 +2,21 @@
 title: "Introduction to \"Introduction to Data Science\""
 author: "Erik Fredner"
 date: 2024-08-26
-format: 
-  revealjs:
-    #incremental: true
-    theme: default
-    transition: slide
-    logo: "images/by-sa.png"
-    footer: "https://fredner.org"
+# format: 
+#   revealjs:
+#     #incremental: true
+#     theme: default
+#     transition: slide
+#     logo: "images/by-sa.png"
+#     footer: "https://fredner.org"
+format:
+  pdf:
+    toc: true
+    number-sections: true
+    margins: 1in
+    papersize: letter
+    colorlinks: true
+    highlight-style: pygments
 ---
 
 # Outline
@@ -131,12 +139,19 @@ A bunch of things should happen.
 
 You only need to let me know if you get an `Error`.
 
-## Debugging
+## Step 4.5: Debugging
 
 - If you ran into a problem during the installation, raise your hand.
 - If you finished installing everything successfully and think you can help others, go to the closest person with their hand up.
 
-# For next time
+## Step 5: Download materials
+
+- Go to Blackboard / Course Documents / 00 - Intro
+- Download [`DSST289.zip`](https://blackboard.richmond.edu/bbcswebdav/pid-1849539-dt-content-rid-16112227_1/xid-16112227_1)
+- Extract this `.zip` file
+- Move it to a location you can find easily (e.g., `Desktop`)
+
+# Next time
 
 1. Read `notes01.Rmd`. (All notes will be numbered sequentially.)
 2. Complete the questions at the end of `notes01.Rmd`.

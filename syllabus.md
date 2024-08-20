@@ -57,7 +57,7 @@ By the end of this course, students will be able to...
 
 - Collect, manipulate, visualize, and explore data.
 - Describe best practices for structuring tabular data.
-- Articulate relationships between a dataset and analyses thereof.
+- Articulate relationships between a data set and analyses thereof.
 - Use programming language documentation and cookbooks to solve problems.
 - Understand key aspects of the [R programming language](https://www.r-project.org) and the [`tidyverse`](https://www.tidyverse.org).
 - Use the [RStudio](https://posit.co/products/open-source/rstudio/) integrated development environment.
@@ -187,13 +187,13 @@ You will be given an opportunity to begin working on homework during class. Your
 
 ### Exams
 
-Each of the three exams has two halves: a take-home open-book part and a closed-book in-class part.
+Each of the three exams has two halves: a take-home open-book part and an in-class closed-book part.
 
 The take-home will be distributed in advance of the in-class exam. Answers to the take-home should be submitted by the beginning of the in-class exam. A list of topics for the in-class exam will be posted on the course website.
 
 ### Final Project
 
-The final project will be due during the last week of class. The project will ask you to find or create a new dataset, and apply techniques learned throughout the class to analyze it. The project will take the form of a digital poster session and a one-page reflection. Detailed intructions will be provided later in the course.
+The final project will be due during the last week of class. The project will ask you to find or create a new data set, and apply techniques learned throughout the class to analyze it. The project will take the form of a digital poster session and a one-page reflection. Detailed instructions will be provided later in the course.
 
 ## Honor
 
@@ -201,7 +201,7 @@ This course is taught in accordance with the University of Richmond Honor Code, 
 
 ### Generative Artificial Intelligence
 
-Generative artificial intelligence (GenAI) programs, especially large language models (LLMs), can be useful tools for coding. However, overreliance on LLMs or other resources where you can copy answers to programming problems directly (e.g., StackOverflow) will impede your learning.
+Generative artificial intelligence (GenAI) programs, especially large language models (LLMs), can be useful tools for coding. However, over reliance on LLMs or other resources where you can copy answers to programming problems directly (e.g., StackOverflow) will impede your learning.
 
 Moreover, LLMs often answer questions incorrectly and/or using different methodologies than those we study in class. This is referred to as ["hallucination"](https://en.wikipedia.org/wiki/Hallucination_(artificial_intelligence)). In order to be an effective user of these technologies, it is crucial for you to recognize when and how that happens.
 
