@@ -1,0 +1,255 @@
+---
+title: "Tabular Data & R Overview"
+author: "Erik Fredner"
+date: 2024-08-28
+format:
+  revealjs:
+    #incremental: true
+    theme: default
+    transition: slide
+    logo: "images/by-sa.png"
+    footer: "https://fredner.org"
+    chalkboard: true
+# format:
+#   pdf:
+#     toc: true
+#     number-sections: true
+#     margins: 1in
+#     papersize: letter
+#     colorlinks: true
+#     highlight-style: pygments
+---
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(clipr)
+```
+
+
+# Tabular Data
+
+- Tabular data is a common data structure.
+- It is a table ("table" → "tabular") with rows and columns.
+- Rows contain observations.
+- Columns contain features or variables.
+
+## Excel is tabular
+
+![Table with dog breed, height, weight](images/dogs.png)
+
+## Observations (dogs) go in rows
+
+![Dogs with highlighted row.](images/dogs_row.png)
+
+## Features (breed, height, weight) go in columns
+
+![Dogs with highlighted column.](images/dogs_col.png)
+
+## Tibbles are tabular
+
+```{r, echo=TRUE}
+#| code-line-numbers: "|1|2|3|4"
+
+
+breed <- c("Shih-Tzu", "Labrador", "Beagle", "Newfoundland", "Chihuahua", "Affenpinscher")
+weight <- c(5.5, 33, 10.2, 70, 1.3, 9.6)
+height <- c(24, 56, 34, 69, 20, 27)
+dogs <- tibble(breed, weight, height)
+dogs
+```
+
+## One feature: `breed`
+
+```{r, echo=TRUE}
+dogs |>
+  select(breed)
+```
+
+## One observation: `"Beagle"`
+
+```{r, echo=TRUE}
+#| code-line-numbers: "|2"
+dogs |>
+  filter(breed == "Beagle")
+```
+
+- `==` is a comparison operator that means "is equal to."
+- We're saying, "Filter this tibble for rows where `breed` is equal to `"Beagle"`."
+
+## Data types
+
+- Every feature (column) has a data type.
+- Two common data types in the `dogs` table:
+  - `character` (text, e.g., `"Beagle"`)
+  - `numeric` (numbers, e.g., `10.2`)
+- Each feature has a single data type.
+
+## Data types in `dogs`
+
+```{r, echo=TRUE}
+dogs
+```
+
+- `chr` is short for `character`
+- `dbl` is short for `double` (a type of `numeric`)
+
+## Takeaways
+
+- Good data structure is the most important thing we will learn in this class.
+- Real-world data science is largely about gathering, cleaning, and organizing data.
+- Don't take good data structure for granted!
+
+# Introduction to some key concepts in R
+
+## Objects
+
+- Everything in R is an object.
+- We create new objects by assigning values to names:
+
+```{r, echo=TRUE}
+almost_pi <- 3.14
+almost_pi <- 3.1415
+almost_pi <- 3.141592653589793238462643383279
+# note the rounding:
+almost_pi
+```
+
+## Functions
+
+Functions take inputs and generate outputs.
+
+```{r, echo=TRUE}
+# sqrt is a function that takes a number and returns its square root
+sqrt(9)
+```
+
+## Comparison operators
+
+Comparison operators compare two values and return either `TRUE` or `FALSE`.
+
+```{r, echo=TRUE}
+# Is the square root of 9 equal to 3?
+sqrt(9) == 3
+```
+
+```{r, echo=TRUE}
+# Is the square root of 10 less than 3?
+sqrt(10) < 3
+```
+
+## Functions take arguments
+
+- Arguments may be named. If unnamed, arguments are evaluated by position.
+- If named, they may be evaluated in any order.
+
+```{r, echo=TRUE}
+# round is a function that takes a numeric vector and rounds it to the nearest integer
+round(almost_pi)
+round(almost_pi, digits = 6)
+# this is the same as above because digits is the first argument
+round(almost_pi, 6)
+# this is the same as above, but because we name x, we can invert the order:
+round(digits = 6, x = almost_pi)
+```
+
+## Pipes
+
+- Pipes `|>` chain functions together.
+- They pass the output of one function to the first input (`x`) of the next function.
+- They improve readability and reduce the need for intermediate objects.
+
+## Why do pipes improve readability?
+
+```{r, echo=TRUE}
+# this is hard to read
+abs(tan(log(exp(8), base = 2)))
+
+# this is annoying to write
+temp <- exp(8)
+temp <- log(temp, base = 2)
+temp <- tan(temp)
+temp <- abs(temp)
+temp
+```
+
+```{r, echo=TRUE}
+# this is easier to read and easier to write
+8 |>
+  exp() |>
+  log(base = 2) |>
+  tan() |>
+  abs()
+```
+
+## Formatting code
+
+- Well formatted code is not just nice.
+  - It's essential to share your code.
+- These are not my opinions. They're from the [`tidyverse` style guide](https://style.tidyverse.org).
+- Some rules I will enforce:
+
+## Spacing around operators
+
+Put spaces before and after operators.
+
+```{r, echo=TRUE}
+# bad spacing is hard to read
+bad<-1+2/3
+
+# good spacing
+good <- 1 + 2 / 3
+```
+
+But as in English prose, no space *before* a comma:
+
+```{r, echo=TRUE}
+# bad spacing is unnatural
+bad <- round(almost_pi , 2)
+
+# good spacing
+good <- round(almost_pi, 2)
+```
+
+## Pipe spacing
+
+Pipes `|>` require vertical and horizontal spacing:
+
+```{r, echo=TRUE}
+# bad spacing
+8|>exp()|>log(base=2)|>tan()|>abs()
+
+# good spacing: note the indentations (tabs)
+8 |>
+  exp() |>
+  log(base = 2) |>
+  tan() |>
+  abs()
+```
+
+## Naming stuff
+
+Naming objects is hard! Bad names make things more difficult for everyone.
+
+Rules for names:
+
+1. Use lowercase letters, numbers, and underscores.
+2. Use [snake case](https://en.wikipedia.org/wiki/Snake_case) (e.g., `snake_case`).
+3. Write the shortest, clearest name you can.
+
+## Naming stuff: examples
+
+- Horrible: `WeightOfDogInKilograms`
+- Bad: `weight_of_dog_in_kg`
+- Okay: `dog_weight`
+- Best: `weight`
+
+The last and best option is only available if your data is structured correctly!
+
+## Working with `.Rmd` files
+
+There are many ways to run code in an `.Rmd` file:
+
+- Click the green play button in the RStudio script editor.
+- Use the Command Pallette (Cmd + Shift + P) and search for "Run the current code chunk."
+- Keyboard shortcuts: Ctrl + Shift + Enter (Windows) or ⌘ + Shift + Enter (macOS)
+- Click the Knit button to render the entire document as an HTML file.

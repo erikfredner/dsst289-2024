@@ -2,21 +2,21 @@
 title: "Introduction to \"Introduction to Data Science\""
 author: "Erik Fredner"
 date: 2024-08-26
-# format: 
-#   revealjs:
-#     #incremental: true
-#     theme: default
-#     transition: slide
-#     logo: "images/by-sa.png"
-#     footer: "https://fredner.org"
 format:
-  pdf:
-    toc: true
-    number-sections: true
-    margins: 1in
-    papersize: letter
-    colorlinks: true
-    highlight-style: pygments
+  revealjs:
+    #incremental: true
+    theme: default
+    transition: slide
+    logo: "images/by-sa.png"
+    footer: "https://fredner.org"
+# format:
+#   pdf:
+#     toc: true
+#     number-sections: true
+#     margins: 1in
+#     papersize: letter
+#     colorlinks: true
+#     highlight-style: pygments
 ---
 
 # Outline

@@ -32,7 +32,7 @@ Instructor      [Erik Fredner](https://english.richmond.edu/faculty/efredner/) (
 Email           <erik.fredner@richmond.edu>
 Classroom       105 The Refectory
 Office          314 Carole Weinstein International Center
-Office Hours    Wed. 14:30-16:30
+Office Hours    Wed. 14:30-15:30
 Website         [Blackboard](https://blackboard.richmond.edu/webapps/blackboard/execute/courseMain?course_id=_56262_1)
 Updated         \today
 -----           -----
@@ -133,47 +133,48 @@ F               0-69
   - I will inform you of any changes as far in advance as possible.
 - **Bold** items are worth a large percentage of your grade.
 
-Date        Topic
------       -----
-08-26       Introduction
-08-28       Tabular data
-09-02       Grammar of graphics
-09-04       Aesthetics and scales
-09-09       Organizing data
-09-11       Summarizing data
-09-16       Creating features
-09-18       **Exam 1**
-09-23       Creating data
-09-25       Data feminism
-09-30       Table joins
-10-02       Table pivots
-10-07       Review 1
-10-09       Review 2
-10-16       Review 3
-10-21       Tidy models
-10-23       Exam 2 review
-10-28       **Exam 2**
-10-30       Project assignments
-11-04       Dates and times
-11-06       Spatial data
-11-11       Spatial joins
-11-13       Time zones
-11-18       **Exam 3**
-11-20       Workshop 1
-11-25       Workshop 2
-12-02       Workshop 3
-12-04       **Final projects**
+Meeting No. | Date  | Topic
+------------|-------|--------------------------------
+00          | 08-26 | Introduction
+01          | 08-28 | Tabular data
+02          | 09-02 | Grammar of graphics
+03          | 09-04 | Aesthetics and scales
+04          | 09-09 | Organizing data
+05          | 09-11 | Summarizing data
+06          | 09-16 | Creating features
+07          | 09-18 | **Exam 1**
+08          | 09-23 | Creating data
+09          | 09-25 | Data feminism
+10          | 09-30 | Table joins
+11          | 10-02 | Table pivots
+12          | 10-07 | Review 1
+13          | 10-09 | Review 2
+14          | 10-16 | Review 3
+15          | 10-21 | Tidy models
+16          | 10-23 | Exam 2 review
+17          | 10-28 | **Exam 2**
+18          | 10-30 | Project assignments
+19          | 11-04 | Dates and times
+20          | 11-06 | Spatial data
+21          | 11-11 | Spatial joins
+22          | 11-13 | Time zones
+23          | 11-18 | **Exam 3**
+24          | 11-20 | Workshop 1
+25          | 11-25 | Workshop 2
+26          | 12-02 | Workshop 3
+27          | 12-04 | **Final projects**
 
 ## Assignments
 
 ### Homework
 
-All class meetings, other than exam days, have a reading posted on our website. A few questions are included at the end of each reading. These must be completed before class. Please bring the written responses with you to class. You will upload completed questions to the course website.
+Most class meetings will have a reading posted on our website. A few questions are included at the end of each reading. These must be completed before class. Please bring the written responses with you to class. You will upload completed questions to the course website.
 
 You will be given an opportunity to begin working on homework during class. Your homework grade will be based on the proportion of assignments that you complete on time. If you put in a good-faith effort on the homework, it will be marked complete.
 
 ### Participation
 
+- You will work on practice problems during class in notebooks.
 - Everyone may have up to two unexcused absences.
   - Additional unexcused absences will harm your participation grade.
 - You may email me to request an excused absence.
@@ -203,7 +204,7 @@ This course is taught in accordance with the University of Richmond Honor Code, 
 
 Generative artificial intelligence (GenAI) programs, especially large language models (LLMs), can be useful tools for coding. However, over reliance on LLMs or other resources where you can copy answers to programming problems directly (e.g., StackOverflow) will impede your learning.
 
-Moreover, LLMs often answer questions incorrectly and/or using different methodologies than those we study in class. This is referred to as ["hallucination"](https://en.wikipedia.org/wiki/Hallucination_(artificial_intelligence)). In order to be an effective user of these technologies, it is crucial for you to recognize when and how that happens.
+Moreover, LLMs sometimes answer questions incorrectly and/or using different methodologies than those we study in class. When LLMs make stuff up (e.g., libraries that don't exist), this is referred to as ["hallucination"](https://en.wikipedia.org/wiki/Hallucination_(artificial_intelligence)). In order to be an effective user of these technologies, it is crucial for you to recognize when that happens and how to respond.
 
 ### Prohibited uses of GenAI
 
@@ -215,7 +216,7 @@ Any of the above uses would be treated as violations of the honor code.
 
 ### Permitted uses of GenAI
 
-- If you get stuck on a problem that you find you cannot solve by consulting the course notes or other resources, you may consult GenAI tools.
+- If you get stuck on a problem that you cannot solve by consulting the course notes and/or communicating with classmates, you may then consult GenAI tools.
 - If you use GenAI tools like ChatGPT, you must **cite** your interaction with them.
   - [This page](https://help.openai.com/en/articles/7925741-chatgpt-shared-links-faq) explains how to share a link to a ChatGPT interaction.
   - An adequate citation would be: "I got [this help](https://chatgpt.com/share/2a4be40e-7b25-418d-b350-966a1915ac52) from ChatGPT to solve this problem."

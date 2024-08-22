@@ -71,6 +71,49 @@ browser:
 In fact, the notes that you are currently reading were created with
 RMarkdown files that are knitted to HTML.
 
+## Markdown
+
+Markdown is a lightweight markup language used to format text for the web.
+RMarkdown documents combine markdown prose with R code.
+Here are some of the key things you will need to know how to do with markdown:
+
+1. Create headers using the `#` symbol. The number of `#` symbols
+  determines the size of the header.
+
+```{markdown}
+# Big header
+
+The quick brown fox jumped over the lazy dog.
+
+## Smaller header
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+```
+
+2. Distinguish named objects using backticks:
+
+```{markdown}
+The `seq` function generates a sequence of numbers.
+```
+
+3. Create lists using `*` or `-` for bullet points and numbers for ordered lists:
+
+```{markdown}
+* First item
+* Second item
+* Third item
+```
+
+4. Create links using square brackets for the text and parentheses for the URL:
+
+```{markdown}
+[Google](https://www.google.com)
+```
+
+You will see all of these elements (and more) in the `.Rmd` notebooks that you will complete for homework.
+
+For more information, see [the R Markdown guide](https://rmarkdown.rstudio.com/lesson-8.html).
+
 ## Running R Code
 
 We now want to give a very brief overview of how to run R code. We
@@ -283,9 +326,12 @@ solutions with you to class.
 
 1. Make sure you have R, RStudio, and all of the packages installed. If you are
 still having trouble with anything, please let me know during class.
+
 2. On a piece of paper, make an example of a tabular data set with five rows and
 three columns. This can capture any type of information you would like. We will
 share these together in class.
+
 3. Give each of the columns of your data set names. Follow the variable
 name rules described above.
+
 4. Once you have finished reading and completing the items above, make sure to submit the survey.
