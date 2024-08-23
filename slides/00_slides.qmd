@@ -9,14 +9,7 @@ format:
     transition: slide
     logo: "images/by-sa.png"
     footer: "https://fredner.org"
-# format:
-#   pdf:
-#     toc: true
-#     number-sections: true
-#     margins: 1in
-#     papersize: letter
-#     colorlinks: true
-#     highlight-style: pygments
+    embed-resources: true
 ---
 
 # Outline
@@ -44,7 +37,7 @@ format:
 ## Introduce *me* to UR
 
 - This is my first semester at UR!
-  - If you want to learn more about who I am: <https://fredner.org>
+  - If you want to learn more about where I'm coming from: <https://fredner.org>
 - How would you describe the culture of UR?
   - Discuss with the people next to you.
 
@@ -53,7 +46,9 @@ format:
 Please complete this brief **anonymous** survey:
 <https://richmond.ca1.qualtrics.com/jfe/form/SV_8vsOr6mRZGypJVc>
 
-This will help me design the class.
+This link was included with the announcement you received on Sunday.
+
+I will use the survey results to design the class.
 
 # Course Overview
 
@@ -63,7 +58,7 @@ This will help me design the class.
 - We focus on the creation of data and application of methods, not theoretical or foundational questions.
 - This is not a mathematics course, nor will it resemble a traditional introductory statistics class. We will spend the entire semester writing code to apply data science concepts.
 
-## Why do data science?
+## Why do data science? One perspective:
 
 - There is too much information in the world.
   - e.g., every minute, approximately 500 hours of video are uploaded to YouTube.
@@ -92,6 +87,24 @@ height="600" >}}
 - Go to the course [Blackboard site](https://blackboard.richmond.edu/webapps/blackboard/execute/courseMain?course_id=_56262_1) and click on Syllabus.
 
 ## Questions about syllabus?
+
+## The elephant in the room
+
+- *No one* knows what the best thing for professors to do about GenAI (e.g., ChatGPT) is.
+- You will likely get different instructions from all of your professors about it.
+- Use of GenAI is **not required** in this course.
+- But it is already widespread in all domains of programming, including data science, so it is not prohibited either.
+
+## Custom GPT
+
+- I created a [Custom GPT](https://chatgpt.com/g/g-eChIzwMNp-ur-intro-to-data-science-gpt) for this course that already knows about the course requirements.
+- I ask you to do these things in this order when you run into trouble on homework:
+
+1. Read the notes.
+2. Talk to your classmates.
+3. Search for credible information online.
+4. Ask the Custom GPT for help.
+5. *Cite your interaction* with the Custom GPT.
 
 # Install stuff
 
@@ -151,11 +164,10 @@ You only need to let me know if you get an `Error`.
 - Extract this `.zip` file
 - Move it to a location you can find easily (e.g., `Desktop`)
 
-# Next time
+# For next time
 
 1. Read `notes01.Rmd`. (All notes will be numbered sequentially.)
 2. Complete the questions at the end of `notes01.Rmd`.
-3. Complete the questions in `notebook01.Rmd`.
-4. Upload your completed `notebook01.Rmd` to Blackboard before class.
+3. Upload your completed questions to Blackboard before class.
 
 Time permitting, you can start on this now.

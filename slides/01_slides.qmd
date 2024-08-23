@@ -9,7 +9,7 @@ format:
     transition: slide
     logo: "images/by-sa.png"
     footer: "https://fredner.org"
-    chalkboard: true
+    embed-resources: true
 # format:
 #   pdf:
 #     toc: true
@@ -245,7 +245,7 @@ Rules for names:
 
 The last and best option is only available if your data is structured correctly!
 
-## Working with `.Rmd` files
+## Running code in `.Rmd` files
 
 There are many ways to run code in an `.Rmd` file:
 

@@ -32,7 +32,7 @@ Instructor      [Erik Fredner](https://english.richmond.edu/faculty/efredner/) (
 Email           <erik.fredner@richmond.edu>
 Classroom       105 The Refectory
 Office          314 Carole Weinstein International Center
-Office Hours    Wed. 14:30-15:30
+Office Hours    Wed. 14:30-15:30 & by appointment
 Website         [Blackboard](https://blackboard.richmond.edu/webapps/blackboard/execute/courseMain?course_id=_56262_1)
 Updated         \today
 -----           -----
@@ -174,13 +174,13 @@ You will be given an opportunity to begin working on homework during class. Your
 
 ### Participation
 
-- You will work on practice problems during class in notebooks.
+- After a brief lecture reviewing material from the reading, you will work on practice notebooks during class in small groups.
 - Everyone may have up to two unexcused absences.
   - Additional unexcused absences will harm your participation grade.
 - You may email me to request an excused absence.
   - Your request will be approved if it is for illness, hospitalization, death in the family, important religious holidays, or university activities (e.g., field trips, University-sponsored athletic events).
-- You do *not* need to provide details.
-  - Simply say, "I'm sick." You don't need to tell me, e.g., "I have strep throat."
+  - You do *not* need to provide details if request an absence for one of the reasons above.
+    - Simply say, "I'm sick." You don't need to tell me, e.g., "I have strep throat."
 - Students who receive excused absences may submit homework late.
 - Please request an excused absence before missing class if possible.
   - If you request an excused absence *after* missing class, you must do so as soon as possible.
@@ -204,20 +204,25 @@ This course is taught in accordance with the University of Richmond Honor Code, 
 
 Generative artificial intelligence (GenAI) programs, especially large language models (LLMs), can be useful tools for coding. However, over reliance on LLMs or other resources where you can copy answers to programming problems directly (e.g., StackOverflow) will impede your learning.
 
-Moreover, LLMs sometimes answer questions incorrectly and/or using different methodologies than those we study in class. When LLMs make stuff up (e.g., libraries that don't exist), this is referred to as ["hallucination"](https://en.wikipedia.org/wiki/Hallucination_(artificial_intelligence)). In order to be an effective user of these technologies, it is crucial for you to recognize when that happens and how to respond.
+Moreover, LLMs sometimes answer questions incorrectly and/or using different methodologies than those we study in class. When LLMs make stuff up (e.g., libraries that don't exist), this is referred to as ["hallucination."](https://en.wikipedia.org/wiki/Hallucination_(artificial_intelligence)) In order to be an effective user of these technologies, it is crucial for you to recognize when that happens and how to respond.
 
 ### Prohibited uses of GenAI
 
 1. Submitting any model output, in part or in whole, as your own work. This includes code and writing.
 2. Uploading any data used in this course (e.g., `.csv` files) to multimodal GenAI tools like ChatGPT.
-3. Entering course materials (e.g., copy-pasting or paraphrasing homework questions) into GenAI tools.
+3. Using GenAI tools on the take-home portion of exams.
 
 Any of the above uses would be treated as violations of the honor code.
 
 ### Permitted uses of GenAI
 
-- If you get stuck on a problem that you cannot solve by consulting the course notes and/or communicating with classmates, you may then consult GenAI tools.
-- If you use GenAI tools like ChatGPT, you must **cite** your interaction with them.
+If you get stuck on a homework problem, I ask you to try these things in this order:
+
+1. Review the course notes.
+2. Talk to your classmates.
+3. Search for credible information online.
+4. After trying all of the above, talk to the [Custom GPT](https://chatgpt.com/g/g-eChIzwMNp-ur-intro-to-data-science-gpt) generated for this class.
+5. If you use information from the Custom GPT, you must **cite** your interactions with it.
   - [This page](https://help.openai.com/en/articles/7925741-chatgpt-shared-links-faq) explains how to share a link to a ChatGPT interaction.
   - An adequate citation would be: "I got [this help](https://chatgpt.com/share/2a4be40e-7b25-418d-b350-966a1915ac52) from ChatGPT to solve this problem."
 

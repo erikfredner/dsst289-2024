@@ -222,10 +222,19 @@ help(seq)
 
 This will pull up the documentation for the `seq` function in the Help tab in RStudio. You can also search for functions in the Help tab by typing in the search bar.
 
-## Loading data
+## Tabular data
 
 In these notes we will be working with data that is stored in a tabular
-format. Here is an example of a tabular data set of food types, which
+format. Let's start with the vocabulary of tabular data:
+
+> - A **variable** (or **feature**) is a quantity, quality, or property that you can measure.
+> - A **value** is the state of a variable when you measure it. The value of a variable may change from measurement to measurement.
+> - An **observation** is a set of measurements made under similar conditions (you usually make all of the measurements in an observation at the same time and on the same object). An observation will contain several values, each associated with a different variable. We’ll sometimes refer to an observation as a data point.
+> - **Tabular data** is a set of values, each associated with a variable and an observation. Tabular data is **tidy** if each value is placed in its own “cell”, each variable in its own column, and each observation in its own row.\
+> from *R for Data Science* (2023)
+
+
+Here is an example of a tabular data set of food types, which
 has nine rows and five columns. Each row tells us the nutritional
 properties contained in 100 grams of a particular type of food.
 
@@ -238,7 +247,7 @@ individual food corresponds to a specific observation:
 <img src="../imgs/tidy-2.png" style="padding-left: 15%; padding-right: 15%; padding-top: 5%">
 
 The columns in a tabular data set represent the measurements that we
-record for each observation. These measurements are called *features*.
+record for each observation. These measurements are called *variables* or *features*.
 In our example data set, we have five features which record the name
 of the food type, the food group that the food falls into, the number
 of calories in a 100g serving, the amount of sodium (mg) in a 100g
@@ -328,10 +337,9 @@ solutions with you to class.
 still having trouble with anything, please let me know during class.
 
 2. On a piece of paper, make an example of a tabular data set with five rows and
-three columns. This can capture any type of information you would like. We will
-share these together in class.
+three columns. This can capture any type of information you would like. (If you don't have any ideas, try your "to do" list.) We will share these together in class.
 
 3. Give each of the columns of your data set names. Follow the variable
 name rules described above.
 
-4. Once you have finished reading and completing the items above, make sure to submit the survey.
+4. Once you have finished reading and completing the items above, make sure you have responded to the survey.

@@ -1,0 +1,47 @@
+---
+title: "Introduction to grammar of graphics"
+author: "Erik Fredner"
+date: "`r Sys.Date()`"
+format:
+  revealjs:
+    #incremental: true
+    theme: default
+    transition: slide
+    logo: "images/by-sa.png"
+    footer: "https://fredner.org"
+    embed-resources: true
+---
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+# What is the grammar of graphics?
+
+## Origin
+
+- `ggplot2` did not create "the grammar of graphics."
+- `ggplot2` implements the ideas in [*The Grammar of Graphics* (2005) by Leland Wilkinson](https://richmond.primo.exlibrisgroup.com/permalink/01URICH_INST/10lhjt5/cdi_springer_books_10_1007_0_387_28695_0).
+
+## Key concepts
+
+- Data visualizations (simple or complex) are composed of layers.
+- Each layer consists of three parts:
+
+| **Key**  | **Description**                                                                                     |
+|----------|-----------------------------------------------------------------------------------------------------|
+| `data`   | Tabular dataset associated with the layer                                                           |
+| `geom`   | Graphical element associated with each observation                                                  |
+| `aes`    | Mappings from properties of the plot that associate features in the dataset with elements of the geometry |
+
+## Example: scatter plot of `food`
+
+```{r, echo=TRUE}
+food <- read_csv("../data/food.csv")
+
+food |>
+  ggplot(aes(x = calories, y = carbs)) +
+  geom_point()
+```
+
+TODO figure out how to make the plot smaller

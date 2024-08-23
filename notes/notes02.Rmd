@@ -21,7 +21,10 @@ You may have often heard the phrases "numbers don't lie" or "the data speaks for
 Data visualization is one of the main ways that we can explore, understand, and communicate with data.
 But it is also a major way that people can be misled (or mislead others) with data.
 
-For example:
+For example, look at these graphs very quickly, the way you might while skimming a news article:
+
+1. How would you tell the "story" of the plot on the left?
+2. How would you tell the "story" of the plot on the right?
 
 ```{r, echo=FALSE, warnings=FALSE, message=FALSE}
 # Load necessary libraries
@@ -38,24 +41,17 @@ data <- data.frame(
 p1 <- ggplot(data, aes(x = year, y = interest_rate)) +
   geom_line(color = "blue", linewidth = 1) +
   geom_point(color = "blue", size = 3) +
-  scale_y_continuous(limits = c(3.4, 4.1)) +
-  ggtitle("Narrow Y-Axis")
+  scale_y_continuous(limits = c(3.4, 4.1))
 
 # Plot 2: With a broader y-axis
 p2 <- ggplot(data, aes(x = year, y = interest_rate)) +
   geom_line(color = "red", linewidth = 1) +
   geom_point(color = "red", size = 3) +
-  scale_y_continuous(limits = c(0, 5)) +
-  ggtitle("Broad Y-Axis")
+  scale_y_continuous(limits = c(0, 5))
 
 # Arrange plots side by side
 grid.arrange(p1, p2, ncol = 2)
 ```
-
-Imagine looking at them quickly, the way you might while skimming a news article:
-
-1. How would you tell the "story" of the plot on the left?
-2. How would you tell the "story" of the plot on the right?
 
 Both of these plots show the same data, but the y-axis is different in each. The first plot has a narrow y-axis (3.4-4.1), which makes the changes in interest rates look more dramatic. The second plot has a broader y-axis (0-5), which makes the changes look less dramatic.
 
@@ -126,7 +122,7 @@ food |>
   # call ggplot to start a new plot
   ggplot() +
   # add a layer with points using geom_point
-  geom_point(aes(x = calories, y = total_fat))
+  geom_point(aes(x = calories, y = total_fat)) # define our aes()
 ```
 
 In the first line we specify the data set (`food`), which is then piped (`|>`)
@@ -148,7 +144,7 @@ food |>
 ```
 
 In the next few classes we will see how to modify and build on this basic
-structure to create more complex graphics. As a teaser of what's to come, see how easy it is to add custom labels to the plot:
+structure to create more complex graphics. As a teaser of what's to come, see how easy it is to add (`+`) custom labels to the plot:
 
 ```{r}
 food |>
@@ -185,7 +181,7 @@ food |>
 #### Getting help
 
 Remember, if you want to read more about `geom_text` or any other function,
-you can get help from the R console:
+you can search for help from the R console or from `.Rmd` files:
 
 ```{r}
 ??geom_text
@@ -197,7 +193,7 @@ You can also find the documentation online by searching for the function name us
 - `ggplot2 geom_text`
 - `geom_text documentation`
 
-The domains `r-project.org` and `tidyverse.org` should be the first places you check.
+`r-project.org` and `tidyverse.org` should be the main websites you check.
 
 ### Overlapping text
 
@@ -274,7 +270,7 @@ the labels giving the name of the animal.
 
 3. Hand-sketch what your scatter plot should look like.
 
-4. Enter the data that you created into a new `.Rmd` file following the example below:
+4. Enter the data that you created into a new `.Rmd` file following the example below. (Note that the `c()` function **c**ombines comma-separated values into a vector or list, so the order of the items corresponds to the order of the rows in the tibble or data frame.)
 
 ```{r}
 # create your columns by replacing these sample values with your own:
