@@ -97,9 +97,11 @@ If we spend time reviewing material that you already know, remember that it may 
 
 - We should have a lot of time during class to answer questions about course material.
   - I will also encourage you to collaborate with peers during class time.
+- I encourage you to study with your classmates, though I expect all work that you submit to be your own.
 - Come to office hours or schedule a meeting for any questions or personal concerns that cannot be addressed in class.
   - To schedule, email me with your availability at least one day before you’d like to meet.
-- Note that I generally do not answer conceptual questions about homework before they are due. Just do your best, and we will discuss in class.
+- Note that I generally do not answer conceptual questions about homework before they are due.
+  - Homework is graded on timely completion and effort, *not* accuracy.
 
 ## Grades
 

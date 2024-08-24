@@ -9,7 +9,10 @@ format:
     transition: slide
     logo: "images/by-sa.png"
     footer: "https://fredner.org"
-    embed-resources: true
+    embed-resources: true  
+    scrollable: true
+    mermaid:
+      theme: neutral
 ---
 
 # Outline
@@ -75,6 +78,30 @@ I will use the survey results to design the class.
   - what good data is
   - how to ask good questions of data
   - how we can use good data to answer good questions
+  
+## What does the data science process look like?
+
+```{mermaid}
+flowchart LR
+    A[Import] --> B[Tidy]
+    B --> C[Transform]
+    subgraph Understand
+        direction LR
+        C --> D[Visualize]
+        D --> E[Model]
+        E --> C
+    end
+    Understand --> F[Communicate]
+    subgraph Program
+        direction LR
+        A
+        B
+        Understand
+        F
+    end
+```
+
+from *R for Data Science* (2023)
 
 ## An effective example
 
@@ -90,8 +117,8 @@ height="600" >}}
 
 ## The elephant in the room
 
-- *No one* knows what the best thing for professors to do about GenAI (e.g., ChatGPT) is.
-- You will likely get different instructions from all of your professors about it.
+- *No one* knows the best course of action for students or professors regarding GenAI (e.g., ChatGPT).
+- As a result, you will probably get different instructions from all of your professors about it.
 - Use of GenAI is **not required** in this course.
 - But it is already widespread in all domains of programming, including data science, so it is not prohibited either.
 
@@ -127,15 +154,17 @@ If you already have RStudio installed, install the newest version.
 ## Step 3: Test it
 
 1. Open RStudio.
-2. Type the following in the Console:
+2. Type the following in the R console (bottom left quadrant with the `>`):
 
 ```r
 print("Hello, world!")
 ```
 
-3. Press Enter
+Note that you must get the parentheses `()` and quotes `""` exactly right.
 
-This should return:
+3. Press Enter or Return on your keyboard.
+
+You should see this in the console:
 
 ```r
 [1] "Hello, world!"
@@ -162,12 +191,14 @@ You only need to let me know if you get an `Error`.
 - Go to Blackboard / Course Documents / 00 - Intro
 - Download [`DSST289.zip`](https://blackboard.richmond.edu/bbcswebdav/pid-1849539-dt-content-rid-16112227_1/xid-16112227_1)
 - Extract this `.zip` file
-- Move it to a location you can find easily (e.g., `Desktop`)
+- Move it to a location on your computer that you can find easily (e.g., `Desktop`)
 
-# For next time
+# With our remaining time {.smaller}
 
-1. Read `notes01.Rmd`. (All notes will be numbered sequentially.)
-2. Complete the questions at the end of `notes01.Rmd`.
-3. Upload your completed questions to Blackboard before class.
+1. Read the notes for next class: Blackboard > Course Documents > 01 - Tabular Data > notes
+2. Complete the questions at the end of the notes.
+3. Yes, you may work with your classmates on homework! I recommend that you **exchange contact information**.
 
-Time permitting, you can start on this now.
+  - If someone wants to take the lead on organizing a full-class study group on WhatsApp or whatever, go for it.
+  
+4. Upload your completed questions to the Blackboard assignment "homework upload" before next class.

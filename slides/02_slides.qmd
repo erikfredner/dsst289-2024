@@ -10,11 +10,49 @@ format:
     logo: "images/by-sa.png"
     footer: "https://fredner.org"
     embed-resources: true
+    scrollable: true
 ---
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
 ```
+
+# Why visualize data well?
+
+```{r, echo=FALSE, warnings=FALSE, message=FALSE}
+# Load necessary libraries
+library(ggplot2)
+library(gridExtra)
+
+# Dummy data
+data <- data.frame(
+  year = c(2010, 2011, 2012, 2013, 2014, 2015),
+  interest_rate = c(3.5, 3.7, 3.6, 3.8, 3.9, 4.0)
+)
+
+# Plot 1: With a narrow y-axis
+p1 <- ggplot(data, aes(x = year, y = interest_rate)) +
+  geom_line(color = "blue", linewidth = 1) +
+  geom_point(color = "blue", size = 3) +
+  scale_y_continuous(limits = c(3.4, 4.1))
+
+# Plot 2: With a broader y-axis
+p2 <- ggplot(data, aes(x = year, y = interest_rate)) +
+  geom_line(color = "red", linewidth = 1) +
+  geom_point(color = "red", size = 3) +
+  scale_y_continuous(limits = c(0, 5))
+
+# Arrange plots side by side
+grid.arrange(p1, p2, ncol = 2)
+```
+
+## What are key considerations for visualizing data well?
+
+- Keep it simple! ([KISS principle](https://en.wikipedia.org/wiki/KISS_principle))
+- Don't cherry-pick
+  - Represent data *truthfully*
+- Make accessible visualizations
+  - e.g., color palettes like `viridis` work for colorblind people
 
 # What is the grammar of graphics?
 
@@ -23,10 +61,9 @@ library(tidyverse)
 - `ggplot2` did not create "the grammar of graphics."
 - `ggplot2` implements the ideas in [*The Grammar of Graphics* (2005) by Leland Wilkinson](https://richmond.primo.exlibrisgroup.com/permalink/01URICH_INST/10lhjt5/cdi_springer_books_10_1007_0_387_28695_0).
 
-## Key concepts
+# Key gg concepts
 
-- Data visualizations (simple or complex) are composed of layers.
-- Each layer consists of three parts:
+Data visualizations (simple or complex) are composed of layers. Each layer consists of three parts:
 
 | **Key**  | **Description**                                                                                     |
 |----------|-----------------------------------------------------------------------------------------------------|
@@ -34,14 +71,92 @@ library(tidyverse)
 | `geom`   | Graphical element associated with each observation                                                  |
 | `aes`    | Mappings from properties of the plot that associate features in the dataset with elements of the geometry |
 
-## Example: scatter plot of `food`
+## Example data set: `food`
 
 ```{r, echo=TRUE}
 food <- read_csv("../data/food.csv")
 
 food |>
-  ggplot(aes(x = calories, y = carbs)) +
-  geom_point()
+  select(item, food_group, calories, carbs)
 ```
 
-TODO figure out how to make the plot smaller
+
+## Example scatter plot
+
+**Observations** represented by dots:
+
+```{r, echo=TRUE}
+food <- read_csv("../data/food.csv")
+
+food |>
+  ggplot() +
+  geom_point(aes(x = calories, y = carbs))
+```
+
+## Example text plot
+
+**Observations** represented by the `item` label:
+
+```{r, echo=TRUE}
+food |>
+  ggplot() +
+  geom_text(aes(x = calories, y = carbs, label = item))
+```
+
+## Example bar plot (more complex)
+
+**Observations** represented by bars:
+
+```{r, echo=TRUE}
+#| code-fold: true
+#| code-line-numbers: true
+
+food |>
+  # filter for high cholesterol foods:
+  filter(cholesterol > 50) |>
+  ggplot() +
+  # set nice x axis label:
+  xlab("Food") +
+  # set nice y axis label:
+  ylab("Cholesterol (mg)") +
+  # set bar chart
+  geom_col(aes(
+    # sort bars by descending amount of cholesterol
+    x = reorder(item, -cholesterol),
+    y = cholesterol,
+    # set bar color (fill) by food_group
+    fill = food_group
+  )) +
+  # tilt labels for readability:
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+## Syntax review
+
+With `ggplot`, you can combine multiple layers to create simple or complex
+data visualizations. In general terms, the structure is:
+
+```r
+data |>
+  ggplot() +
+  geom_...(aes(x = ..., y = ...)) +
+  ...
+```
+
+# Fixed aesthetics in `ggplot`
+
+## Why hard-code aesthetics?
+
+- Sometimes you want to set aesthetics that are not tied to the data.
+- For example, you might want to set the color of all points to be green.
+- Or you might want to set the size of all points to be huge.
+
+## Example scatter plot with fixed aesthetics
+
+```{r, echo=TRUE}
+food |>
+  ggplot() +
+  # note that the color green goes outside of aes():
+  geom_point(aes(x = calories, y = carbs, size = 10), color = "green")
+```
+

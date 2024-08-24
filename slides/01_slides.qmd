@@ -31,7 +31,7 @@ library(clipr)
 - Tabular data is a common data structure.
 - It is a table ("table" → "tabular") with rows and columns.
 - Rows contain observations.
-- Columns contain features or variables.
+- Columns contain variables (which are also occasionally called features).
 
 ## Excel is tabular
 
@@ -41,9 +41,9 @@ library(clipr)
 
 ![Dogs with highlighted row.](images/dogs_row.png)
 
-## Features (breed, height, weight) go in columns
+## Variables go in columns
 
-![Dogs with highlighted column.](images/dogs_col.png)
+![Dogs with `breed` column highlighted.](images/dogs_col.png)
 
 ## Tibbles are tabular
 
@@ -58,7 +58,7 @@ dogs <- tibble(breed, weight, height)
 dogs
 ```
 
-## One feature: `breed`
+## One variable: `breed`
 
 ```{r, echo=TRUE}
 dogs |>
@@ -75,14 +75,15 @@ dogs |>
 
 - `==` is a comparison operator that means "is equal to."
 - We're saying, "Filter this tibble for rows where `breed` is equal to `"Beagle"`."
+- We will learn more about this later.
+  - For now, focus on the variable/observation distinction.
 
 ## Data types
 
-- Every feature (column) has a data type.
+- Every variable (column) has one and only one data type.
 - Two common data types in the `dogs` table:
   - `character` (text, e.g., `"Beagle"`)
   - `numeric` (numbers, e.g., `10.2`)
-- Each feature has a single data type.
 
 ## Data types in `dogs`
 
@@ -90,21 +91,22 @@ dogs |>
 dogs
 ```
 
-- `chr` is short for `character`
-- `dbl` is short for `double` (a type of `numeric`)
+- `<chr>` is short for `character`
+- `<dbl>` is short for `double`, which is a type of `numeric`
 
-## Takeaways
+## Tabular data takeaways
 
 - Good data structure is the most important thing we will learn in this class.
 - Real-world data science is largely about gathering, cleaning, and organizing data.
-- Don't take good data structure for granted!
+  - In real life, data scientists spend **most of their time** doing this.
+- Don't take good data for granted!
 
 # Introduction to some key concepts in R
 
 ## Objects
 
 - Everything in R is an object.
-- We create new objects by assigning values to names:
+- We usually create new objects by assigning values to names:
 
 ```{r, echo=TRUE}
 almost_pi <- 3.14
@@ -118,9 +120,10 @@ almost_pi
 
 Functions take inputs and generate outputs.
 
+`round()` is a function that rounds a number (and/or a vector of numbers)
+
 ```{r, echo=TRUE}
-# sqrt is a function that takes a number and returns its square root
-sqrt(9)
+round(9.5)
 ```
 
 ## Comparison operators
@@ -128,13 +131,13 @@ sqrt(9)
 Comparison operators compare two values and return either `TRUE` or `FALSE`.
 
 ```{r, echo=TRUE}
-# Is the square root of 9 equal to 3?
-sqrt(9) == 3
+# Is the rounded value of 9.4 equal to 10?
+round(9.4) == 10
 ```
 
 ```{r, echo=TRUE}
-# Is the square root of 10 less than 3?
-sqrt(10) < 3
+# Is the rounded value of 9.4 less than 10?
+round(9.4) < 10
 ```
 
 ## Functions take arguments
@@ -143,7 +146,7 @@ sqrt(10) < 3
 - If named, they may be evaluated in any order.
 
 ```{r, echo=TRUE}
-# round is a function that takes a numeric vector and rounds it to the nearest integer
+# here, we're rounding the almost_pi object
 round(almost_pi)
 round(almost_pi, digits = 6)
 # this is the same as above because digits is the first argument
@@ -155,13 +158,14 @@ round(digits = 6, x = almost_pi)
 ## Pipes
 
 - Pipes `|>` chain functions together.
-- They pass the output of one function to the first input (`x`) of the next function.
+- They pass the output of one function to the first input (often `x`) of the next function.
 - They improve readability and reduce the need for intermediate objects.
 
 ## Why do pipes improve readability?
 
 ```{r, echo=TRUE}
 # this is hard to read
+# you evaluate expressions from the innermost to the outermost
 abs(tan(log(exp(8), base = 2)))
 
 # this is annoying to write
@@ -173,7 +177,7 @@ temp
 ```
 
 ```{r, echo=TRUE}
-# this is easier to read and easier to write
+# pipes are easier to read and easier to write
 8 |>
   exp() |>
   log(base = 2) |>
@@ -184,8 +188,8 @@ temp
 ## Formatting code
 
 - Well formatted code is not just nice.
-  - It's essential to share your code.
-- These are not my opinions. They're from the [`tidyverse` style guide](https://style.tidyverse.org).
+  - It's essential when you share your code with others, or need to read it later.
+- The formatting guidelines we use are not my opinions. They're from the [`tidyverse` style guide](https://style.tidyverse.org).
 - Some rules I will enforce:
 
 ## Spacing around operators
@@ -218,7 +222,7 @@ Pipes `|>` require vertical and horizontal spacing:
 # bad spacing
 8|>exp()|>log(base=2)|>tan()|>abs()
 
-# good spacing: note the indentations (tabs)
+# good spacing: note the indentations (tabs) after the first pipe
 8 |>
   exp() |>
   log(base = 2) |>
