@@ -2,9 +2,12 @@
 title: "Notebook 02"
 output:
   html_document:
-    theme: simplex
-    highlight: pygments
-    css: "../css/note-style.css"
+    df_print: paged
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    highlight: tango
 ---
 
 ## Getting Started
@@ -66,14 +69,12 @@ because there are some missing data values and it will be helpful to turn off
 the warnings about these data rows.
 
 ```{r, warning=FALSE, question-01}
-
 ```
 
 Now, in the code region below, produce a scatter plot with population on the
 x-axis and metro population on the y-axis.
 
 ```{r, warning=FALSE, question-02}
-
 ```
 
 Which of the two regional populations (metro or city) seem to more closely
@@ -87,7 +88,6 @@ Produce a plot with population on the x-axis and metro population on the y-axis
 and label each point with the city name.
 
 ```{r, warning=FALSE, question-03}
-
 ```
 
 What two cities seem to have the largest (absolute) discrepancy between their
@@ -99,7 +99,6 @@ latitude is on the y-axis (`lat`), and the labels are given by the city names
 (`name`).
 
 ```{r, question-04}
-
 ```
 
 This should roughly resemble a map of the world. In the code below, produce
@@ -107,7 +106,6 @@ a modified version of this plot, replacing the text layer with two layers:
 a text repel layer and well as a point layer.
 
 ```{r, question-05}
-
 ```
 
 Which of these two plots do you find easier to read, and why? (Note, there is
@@ -131,7 +129,6 @@ Create a scatter plot with the Hans Roslin data showing GDP (Income) on the
 x-axis and life expectancy on the y-axis.
 
 ```{r, question-06}
-
 ```
 
 Of course, this is a static plot, and does not move like the one that Hans 

@@ -1,0 +1,170 @@
+---
+title: "Aesthetics & Scales"
+author: "Erik Fredner"
+date: "`r Sys.Date()`"
+echo: true
+format:
+  revealjs:
+    #incremental: true
+    theme: default
+    transition: slide
+    logo: "images/by-sa.png"
+    footer: "https://fredner.org"
+    embed-resources: true
+    scrollable: true
+    code-fold: true
+---
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggrepel)
+```
+
+## Aesthetics: so what?
+
+- Aesthetics (such as color, size, shape, etc.) determine how data points are visually distinguished in a plot.
+  - Choosing the right aesthetics ensures that the visualization communicates the correct message.
+  - For example, it would be confusing to color Democrats red and Republicans blue in a political visualization.
+
+## Scales: so what?
+
+- Scales control how data is mapped onto visual dimensions like the x- and y-axes.
+  - This affects how easily readers can interpret the visualization.
+  - Proper scaling can prevent misleading representations.
+  
+## Aesthetics & Scales with Pokémon
+
+This shows the Pokemon with the highest `defense` and `hp` in the top-right corner of the plot.
+
+```{r}
+pokemon <- read_csv("../data/pokemon.csv")
+
+pokemon |>
+  ggplot() +
+  geom_point(aes(x = defense, y = hp))
+```
+
+## Modifying scales
+
+Let's suppose we wanted to flip that and see the Pokemon with the highest `defense` and **lowest** `hp` in the top-right corner.
+
+```{r}
+pokemon |>
+  ggplot() +
+  geom_point(aes(x = defense, y = hp)) +
+  # reverse the y-axis
+  scale_y_reverse()
+```
+
+## Combining scales and aesthetics
+
+Let's find out the name of the Pokemon with low `hp` and high `defense`:
+
+```{r}
+pokemon |>
+  ggplot() +
+  geom_point(aes(x = defense, y = hp)) +
+  scale_y_reverse() +
+  # new:
+  geom_text(aes(x = defense, y = hp, label = name))
+```
+
+## Limiting scales
+
+```{r}
+pokemon |>
+  ggplot() +
+  geom_point(aes(x = defense, y = hp)) +
+  scale_y_reverse() +
+  # repel the text labels:
+  geom_text_repel(aes(x = defense, y = hp, label = name)) +
+  # limit the x-axis to `defense` of 150 or more:
+  # `NA` ("Not Available") is a missing value indicator.
+  # We use it here to say that there is no upper limit on the x-axis.
+  scale_x_continuous(limits = c(150, NA))
+```
+
+## Increasing `n.breaks`
+
+```{r}
+pokemon |>
+  ggplot() +
+  geom_point(aes(x = defense, y = hp)) +
+  scale_y_reverse() +
+  geom_text_repel(aes(x = defense, y = hp, label = name)) +
+  # make it easier to identify the precise values of `defense`:
+  scale_x_continuous(limits = c(150, NA), n.breaks = 30)
+```
+
+## Color
+
+- We can use color to see patterns in the data by factors.
+- Let's see if there are any patterns in the `type_1` of the Pokemon in relation to their `defense` and `hp`.
+- And we're going to `filter` for first generation Pokemon for simplicity.
+
+## Color by `type_1`
+
+```{r}
+pokemon |>
+  filter(generation == 1) |>
+  ggplot() +
+  geom_point(aes(x = defense, y = hp, color = type_1)) +
+  geom_text_repel(aes(x = defense, y = hp, label = name))
+```
+
+## Custom color
+
+Let's use colors associated with 🔥, 🍃, and 💧 Pokemon:
+
+```{r}
+pokemon |>
+  filter(generation == 1) |>
+  # filter for just a few types
+  filter(type_1 %in% c("Water", "Fire", "Grass")) |>
+  ggplot() +
+  geom_point(aes(x = defense, y = hp, color = type_1)) +
+  geom_text_repel(aes(x = defense, y = hp, label = name)) +
+  # use the `type_1` colors instead of the default:
+  scale_color_manual(values = c(
+    Water = "blue",
+    Fire = "red",
+    Grass = "green"
+  ))
+```
+
+## `scale_color`
+
+`stat_total` roughly represents how powerful a Pokemon is, which makes it obvious how good Mewtwo is.
+
+```{r}
+pokemon |>
+  filter(generation == 1) |>
+  ggplot() +
+  # color the points by `stat_total` instead of `type1`:
+  geom_point(aes(x = defense, y = hp, color = stat_total)) +
+  # use the `viridis` color palette instead of the default:
+  scale_color_viridis_c() +
+  geom_text_repel(aes(x = defense, y = hp, label = name))
+```
+
+## Size
+
+We could also use size to represent `stat_total`, which makes it obvious how bad Magikarp is!
+
+```{r}
+pokemon |>
+  filter(generation == 1) |>
+  # just water pokemon
+  filter(type_1 == "Water") |>
+  ggplot() +
+  geom_point(aes(x = defense, y = hp, size = stat_total)) +
+  # this scales the difference in size between points:
+  scale_size_continuous(range = c(1, 10)) +
+  geom_text_repel(aes(x = defense, y = hp, label = name))
+```
+
+## Summary
+
+- **Aesthetics** determine how data points are visually distinguished, including aspects like color, size, and shape.
+- **Scales** control how data is mapped onto visual dimensions such as x- and y-axes. Proper scaling ensures that visualizations are easy to interpret and not misleading.
+- Manipulating both aesthetics and scales can reveal patterns and/or outliers in data.

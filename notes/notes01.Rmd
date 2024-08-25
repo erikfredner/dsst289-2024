@@ -3,9 +3,12 @@ title: "01. Working with R and RMarkdown"
 date: "`r Sys.Date()`"
 output:
   html_document:
-    theme: simplex
-    highlight: pygments
-    css: "../css/note-style.css"
+    df_print: paged
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    highlight: tango
 ---
 
 ```{r, include=FALSE}

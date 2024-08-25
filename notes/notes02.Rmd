@@ -3,9 +3,12 @@ title: "02. Grammar of Graphics"
 date: "`r Sys.Date()`"
 output:
   html_document:
-    theme: simplex
-    highlight: pygments
-    css: "../css/note-style.css"
+    df_print: paged
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    highlight: tango
 ---
 
 ```{r, include=FALSE, message=FALSE}
@@ -59,7 +62,7 @@ Learning how to do data visualization well is about learning how to make sure th
 
 For more about the history of data visualization, check out [*Data by Design*](https://dataxdesign.io/).
 
-### Elements of data visualization
+## Elements of data visualization
 
 Data visualization is an important skill that R is
 particularly well-designed for. We are going to learn and use the [`ggplot2`](https://ggplot2.tidyverse.org)

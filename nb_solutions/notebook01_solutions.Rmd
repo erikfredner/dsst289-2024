@@ -2,9 +2,12 @@
 title: "Notebook 01"
 output:
   html_document:
-    theme: simplex
-    highlight: pygments
-    css: "../css/note-style.css"
+    df_print: paged
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    highlight: tango
 ---
 
 ```{r, include=FALSE}
@@ -143,9 +146,9 @@ this code over the next 6 chapters. For now, just run the code block and see
 what happens:
 
 ```{r}
-new_data<-mutate(cities,city_density=city_pop/city_area*1000)
-new_data<-arrange(new_data,desc(city_density))
-select(new_data,name,country,city_density)
+new_data <- mutate(cities, city_density = city_pop / city_area * 1000)
+new_data <- arrange(new_data, desc(city_density))
+select(new_data, name, country, city_density)
 ```
 
 Let's focus on formatting the code above correctly. Note I did not include any
