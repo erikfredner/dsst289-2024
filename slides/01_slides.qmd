@@ -1,29 +1,31 @@
 ---
-title: "Tabular Data & R Overview"
+title: "Tabular Data"
+subtitle: "DSST 289: Introduction to Data Science"
 author: "Erik Fredner"
 date: 2024-08-28
 format:
   revealjs:
-    #incremental: true
-    theme: default
-    transition: slide
+    echo: true
     logo: "images/by-sa.png"
     footer: "https://fredner.org"
+    scrollable: true
     embed-resources: true
-# format:
-#   pdf:
-#     toc: true
-#     number-sections: true
-#     margins: 1in
-#     papersize: letter
-#     colorlinks: true
-#     highlight-style: pygments
 ---
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
+library(knitr)
 library(clipr)
 ```
+
+
+# Homework check-in
+
+1. Received Blackboard announcement?
+2. Read [the notes](https://blackboard.richmond.edu/bbcswebdav/pid-1849604-dt-content-rid-16130973_1/xid-16130973_1) for today?
+3. Installed R, RStudio, and the `tidyverse`?
+4. Completed questions at the end of the notes?
+5. Uploaded completed questions to Blackboard?
 
 
 # Tabular Data
@@ -45,7 +47,7 @@ library(clipr)
 
 ![Dogs with `breed` column highlighted.](images/dogs_col.png)
 
-## Tibbles are tabular
+## `tibble`s are tabular
 
 ```{r, echo=TRUE}
 #| code-line-numbers: "|1|2|3|4"
@@ -62,21 +64,20 @@ dogs
 
 ```{r, echo=TRUE}
 dogs |>
+  # `select()` says "select these columns."
   select(breed)
 ```
 
 ## One observation: `"Beagle"`
 
 ```{r, echo=TRUE}
-#| code-line-numbers: "|2"
 dogs |>
   filter(breed == "Beagle")
 ```
 
 - `==` is a comparison operator that means "is equal to."
 - We're saying, "Filter this tibble for rows where `breed` is equal to `"Beagle"`."
-- We will learn more about this later.
-  - For now, focus on the variable/observation distinction.
+- Note the distinction betwen **variables** and **observations**.
 
 ## Data types
 
@@ -140,7 +141,9 @@ round(9.4) == 10
 round(9.4) < 10
 ```
 
-## Functions take arguments
+
+
+## Functions take arguments {.smaller}
 
 - Arguments may be named. If unnamed, arguments are evaluated by position.
 - If named, they may be evaluated in any order.
@@ -161,7 +164,7 @@ round(digits = 6, x = almost_pi)
 - They pass the output of one function to the first input (often `x`) of the next function.
 - They improve readability and reduce the need for intermediate objects.
 
-## Why do pipes improve readability?
+## Why are pipes `|>` useful?
 
 ```{r, echo=TRUE}
 # this is hard to read
@@ -189,7 +192,8 @@ temp
 
 - Well formatted code is not just nice.
   - It's essential when you share your code with others, or need to read it later.
-- The formatting guidelines we use are not my opinions. They're from the [`tidyverse` style guide](https://style.tidyverse.org).
+- The formatting guidelines we use are not my opinions.
+  - They're from the [`tidyverse` style guide](https://style.tidyverse.org).
 - Some rules I will enforce:
 
 ## Spacing around operators
@@ -232,7 +236,7 @@ Pipes `|>` require vertical and horizontal spacing:
 
 ## Naming stuff
 
-Naming objects is hard! Bad names make things more difficult for everyone.
+Bad object names make code hard for you and your readers to understand.
 
 Rules for names:
 
@@ -257,3 +261,11 @@ There are many ways to run code in an `.Rmd` file:
 - Use the Command Pallette (Cmd + Shift + P) and search for "Run the current code chunk."
 - Keyboard shortcuts: Ctrl + Shift + Enter (Windows) or ⌘ + Shift + Enter (macOS)
 - Click the Knit button to render the entire document as an HTML file.
+
+## In-class practice
+
+1. Go to [Course Documents](https://blackboard.richmond.edu/webapps/blackboard/content/listContentEditable.jsp?content_id=_1725326_1&course_id=_56262_1&mode=reset) in Blackboard.
+2. Download `notebook (.Rmd)` file from the folder `01-Tabular Data`.
+3. Move that file to your the `nb` directory in your `DSST289` folder:
+   - `DSST289/nb/notebook01.Rmd`
+4. Open that file in RStudio and try the problems.

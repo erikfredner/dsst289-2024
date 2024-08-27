@@ -1,12 +1,10 @@
 ---
-title: "Introduction to \"Introduction to Data Science\""
+title: "👋 Welcome"
+subtitle: "DSST 289: Introduction to Data Science"
 author: "Erik Fredner"
 date: 2024-08-26
 format:
   revealjs:
-    #incremental: true
-    theme: default
-    transition: slide
     logo: "images/by-sa.png"
     footer: "https://fredner.org"
     embed-resources: true  
@@ -27,7 +25,7 @@ format:
 
 ## Introductions
 
-1. Preferred name
+1. Name
 2. Pronouns
 3. Something you *dislike*
 
@@ -35,7 +33,7 @@ format:
 
 1. Professor Fredner
 2. He/him
-3. Gushers
+3. Buzzy bass
 
 ## Introduce *me* to UR
 
@@ -44,7 +42,7 @@ format:
 - How would you describe the culture of UR?
   - Discuss with the people next to you.
 
-## Anonymous survey
+## Anonymous survey {.smaller}
 
 Please complete this brief **anonymous** survey:
 <https://richmond.ca1.qualtrics.com/jfe/form/SV_8vsOr6mRZGypJVc>
@@ -64,7 +62,7 @@ I will use the survey results to design the class.
 ## Why do data science? One perspective:
 
 - There is too much information in the world.
-  - e.g., every minute, approximately 500 hours of video are uploaded to YouTube.
+  - e.g., every **minute**, approximately 500 hours of video are uploaded to YouTube.
 - People value *useful* information and new knowledge.
   - Almost none of those 500 hours are worth your finite time.
 - Data science transforms data into useful information.
@@ -101,13 +99,13 @@ flowchart LR
     end
 ```
 
-from *R for Data Science* (2023)
+from [*R for Data Science* (2023)](https://r4ds.hadley.nz/whole-game)
 
 ## An effective example
 
 {{< video https://www.youtube.com/watch?v=Z8t4k0Q8e8Y
-width="800"
-height="600" >}}
+width="600"
+height="400" >}}
 
 # Syllabus
 
@@ -124,7 +122,7 @@ height="600" >}}
 
 ## Custom GPT
 
-- I created a [Custom GPT](https://chatgpt.com/g/g-eChIzwMNp-ur-intro-to-data-science-gpt) for this course that already knows about the course requirements.
+- I created a [Custom GPT](https://chatgpt.com/g/g-eChIzwMNp-ur-intro-to-data-science-gpt) for this course.
 - I ask you to do these things in this order when you run into trouble on homework:
 
 1. Read the notes.
@@ -138,6 +136,7 @@ height="600" >}}
 ## Step 1: R
 
 Install the version for your operating system:
+
 <https://cloud.r-project.org>
 
 If you already have R installed, install the newest version.
@@ -147,6 +146,7 @@ If you have a Mac that was made in 2020 or later, choose "Apple Silicon."
 ## Step 2: RStudio
 
 Install the free version of RStudio Desktop:
+
 <https://posit.co/downloads/>
 
 If you already have RStudio installed, install the newest version.

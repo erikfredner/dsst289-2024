@@ -83,7 +83,7 @@ Here are some of the key things you will need to know how to do with markdown:
 1. Create headers using the `#` symbol. The number of `#` symbols
   determines the size of the header.
 
-```{markdown}
+```
 # Big header
 
 The quick brown fox jumped over the lazy dog.
@@ -95,13 +95,13 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 2. Distinguish named objects using backticks:
 
-```{markdown}
+```
 The `seq` function generates a sequence of numbers.
 ```
 
 3. Create lists using `*` or `-` for bullet points and numbers for ordered lists:
 
-```{markdown}
+```
 * First item
 * Second item
 * Third item
@@ -109,7 +109,7 @@ The `seq` function generates a sequence of numbers.
 
 4. Create links using square brackets for the text and parentheses for the URL:
 
-```{markdown}
+```
 [Google](https://www.google.com)
 ```
 

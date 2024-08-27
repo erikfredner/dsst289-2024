@@ -1,13 +1,11 @@
 ---
-title: "Aesthetics & Scales"
+title: "Aesthetics & Scales (with Pokémon)"
+subtitle: "DSST 289: Introduction to Data Science"
 author: "Erik Fredner"
 date: "`r Sys.Date()`"
 echo: true
 format:
   revealjs:
-    #incremental: true
-    theme: default
-    transition: slide
     logo: "images/by-sa.png"
     footer: "https://fredner.org"
     embed-resources: true
@@ -20,11 +18,27 @@ library(tidyverse)
 library(ggrepel)
 ```
 
+## Outline {.smaller}
+
+- Aesthetics & scales: so what?
+- Aesthetics & scales with Pokémon
+  - `pokemon` data
+  - `geom_point`
+  - `geom_text` & `label`
+  - `scale_` & `limits`
+  - `n.breaks`
+  - `color`
+  - `scale_color`
+  - `size`
+  - `shape`
+  - `facet_`ing plots
+
 ## Aesthetics: so what?
 
 - Aesthetics (such as color, size, shape, etc.) determine how data points are visually distinguished in a plot.
   - Choosing the right aesthetics ensures that the visualization communicates the correct message.
-  - For example, it would be confusing to color Democrats red and Republicans blue in a political visualization.
+  - For example, this would be confusing in US politics!
+    - <span style="color:red;">Democrats</span> vs. <span style="color:blue;">Republicans</span>
 
 ## Scales: so what?
 
@@ -32,13 +46,20 @@ library(ggrepel)
   - This affects how easily readers can interpret the visualization.
   - Proper scaling can prevent misleading representations.
   
-## Aesthetics & Scales with Pokémon
-
-This shows the Pokemon with the highest `defense` and `hp` in the top-right corner of the plot.
+## `pokemon` data
 
 ```{r}
 pokemon <- read_csv("../data/pokemon.csv")
 
+# take a look at the data:
+pokemon
+```
+
+## Aesthetics & Scales with Pokémon
+
+The highest `defense` and `hp` is in the top-right:
+
+```{r}
 pokemon |>
   ggplot() +
   geom_point(aes(x = defense, y = hp))
@@ -56,9 +77,9 @@ pokemon |>
   scale_y_reverse()
 ```
 
-## Combining scales and aesthetics
+## Combining `scale_`, `aes`, & `geom_`
 
-Let's find out the name of the Pokemon with low `hp` and high `defense`:
+Who has low `hp` and high `defense`?
 
 ```{r}
 pokemon |>
@@ -98,9 +119,9 @@ pokemon |>
 
 ## Color
 
-- We can use color to see patterns in the data by factors.
-- Let's see if there are any patterns in the `type_1` of the Pokemon in relation to their `defense` and `hp`.
-- And we're going to `filter` for first generation Pokemon for simplicity.
+- We can use color to see patterns in the data by variables
+- e.g., Are there relationships between `type_1`, `defense`, and `hp`?
+- We're also going to `filter` for first generation Pokemon to reduce the number of points.
 
 ## Color by `type_1`
 
@@ -134,7 +155,7 @@ pokemon |>
 
 ## `scale_color`
 
-`stat_total` roughly represents how powerful a Pokemon is, which makes it obvious how good Mewtwo is.
+Mewtwo has a high `stat_total`:
 
 ```{r}
 pokemon |>
@@ -147,9 +168,9 @@ pokemon |>
   geom_text_repel(aes(x = defense, y = hp, label = name))
 ```
 
-## Size
+## `size`
 
-We could also use size to represent `stat_total`, which makes it obvious how bad Magikarp is!
+Magikarp has a low `stat_total`:
 
 ```{r}
 pokemon |>
@@ -157,10 +178,94 @@ pokemon |>
   # just water pokemon
   filter(type_1 == "Water") |>
   ggplot() +
+  # new: `size` by `stat_total`
   geom_point(aes(x = defense, y = hp, size = stat_total)) +
-  # this scales the difference in size between points:
-  scale_size_continuous(range = c(1, 10)) +
   geom_text_repel(aes(x = defense, y = hp, label = name))
+```
+
+## Combine `size` and `color`
+
+```{r}
+pokemon |>
+  filter(generation == 1) |>
+  # just psychic pokemon
+  filter(type_1 == "Psychic") |>
+  ggplot() +
+  # new: `color` by `stat_total`, too
+  geom_point(aes(x = defense, y = hp, size = stat_total, color = stat_total)) +
+  # use the `viridis` color palette instead of the default:
+  scale_color_viridis_c() +
+  geom_text_repel(aes(x = defense, y = hp, label = name))
+```
+
+## Combining color and shape
+
+```{r}
+pokemon |>
+  # filter for first gen
+  filter(generation == 1) |>
+  # filter for a few types
+  filter(type_1 %in% c("Normal", "Rock", "Bug", "Poison")) |>
+  ggplot() +
+  geom_point(aes(
+    x = defense,
+    y = hp,
+    # new: shape points by `type_1`
+    shape = type_1,
+    # color points by `stat_total`
+    color = stat_total
+  )) +
+  scale_color_viridis_c() +
+  geom_text_repel(aes(x = defense, y = hp, label = name))
+```
+
+## `facet_`ing plots
+
+```{r}
+# faceting allows us to split a plot into multiple panels based on a factor
+pokemon |>
+  filter(generation == 1) |>
+  filter(type_1 %in% c("Normal", "Rock", "Bug", "Poison")) |>
+  ggplot() +
+  geom_point(aes(x = defense, y = hp, color = stat_total)) +
+  scale_color_viridis_c() +
+  # new: `~` means "by", so we are saying "facet wrap by `type_1`"
+  facet_wrap(~type_1) +
+  # note that the scales of the plots are all the same
+  # this makes them directly comparable
+  geom_text_repel(aes(x = defense, y = hp, label = name))
+```
+
+## Bonus 1: `geom_smooth`
+
+```{r}
+# geom_smooth adds a smoothed line to plots
+# what is the general relationship between hp and defense?
+pokemon |>
+  ggplot() +
+  geom_point(aes(x = defense, y = hp, color = stat_total)) +
+  scale_color_viridis_c() +
+  # new: add a smoothed line to the plot
+  geom_smooth(aes(x = defense, y = hp))
+```
+
+## Bonus 2: `facet_` everything
+
+```{r}
+pokemon |>
+  # we are "pivoting" the data from wide to long format for ease of plotting
+  # we will discuss this more later!
+  pivot_longer(
+    cols = c(attack, sp_attack, defense, sp_defense, speed),
+    names_to = "stat_category",
+    values_to = "stat_value"
+  ) |>
+  ggplot() +
+  geom_point(aes(x = stat_value, y = hp, color = stat_total)) +
+  geom_smooth(aes(x = stat_value, y = hp)) +
+  scale_color_viridis_c() +
+  # new: facet by `stat_category`, a column we created with `pivot_`
+  facet_wrap(~stat_category)
 ```
 
 ## Summary
