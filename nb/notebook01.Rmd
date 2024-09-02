@@ -11,6 +11,10 @@ output:
 ---
 
 ```{r, include=FALSE}
+# set your working directory
+# setwd("~/Desktop/DSST289/nb/")
+# add forgotten package:
+install.packages("ggrepel")
 source("../funs/funs.R")
 ```
 
@@ -24,14 +28,12 @@ equal to your favorite number. (Note, the quotes are not part of the
 variable name).
 
 ```{r, question-01}
-
 ```
 
 In the code below, apply the function `log10` to your favorite
 number. (Again, the quotes are not part of the function name).
 
 ```{r, question-02}
-
 ```
 
 Note that the only point of the exercises here are to familiarize
@@ -49,7 +51,6 @@ produce 100 random numbers. Verify that each time you run the code a different
 set of numbers is produced:
 
 ```{r, question-03}
-
 ```
 
 The `runif` function also has two optional parameters. These are named `min`
@@ -59,7 +60,6 @@ generate 100 random numbers between 50 and 100. Here, select the number of
 random numbers *by position* (that is, without the code `n = 100`).
 
 ```{r, question-04}
-
 ```
 
 A common concern for new R users when running the code above is the meaning
@@ -84,20 +84,17 @@ this three different ways. To start, apply these three function in a single
 line of R code by nesting them inside one another:
 
 ```{r, question-05}
-
 ```
 
 Next, do the same sequence of operations, with one function on each line using
 a temporary variable named `x`:
 
 ```{r, question-06}
-
 ```
 
 Finally, apply the three functions using a sequence of pipes.
 
 ```{r, question-07}
-
 ```
 
 Look at the previous three blocks and code and consider which is easiest to
@@ -141,9 +138,6 @@ this code over the next 6 chapters. For now, just run the code block and see
 what happens:
 
 ```{r}
-new_data<-mutate(cities,city_density=city_pop/city_area*1000)
-new_data<-arrange(new_data,desc(city_density))
-select(new_data,name,country,city_density)
 ```
 
 Let's focus on formatting the code above correctly. Note I did not include any
@@ -151,7 +145,6 @@ spaces! Copy the code above in the block below and then add the correct spaces
 into the code to make it match the style guide given in the notes.
 
 ```{r, question-08}
-
 ```
 
 Make sure to run the code after you are done. What city in the data set has, on
@@ -162,7 +155,6 @@ Now, take the code above and reformat it to use pipes in place of the temporary
 variable. (Again, don't worry if you don't understand what some of this code does. We are practicing using pipes `|>`.)
 
 ```{r, question-09}
-
 ```
 
 Verify that the results are the same as the previous code.
@@ -173,7 +165,6 @@ I have also given you the food data set given in the notes. In the code below,
 read this data set into R using the `read_csv` function.
 
 ```{r, question-10}
-
 ```
 
 If you have some time left in class, take a look at all of the data columns for

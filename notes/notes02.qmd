@@ -161,12 +161,12 @@ structure to create more complex graphics. As a teaser of what's to come, see ho
 food |>
   ggplot() +
   geom_point(aes(x = vitamin_a, y = iron)) +
-  # add label to x-axis
-  xlab("Vitamin A (ATC A11)") +
-  # add label to y-axis
-  ylab("Iron (Fe)") +
-  # add title
-  ggtitle("Vitamin A and Iron in Foods")
+  # add labels:
+  labs(
+    x = "Vitamin A (ATC A11)",
+    y = "Iron (Fe)",
+    title = "Vitamin A and Iron in Foods"
+  )
 ```
 
 

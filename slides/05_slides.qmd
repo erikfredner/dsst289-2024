@@ -1,0 +1,150 @@
+---
+title: "Summarizing and grouping *Star Wars* data"
+subtitle: "DSST 289: Introduction to Data Science"
+author: "Erik Fredner"
+date: "`r Sys.Date()`"
+echo: true
+format:
+  revealjs:
+    logo: "images/by-sa.png"
+    footer: "https://fredner.org"
+    embed-resources: true
+    scrollable: true
+    code-fold: true
+    tables: true
+---
+
+# `summarize()`
+
+`summarize()` reduces elements of a data frame with one of several summary
+functions. It is a `dplyr` *verb*.
+
+## *Star Wars* data
+
+```{r}
+library(tidyverse)
+library(knitr)
+
+starwars <- read_csv(file.path("..", "data", "starwars.csv"))
+
+starwars |> 
+  # just a few items:
+  select(name, height, mass, sex) |>
+  # just the first few rows
+  head() |> 
+  # pretty-print table:
+  kable()
+```
+
+## `summarize`-ing height
+
+```{r}
+#| code-fold: false
+starwars |> 
+  summarize(mean_height = mean(height, na.rm = TRUE))
+```
+
+## `na.rm = TRUE`?
+
+The `na.rm` argument is used to remove `NA` values from the calculation.
+
+```{r}
+#| code-fold: false
+#| code-line-numbers: "4"
+# Which starwars characters have missing heights?
+starwars |> 
+  # is.na() returns TRUE if the value is NA:
+  filter(is.na(height)) |> 
+  select(name, height) |> 
+  kable()
+```
+
+## `summarize`-ing height and mass
+
+```{r}
+#| code-fold: false
+starwars |> 
+  summarize(mean_height = mean(height, na.rm = TRUE),
+            mean_mass = mean(mass, na.rm = TRUE)) |> 
+  kable()
+```
+
+# `group_by`
+
+- `summarize`-ing single columns is okay.
+- `summarize()` shines when we combine it with `group_by()`.
+
+## `height` by `sex`
+
+```{r}
+starwars |>
+  # create groups:
+  group_by(sex) |>
+  # summarize within groups:
+  summarize(mean_height = mean(height, na.rm = TRUE)) |> 
+  # sort:
+  arrange(mean_height) |> 
+  kable()
+```
+
+## `height` by `sex` and `species`
+
+```{r}
+starwars |> 
+  group_by(sex, species) |>
+  summarize(mean_height = mean(height, na.rm = TRUE)) |>
+  arrange(mean_height) |> 
+  kable()
+```
+
+## `n()` gives group sizes
+
+```{r}
+starwars |>
+  group_by(species) |>
+  summarize(n = n()) |>
+  arrange(desc(n)) |>
+  kable()
+```
+
+## `paste()` collapses values in character colums to strings
+
+```{r}
+starwars |>
+  group_by(species) |>
+  # you can use any string as a separator:
+  summarize(names = paste(name, collapse = " ✨ ")) |> 
+  # not readable in a pretty table:
+  print()
+```
+
+# `summarize()` + `group_by()` + `ggplot2`
+
+## `height` and `mass` grouped by `sex`
+
+```{r}
+starwars |> 
+  group_by(sex) |> 
+  summarize(mean_height = mean(height, na.rm = TRUE),
+            mean_mass = mean(mass, na.rm = TRUE),
+            n = n()) |>
+  ggplot(aes(x = mean_height, y = mean_mass, size = n)) +
+  geom_point() +
+  geom_text(aes(label = sex))
+```
+
+## Who are our outliers?
+
+```{r}
+starwars |>
+  filter(sex == "hermaphroditic") |> 
+  select(name, height, mass, sex) |>
+  kable()
+```
+
+## Notes of caution for summarizing groups
+
+- Make sure that the groups are comparable
+- Be aware of missing data
+- Be aware of outliers
+- Be aware of the number of items in each group

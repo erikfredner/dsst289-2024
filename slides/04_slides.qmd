@@ -1,0 +1,219 @@
+---
+title: "Organizing *Star Wars* data"
+subtitle: "DSST 289: Introduction to Data Science"
+author: "Erik Fredner"
+date: "`r Sys.Date()`"
+echo: true
+format:
+  revealjs:
+    logo: "images/by-sa.png"
+    footer: "https://fredner.org"
+    embed-resources: true
+    scrollable: true
+    code-fold: true
+    tables: true
+---
+
+# Verbs 
+
+## in language
+
+- In spoken language, a *verb* is:
+
+> 1.a. Grammar. A word or lexical unit which is used to indicate the occurrence or performance of an action or the existence of a state or condition, and which generally forms the grammatical predicate of the subject, or functions as the predicate of the subject in combination with an adjunct or adjuncts. ([Oxford English Dictionary](https://doi.org/10.1093/OED/3440824690))
+
+## in R
+
+- In R, we refer to some `dplyr` functions as *verbs*.
+- Generally, these verbs manipulate data frames to achieve some goal.
+- It's pronounced "d plier," as in "data plier, because just as you can use
+pliers to manipulate physical objects, so too can you use `dplyr` to manipulate data.
+
+## Single- vs. multi-table
+
+- Today's notes and slides focused on single-table verbs.
+- We will also discuss multi-table verbs, which are used to combine data from
+multiple tables.
+  - Combining data from several places is one of the most common tasks
+  in data science.
+  
+# Applying verbs to a single `tibble`
+
+## `tibble`: *Star Wars* characters
+
+```{r}
+#| code-fold: false
+library(tidyverse)
+# we're looking at a lot of tables today
+# and the `kable` function from `knitr` will make them look nicer:
+library(knitr)
+
+starwars <- read_csv("../data/starwars.csv")
+```
+
+## `select`
+
+With `select`, we can choose specific columns:
+
+```{r}
+starwars |>
+  # let's see the names and heights of the characters
+  select(name, height) |>
+  # pretty-print the table:
+  kable()
+```
+
+## `slice`
+
+`slice` is used to select rows by position:
+
+```{r}
+starwars |>
+  select(name, height) |>
+  # get rows 10 through 13:
+  slice(10:13) |>
+  kable()
+```
+
+## `slice_head` and `slice_tail`
+
+Often you want to see the top (head) or bottom (tail) of a `tibble`:
+
+```{r}
+starwars |>
+  select(name, height) |>
+  # let's see the last 5 rows, the `tail`:
+  slice_tail(n = 5) |>
+  kable()
+```
+
+
+## `filter`
+
+We can select rows based on values in one or more columns using `filter`:
+
+```{r}
+#| code-line-numbers: "3"
+starwars |>
+  # let's see who isn't human:
+  filter(species != "Human") |>
+  select(name, species) |>
+  # you can also `slice_sample` for random rows
+  slice_sample(n = 4) |>
+  kable()
+```
+
+## `filter` multiple conditions
+
+You can `filter` on multiple conditions:
+
+```{r}
+#| code-fold: false
+#| code-line-numbers: "3"
+starwars |>
+  # who isn't human and is also short?
+  filter(species != "Human", height < 75) |>
+  select(name, species, height) |>
+  kable()
+```
+
+## `filter` and `%in%`
+
+Use `%in%` to filter based on multiple values in a vector:
+
+```{r}
+#| code-line-numbers: "3"
+starwars |>
+  # who's a droid or a Wookiee?
+  filter(species %in% c("Droid", "Wookie")) |>
+  select(name, species) |>
+  slice_sample(n = 3) |>
+  kable()
+```
+
+
+## not (`!`) `%in%`
+
+You can also invert it with `!`:
+
+```{r}
+#| code-line-numbers: "3"
+starwars |>
+  # which characters' sexes are neither male nor female?
+  filter(!sex %in% c("male", "female")) |>
+  select(name, sex) |>
+  slice_sample(n = 3) |>
+  kable()
+```
+
+
+## `arrange`
+
+`arrange` reorders rows based on the values in one or more columns.
+
+```{r}
+#| code-line-numbers: "3"
+starwars |>
+  # let's see who's the shortest
+  arrange(height) |>
+  select(name, height) |>
+  slice_head(n = 3) |>
+  kable()
+```
+
+## `arrange` multiple conditions
+
+Like `filter`, `arrange` can handle multiple conditions:
+
+```{r}
+#| code-line-numbers: "3"
+starwars |>
+  # who's the lightest and the shortest?
+  arrange(mass, height) |>
+  select(name, mass, height) |>
+  slice_head(n = 3) |>
+  kable()
+```
+
+## `desc()` sorts in descending order
+
+```{r}
+#| code-line-numbers: "3"
+starwars |>
+  # who's the heaviest and the tallest?
+  arrange(desc(mass), desc(height)) |>
+  select(name, mass, height) |>
+  slice_head(n = 3) |>
+  kable()
+```
+
+## `fct_inorder()` orders factors for plots
+
+```{r}
+#| code-line-numbers: "3"
+
+# let's see what the most frequent hair colors are:
+starwars |>
+  # fct_infreq orders by frequency:
+  ggplot(aes(y = fct_infreq(hair_color))) +
+  geom_bar() +
+  labs(y = "Hair color", x = "Count")
+```
+
+# Summary
+
+We explored how `dplyr` verbs manipulate data, similar to how verbs in language describe actions.
+
+## Single-Table Verbs
+
+- `select`: Extract specific columns.
+- `slice`: Select rows by position.
+- `slice_head` & `slice_tail`: Get the top or bottom rows.
+- `filter`: Choose rows based on column values.
+- `arrange`: Reorder rows by column values.
+
+## Key Functions
+
+- `%in%`: Filter based on one or more values in a vector `c()`.
+- `desc()`: Sort in descending order.
+- `fct_infreq()`: Order factors by frequency for plotting.

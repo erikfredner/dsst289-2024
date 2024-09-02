@@ -87,6 +87,7 @@ food <- read_csv("../data/food.csv")
 
 food |>
   ggplot() +
+  # note that this is geom_point:
   geom_point(aes(x = calories, y = carbs))
 ```
 
@@ -97,6 +98,7 @@ food |>
 ```{r, echo=TRUE}
 food |>
   ggplot() +
+  # note that this is geom_text:
   geom_text(aes(x = calories, y = carbs, label = item))
 ```
 
@@ -112,10 +114,6 @@ food |>
   # filter for high cholesterol foods:
   filter(cholesterol > 50) |>
   ggplot() +
-  # set nice x axis label:
-  xlab("Food") +
-  # set nice y axis label:
-  ylab("Cholesterol (mg)") +
   # set bar chart
   geom_col(aes(
     # sort bars by descending amount of cholesterol
@@ -123,9 +121,7 @@ food |>
     y = cholesterol,
     # set bar color (fill) by food_group
     fill = food_group
-  )) +
-  # tilt labels for readability:
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  ))
 ```
 
 ## Syntax review
@@ -145,8 +141,7 @@ data |>
 ## Why assign fixed aesthetics?
 
 - Sometimes you want to set aesthetics that are not tied to the data.
-- For example, you might want to set the color of all points to be green.
-- Or you might want to set the size of all points to be huge.
+- For example, you might want to set the color of all points to be <span style="color:green;">green</span>.
 
 ## Example scatter plot with fixed aesthetics
 
@@ -163,7 +158,8 @@ food |>
       y = carbs,
       size = 10
     ),
-    # note that the color green goes outside of aes():
+    # note that color=green goes outside of aes()
+    # because it applies to all points:
     color = "green"
   )
 ```

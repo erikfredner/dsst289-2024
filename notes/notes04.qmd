@@ -37,13 +37,13 @@ data frame in memory.
 
 There are many verbs in the `dplyr` package, though most are
 a minor variant or specific application of another verb. In this notebook
-we will see only four of them:
+we will see only three of them:
 
 | Verb       | Description                                                    |
 |------------|----------------------------------------------------------------|
+| `slice()`   | picks observations based on their positions                           |
 | `select()`   | picks variables based on their names                           |
 | `filter()`   | picks cases based on their values                              |
-| `summarize()`| reduces multiple values down to a single summary               |
 | `arrange()`  | changes the ordering of the rows                               |
 
 In all verb functions, the first argument is the original data frame and the
@@ -147,7 +147,7 @@ using the `c()` function, which *concatenates* multiple strings together.
 
 ```{r}
 food |>
-  # let's get fish AND meat with c():
+  # `filter` for fish AND meat with `c`:
   filter(food_group %in% c("fish", "meat"))
 ```
 
@@ -180,6 +180,8 @@ food |>
   filter(food_group == "fruit")
 ```
 
+If you don't understand why this outputs zero rows, re-read this section.
+
 ## Combining `filter` with `ggplot`
 
 It is also possible to create a chain of calls that then get piped into a call
@@ -210,7 +212,7 @@ knowledge to build some interesting data visualizations. To start, create a
 data set that just consists of the food types that are in the meat food group:
 
 ```{r}
-food_meat <- filter(food, food_group %in% c("meat"))
+food_meat <- filter(food, food_group %in% "meat")
 food_meat
 ```
 
@@ -355,7 +357,8 @@ food |>
   # get the highest amounts of Vitamin A:
   arrange(desc(vitamin_a)) |>
   # and then take the top six:
-  slice(1:6)
+  slice(1:6) |>
+  select(item, calories, vitamin_a)
 ```
 
 By saving this data set, we could highlight these specific foods on top of a

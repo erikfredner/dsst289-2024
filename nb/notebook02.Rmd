@@ -16,10 +16,46 @@ Before running this notebook, select "Session > Restart R and Clear Output" in
 the menu above to start a new R session. This will clear any old data sets and
 give us a blank slate to start with.
 
-After starting a new session, run the following code chunk to load the
-libraries and data that we will be working with today.
+After starting a new session, run the following code chunk to set your working directory.
 
 ```{r, include=FALSE, message=FALSE}
+if (interactive()) {
+  # 1. Choose this .Rmd notebook in your DSST289/nb folder:
+  this_notebook <- file.choose()
+
+  # 2. Set your working directory:
+  this_notebook |>
+    dirname() |>
+    normalizePath() |>
+    print() |>
+    setwd()
+
+  # 3. Confirm that the working directory is set correctly:
+  if (!file.exists("../funs/funs.R")) {
+    stop("The working directory does not seem to be set correctly. Make sure that your notebook is located in the correct directory (`DSST289/nb`), and try again.")
+  } else {
+    message("The working directory appears to be set correctly.")
+  }
+}
+```
+
+
+Then, run this chunk to load the libraries and data that we will be working with today.
+
+```{r, include=FALSE, message=FALSE}
+# install the missing packages from last time:
+install.packages(
+  pkgs = c(
+    "tidyverse", "ggrepel", "jsonlite", "lubridate", "readxl", "rnaturalearth",
+    "sf", "xml2", "lwgeom", "RcppRoll", "remotes", "knitr", "rmarkdown", "lwgeom"
+  ),
+  quiet = TRUE,
+  dependencies = TRUE
+)
+```
+
+```{r}
+# source class functions
 source("../funs/funs.R")
 ```
 
