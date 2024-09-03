@@ -36,7 +36,16 @@ should be summarized. We will introduce several helper functions to make this
 process slightly easier.
 
 Before describing the syntax for the summarize function, let's start with an
-example. Here, we summarize our food data set by indicating the mean (average)
+example. `summarize` works with summary functions, such as `sum` or `mean`:
+
+```{r}
+data <- c(1, 2, 3, 4, 5)
+sum(data)
+mean(data)
+```
+
+
+Here, we summarize our food data set by indicating the mean (average)
 value of the sugar variable across the entire data set:
 
 ```{r}
@@ -145,8 +154,8 @@ This isn't useful for data frames by themselves. You can see the number of rows
 in a regular `tibble` by using the `count` function from the `dplyr` package:
 
 ```{r}
-food |> 
-  count() |> 
+food |>
+  count() |>
   # easier to interpret with `print`:
   print()
 ```
@@ -212,7 +221,7 @@ two additional `geom` types that often are useful specifically for the case of
 summarized data sets.
 
 If we want to create a bar plot, where the heights of the bars as given by a
-column in the data set, we can use the `geom_col` layer type. For this, assign a
+column in the data set, we can use the `geom_col` geometry. For this, assign a
 categorical variable to the `y`-aesthetic and the count variable to the
 `x`-aesthetic (or vice-versa). For example, here is a bar plot showing the
 number of items in each food group:
@@ -221,7 +230,8 @@ number of items in each food group:
 food |>
   group_by(food_group) |>
   summarize(n = n()) |>
-  ggplot(aes(n, food_group)) +
+  # `fct_reorder` orders the bars (factors) by the count
+  ggplot(aes(n, fct_reorder(food_group, n))) +
   geom_col()
 ```
 
@@ -235,7 +245,7 @@ these exactly as we did with the single color value used with scatter plots.
 food |>
   group_by(food_group) |>
   summarize(n = n()) |>
-  ggplot(aes(n, food_group)) +
+  ggplot(aes(n, fct_reorder(food_group, n))) +
   geom_col(color = "black", fill = "white")
 ```
 
@@ -280,5 +290,3 @@ the desired data set:
 3. Compute the average life expectancy of each continent in the year 2002.
 4. Compute the total number of people living in each continent in the year 1957. Note that R has the function `sum()` that might be helpful here.
 5. Compute the total number of countries in each continent.
-
-We will talk about these questions together in class.

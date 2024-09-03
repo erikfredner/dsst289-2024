@@ -1,5 +1,5 @@
 ---
-title: "Aesthetics & Scales (with Pokémon)"
+title: "Aesthetics & Scales with Pokémon"
 subtitle: "DSST 289: Introduction to Data Science"
 author: "Erik Fredner"
 date: "`r Sys.Date()`"
@@ -20,6 +20,7 @@ library(ggrepel)
 
 ## Outline {.smaller}
 
+- Homework
 - Aesthetics & scales: so what?
 - Aesthetics & scales with Pokémon
   - `pokemon` data
@@ -33,18 +34,53 @@ library(ggrepel)
   - `shape`
   - `facet_`ing plots
 
+## Homework
+
+- Share the data visualizations you found online with the people sitting near you.
+- What kind of data would you need to recreate them?
+
 ## Aesthetics: so what?
 
-- Aesthetics (such as color, size, shape, etc.) determine how data points are visually distinguished in a plot.
-  - Choosing the right aesthetics ensures that the visualization communicates the correct message.
-  - For example, this would be confusing in US politics!
-    - <span style="color:red;">Democrats</span> vs. <span style="color:blue;">Republicans</span>
+Aesthetics (such as color, size, shape, etc.) determine how data points are visually distinguished in a plot.
+
+### For example:
+
+<span style="color:red;">Democrats</span> vs. <span style="color:blue;">Republicans</span>
 
 ## Scales: so what?
 
 - Scales control how data is mapped onto visual dimensions like the x- and y-axes.
-  - This affects how easily readers can interpret the visualization.
-  - Proper scaling can prevent misleading representations.
+- Proper scaling can prevent misleading representations.
+
+```{r, echo=FALSE, warnings=FALSE, message=FALSE}
+# Load necessary libraries
+library(ggplot2)
+library(gridExtra)
+library(tidyverse)
+library(knitr)
+
+# Dummy data
+data <- data.frame(
+  year = c(2010, 2011, 2012, 2013, 2014, 2015),
+  interest_rate = c(3.5, 3.7, 3.6, 3.8, 3.9, 4.0)
+)
+
+# Plot 1: With a narrow y-axis
+p1 <- ggplot(data, aes(x = year, y = interest_rate)) +
+  geom_line(color = "blue", linewidth = 1) +
+  geom_point(color = "blue", size = 3) +
+  scale_y_continuous(limits = c(3.4, 4.1))
+
+# Plot 2: With a broader y-axis
+p2 <- ggplot(data, aes(x = year, y = interest_rate)) +
+  geom_line(color = "red", linewidth = 1) +
+  geom_point(color = "red", size = 3) +
+  scale_y_continuous(limits = c(0, 5))
+
+# Arrange plots side by side
+grid.arrange(p1, p2, ncol = 2)
+```
+
   
 ## `pokemon` data
 
@@ -52,12 +88,14 @@ library(ggrepel)
 pokemon <- read_csv("../data/pokemon.csv")
 
 # take a look at the data:
-pokemon
+pokemon |> 
+  head() |> 
+  kable()
 ```
 
 ## Aesthetics & Scales with Pokémon
 
-The highest `defense` and `hp` is in the top-right:
+The highest `defense` and `hp` is in the top-right by default:
 
 ```{r}
 pokemon |>
@@ -93,6 +131,8 @@ pokemon |>
 ## Limiting scales
 
 ```{r}
+#| code-line-numbers: "7-10"
+
 pokemon |>
   ggplot() +
   geom_point(aes(x = defense, y = hp)) +
@@ -138,9 +178,10 @@ pokemon |>
 Let's use colors associated with 🔥, 🍃, and 💧 Pokemon:
 
 ```{r}
+#| code-line-numbers: "8-12"
+
 pokemon |>
   filter(generation == 1) |>
-  # filter for just a few types
   filter(type_1 %in% c("Water", "Fire", "Grass")) |>
   ggplot() +
   geom_point(aes(x = defense, y = hp, color = type_1)) +
@@ -158,6 +199,7 @@ pokemon |>
 Mewtwo has a high `stat_total`:
 
 ```{r}
+#| code-line-numbers: "4-8"
 pokemon |>
   filter(generation == 1) |>
   ggplot() +
@@ -219,7 +261,7 @@ pokemon |>
   geom_text_repel(aes(x = defense, y = hp, label = name))
 ```
 
-## `facet_`ing plots
+## Bonus: `facet`-ing plots
 
 ```{r}
 # faceting allows us to split a plot into multiple panels based on a factor
@@ -236,25 +278,12 @@ pokemon |>
   geom_text_repel(aes(x = defense, y = hp, label = name))
 ```
 
-## Bonus 1: `geom_smooth`
-
-```{r}
-# geom_smooth adds a smoothed line to plots
-# what is the general relationship between hp and defense?
-pokemon |>
-  ggplot() +
-  geom_point(aes(x = defense, y = hp, color = stat_total)) +
-  scale_color_viridis_c() +
-  # new: add a smoothed line to the plot
-  geom_smooth(aes(x = defense, y = hp))
-```
-
-## Bonus 2: `facet_` everything
+## Coming soon: `facet` everything
 
 ```{r}
 pokemon |>
   # we are "pivoting" the data from wide to long format for ease of plotting
-  # we will discuss this more later!
+  # we will discuss this later in the course
   pivot_longer(
     cols = c(attack, sp_attack, defense, sp_defense, speed),
     names_to = "stat_category",
@@ -262,7 +291,6 @@ pokemon |>
   ) |>
   ggplot() +
   geom_point(aes(x = stat_value, y = hp, color = stat_total)) +
-  geom_smooth(aes(x = stat_value, y = hp)) +
   scale_color_viridis_c() +
   # new: facet by `stat_category`, a column we created with `pivot_`
   facet_wrap(~stat_category)
@@ -273,3 +301,4 @@ pokemon |>
 - **Aesthetics** determine how data points are visually distinguished, including aspects like color, size, and shape.
 - **Scales** control how data is mapped onto visual dimensions such as x- and y-axes. Proper scaling ensures that visualizations are easy to interpret and not misleading.
 - Manipulating both aesthetics and scales can reveal patterns and/or outliers in data.
+- Preserving scales on `facet`ed plots can make them directly comparable.
