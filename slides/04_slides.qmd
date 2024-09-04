@@ -93,13 +93,10 @@ starwars |>
 We can select rows based on values in one or more columns using `filter`:
 
 ```{r}
-#| code-line-numbers: "3"
 starwars |>
   # let's see who isn't human:
   filter(species != "Human") |>
   select(name, species) |>
-  # you can also `slice_sample` for random rows
-  slice_sample(n = 4) |>
   kable()
 ```
 
@@ -125,9 +122,8 @@ Use `%in%` to filter based on multiple values in a vector:
 #| code-line-numbers: "3"
 starwars |>
   # who's a droid or a Wookiee?
-  filter(species %in% c("Droid", "Wookie")) |>
+  filter(species %in% c("Droid", "Wookiee")) |>
   select(name, species) |>
-  slice_sample(n = 3) |>
   kable()
 ```
 
@@ -142,7 +138,6 @@ starwars |>
   # which characters' sexes are neither male nor female?
   filter(!sex %in% c("male", "female")) |>
   select(name, sex) |>
-  slice_sample(n = 3) |>
   kable()
 ```
 
@@ -190,12 +185,11 @@ starwars |>
 ## `fct_inorder()` orders factors for plots
 
 ```{r}
-#| code-line-numbers: "3"
-
 # let's see what the most frequent hair colors are:
 starwars |>
   # fct_infreq orders by frequency:
   ggplot(aes(y = fct_infreq(hair_color))) +
+  # Note that `NA` values are not ordered in the same way as other values
   geom_bar() +
   labs(y = "Hair color", x = "Count")
 ```

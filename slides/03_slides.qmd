@@ -52,7 +52,7 @@ Aesthetics (such as color, size, shape, etc.) determine how data points are visu
 - Scales control how data is mapped onto visual dimensions like the x- and y-axes.
 - Proper scaling can prevent misleading representations.
 
-```{r, echo=FALSE, warnings=FALSE, message=FALSE}
+```{r}
 # Load necessary libraries
 library(ggplot2)
 library(gridExtra)
@@ -265,35 +265,15 @@ pokemon |>
 
 ```{r}
 # faceting allows us to split a plot into multiple panels based on a factor
+# maintaining the scales makes them directly comparable
 pokemon |>
-  filter(generation == 1) |>
-  filter(type_1 %in% c("Normal", "Rock", "Bug", "Poison")) |>
+  # exclude top 1% of stat_total to see better color distribution:
+  filter(stat_total < quantile(stat_total, 0.99)) |>
   ggplot() +
   geom_point(aes(x = defense, y = hp, color = stat_total)) +
   scale_color_viridis_c() +
   # new: `~` means "by", so we are saying "facet wrap by `type_1`"
-  facet_wrap(~type_1) +
-  # note that the scales of the plots are all the same
-  # this makes them directly comparable
-  geom_text_repel(aes(x = defense, y = hp, label = name))
-```
-
-## Coming soon: `facet` everything
-
-```{r}
-pokemon |>
-  # we are "pivoting" the data from wide to long format for ease of plotting
-  # we will discuss this later in the course
-  pivot_longer(
-    cols = c(attack, sp_attack, defense, sp_defense, speed),
-    names_to = "stat_category",
-    values_to = "stat_value"
-  ) |>
-  ggplot() +
-  geom_point(aes(x = stat_value, y = hp, color = stat_total)) +
-  scale_color_viridis_c() +
-  # new: facet by `stat_category`, a column we created with `pivot_`
-  facet_wrap(~stat_category)
+  facet_wrap(~type_1)
 ```
 
 ## Summary

@@ -444,7 +444,7 @@
   <meta name="generator" content="quarto-1.5.57">
 
   <meta name="author" content="Erik Fredner">
-  <meta name="dcterms.date" content="2024-08-30">
+  <meta name="dcterms.date" content="2024-09-04">
   <title>Organizing Star Wars data</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1221,7 +1221,7 @@ Erik Fredner
 </div>
 </div>
 
-  <p class="date">2024-08-30</p>
+  <p class="date">2024-09-04</p>
 </section>
 <section>
 <section id="verbs" class="title-slide slide level1 center">
@@ -1739,13 +1739,11 @@ Erik Fredner
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href></a>starwars <span class="sc">|&gt;</span></span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href></a>starwars <span class="sc">|&gt;</span></span>
 <span id="cb5-2"><a href></a>  <span class="co"># let&#39;s see who isn&#39;t human:</span></span>
 <span id="cb5-3"><a href></a>  <span class="fu">filter</span>(species <span class="sc">!=</span> <span class="st">&quot;Human&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-4"><a href></a>  <span class="fu">select</span>(name, species) <span class="sc">|&gt;</span></span>
-<span id="cb5-5"><a href></a>  <span class="co"># you can also `slice_sample` for random rows</span></span>
-<span id="cb5-6"><a href></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">4</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-7"><a href></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-5"><a href></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top">
@@ -1757,8 +1755,160 @@ Erik Fredner
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;">C-3PO</td>
+<td style="text-align: left;">Droid</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">R2-D2</td>
+<td style="text-align: left;">Droid</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">R5-D4</td>
+<td style="text-align: left;">Droid</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Chewbacca</td>
+<td style="text-align: left;">Wookiee</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Greedo</td>
+<td style="text-align: left;">Rodian</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Jabba Desilijic Tiure</td>
+<td style="text-align: left;">Hutt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Yoda</td>
+<td style="text-align: left;">Yoda’s species</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IG-88</td>
+<td style="text-align: left;">Droid</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bossk</td>
+<td style="text-align: left;">Trandoshan</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ackbar</td>
+<td style="text-align: left;">Mon Calamari</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Wicket Systri Warrick</td>
+<td style="text-align: left;">Ewok</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Nien Nunb</td>
+<td style="text-align: left;">Sullustan</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nute Gunray</td>
+<td style="text-align: left;">Neimodian</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Jar Jar Binks</td>
+<td style="text-align: left;">Gungan</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Roos Tarpals</td>
+<td style="text-align: left;">Gungan</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rugor Nass</td>
+<td style="text-align: left;">Gungan</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Watto</td>
+<td style="text-align: left;">Toydarian</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sebulba</td>
+<td style="text-align: left;">Dug</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Darth Maul</td>
+<td style="text-align: left;">Zabrak</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bib Fortuna</td>
+<td style="text-align: left;">Twi’lek</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ayla Secura</td>
+<td style="text-align: left;">Twi’lek</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ratts Tyerel</td>
+<td style="text-align: left;">Aleena</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Dud Bolt</td>
+<td style="text-align: left;">Vulptereen</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gasgano</td>
+<td style="text-align: left;">Xexto</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ben Quadinaros</td>
+<td style="text-align: left;">Toong</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">Ki-Adi-Mundi</td>
 <td style="text-align: left;">Cerean</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kit Fisto</td>
+<td style="text-align: left;">Nautolan</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eeth Koth</td>
+<td style="text-align: left;">Zabrak</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Adi Gallia</td>
+<td style="text-align: left;">Tholothian</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Saesee Tiin</td>
+<td style="text-align: left;">Iktotchi</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Yarael Poof</td>
+<td style="text-align: left;">Quermian</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Plo Koon</td>
+<td style="text-align: left;">Kel Dor</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mas Amedda</td>
+<td style="text-align: left;">Chagrian</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Poggle the Lesser</td>
+<td style="text-align: left;">Geonosian</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Luminara Unduli</td>
+<td style="text-align: left;">Mirialan</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Barriss Offee</td>
+<td style="text-align: left;">Mirialan</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Zam Wesell</td>
+<td style="text-align: left;">Clawdite</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dexter Jettster</td>
+<td style="text-align: left;">Besalisk</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lama Su</td>
+<td style="text-align: left;">Kaminoan</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Taun We</td>
@@ -1769,8 +1919,32 @@ Erik Fredner
 <td style="text-align: left;">Droid</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Dud Bolt</td>
-<td style="text-align: left;">Vulptereen</td>
+<td style="text-align: left;">Wat Tambor</td>
+<td style="text-align: left;">Skakoan</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">San Hill</td>
+<td style="text-align: left;">Muun</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Shaak Ti</td>
+<td style="text-align: left;">Togruta</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Grievous</td>
+<td style="text-align: left;">Kaleesh</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Tarfful</td>
+<td style="text-align: left;">Wookiee</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Tion Medon</td>
+<td style="text-align: left;">Pau’an</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BB8</td>
+<td style="text-align: left;">Droid</td>
 </tr>
 </tbody>
 </table>
@@ -1814,10 +1988,9 @@ Erik Fredner
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href></a>starwars <span class="sc">|&gt;</span></span>
 <span id="cb7-2"><a href></a>  <span class="co"># who&#39;s a droid or a Wookiee?</span></span>
-<span id="cb7-3"><a href></a>  <span class="fu">filter</span>(species <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Droid&quot;</span>, <span class="st">&quot;Wookie&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href></a>  <span class="fu">filter</span>(species <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Droid&quot;</span>, <span class="st">&quot;Wookiee&quot;</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb7-4"><a href></a>  <span class="fu">select</span>(name, species) <span class="sc">|&gt;</span></span>
-<span id="cb7-5"><a href></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">3</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-6"><a href></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-5"><a href></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top">
@@ -1833,11 +2006,31 @@ Erik Fredner
 <td style="text-align: left;">Droid</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">IG-88</td>
+<td style="text-align: left;">R2-D2</td>
 <td style="text-align: left;">Droid</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">R2-D2</td>
+<td style="text-align: left;">R5-D4</td>
+<td style="text-align: left;">Droid</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Chewbacca</td>
+<td style="text-align: left;">Wookiee</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">IG-88</td>
+<td style="text-align: left;">Droid</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">R4-P17</td>
+<td style="text-align: left;">Droid</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Tarfful</td>
+<td style="text-align: left;">Wookiee</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BB8</td>
 <td style="text-align: left;">Droid</td>
 </tr>
 </tbody>
@@ -1855,8 +2048,7 @@ Erik Fredner
 <span id="cb8-2"><a href></a>  <span class="co"># which characters&#39; sexes are neither male nor female?</span></span>
 <span id="cb8-3"><a href></a>  <span class="fu">filter</span>(<span class="sc">!</span>sex <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;male&quot;</span>, <span class="st">&quot;female&quot;</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb8-4"><a href></a>  <span class="fu">select</span>(name, sex) <span class="sc">|&gt;</span></span>
-<span id="cb8-5"><a href></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">3</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-6"><a href></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-5"><a href></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top">
@@ -1868,16 +2060,48 @@ Erik Fredner
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">R2-D2</td>
+<td style="text-align: left;">C-3PO</td>
 <td style="text-align: left;">none</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">R2-D2</td>
+<td style="text-align: left;">none</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">R5-D4</td>
+<td style="text-align: left;">none</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Jabba Desilijic Tiure</td>
+<td style="text-align: left;">hermaphroditic</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Jek Tono Porkins</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IG-88</td>
 <td style="text-align: left;">none</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Gregar Typho</td>
 <td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cordé</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">R4-P17</td>
+<td style="text-align: left;">none</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sly Moore</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BB8</td>
+<td style="text-align: left;">none</td>
 </tr>
 </tbody>
 </table>
@@ -2013,12 +2237,13 @@ Erik Fredner
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href></a><span class="co"># let&#39;s see what the most frequent hair colors are:</span></span>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href></a><span class="co"># let&#39;s see what the most frequent hair colors are:</span></span>
 <span id="cb12-2"><a href></a>starwars <span class="sc">|&gt;</span></span>
 <span id="cb12-3"><a href></a>  <span class="co"># fct_infreq orders by frequency:</span></span>
 <span id="cb12-4"><a href></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">fct_infreq</span>(hair_color))) <span class="sc">+</span></span>
-<span id="cb12-5"><a href></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
-<span id="cb12-6"><a href></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;Hair color&quot;</span>, <span class="at">x =</span> <span class="st">&quot;Count&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-5"><a href></a>  <span class="co"># Note that `NA` values are not ordered in the same way as other values</span></span>
+<span id="cb12-6"><a href></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb12-7"><a href></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;Hair color&quot;</span>, <span class="at">x =</span> <span class="st">&quot;Count&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
