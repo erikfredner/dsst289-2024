@@ -26,7 +26,7 @@ source("../funs/funs.R")
 I have set the options `include=FALSE` and `message=FALSE` to avoid cluttering
 the solutions with all the output from this code.
 
-# Practice
+# Data
 
 We will work with the largest cities data sets:
 
@@ -45,6 +45,8 @@ us
 
 Please refer to the previous notebooks for more information about these data
 sets and how these data sets are organized.
+
+# Practice
 
 ## Summary Statistics
 

@@ -127,7 +127,7 @@ that have between 2 and 3 grams of total fat:
 ```{r}
 food |>
   # filter for foods with between 2 and 3 grams of total fat:
-  filter(between(total_fat, 2, 3))
+  filter(between(total_fat, left = 2, right = 3))
 ```
 
 
@@ -218,9 +218,11 @@ food_meat
 
 One of the core ideas behind the Grammar of Graphics is that complex
 visualizations can be constructed by layering relatively simply elements on top
-of one another. What if we wanted to put together two layers where one layer
+of one another.
+
+What if we wanted to put together two layers where one layer
 uses the `food` data set and the other uses `food_meat`? To do this, we can
-*override* the default data set in a layer with the option `data =`. This will
+**override** the default data set in a layer with the option `data =`. This will
 use a different data set within a particular layer. For example, here is how we
 can layer the meat data set on top of the rest of the food items.
 
@@ -228,6 +230,7 @@ can layer the meat data set on top of the rest of the food items.
 food |>
   ggplot() +
   geom_point(aes(x = calories, y = total_fat)) +
+  # note `data =` specifies the data for this layer:
   geom_point(aes(x = calories, y = total_fat), data = food_meat)
 ```
 
@@ -261,6 +264,8 @@ food |>
   )
 ```
 
+### Inheriting aesthetics
+
 Notice that the code is starting to get a bit more complicated and some of the
 graphic layers are becoming a bit long. This is a good place to use the
 shorthand notation to inherit aesthetics across layers, like this:
@@ -292,8 +297,8 @@ food |>
 ```
 
 We will not need to use the `select` verb as often as `filter` because for the
-most part having extra features around does not effect data visualizations or
-data models. However, it can be useful to displaying results. As we saw above,
+most part having extra features around does not affect data visualizations or
+data models. However, it can be useful for displaying results. As we saw above,
 the Vitamin A and Vitamin C columns were cut-off in the original output but are
 not visible in the selected data set version. Removing and reordering unneeded
 columns will also be useful in some of the advanced applications that are

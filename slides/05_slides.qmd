@@ -14,6 +14,13 @@ format:
     tables: true
 ---
 
+# Overview
+
+- Summarizing data with `summarize()`
+- Grouping data with `group_by()`
+- Handling missing values
+- Visualizing summaries with `ggplot2`
+
 # `summarize()`
 
 `summarize()` reduces elements of a data frame with one of several summary
@@ -29,11 +36,9 @@ library(knitr)
 starwars <- read_csv(file.path("..", "data", "starwars.csv"))
 
 starwars |>
-  # just a few variables:
   select(name, height, mass, sex) |>
-  # just the first few rows:
-  head() |>
-  # pretty-print table:
+  slice_head(n = 5) |>
+  # pretty-print table for slides:
   kable()
 ```
 
@@ -45,10 +50,20 @@ starwars |>
   summarize(mean_height = mean(height, na.rm = TRUE))
 ```
 
-## `na.rm = TRUE`?
+## Why `na.rm = TRUE`?
 
 The `na.rm` argument is used to remove `NA` values from the calculation.
-It would be inaccurate to assume that these should be `0`!
+It would be inaccurate to assume that these should be `0` (or any other value).
+If `na.rm = FALSE`, the result will be not available:
+
+```{r}
+#| code-fold: false
+
+starwars |> 
+  summarize(mean_height = mean(height, na.rm = FALSE))
+```
+
+## How to find `na` values?
 
 ```{r}
 #| code-fold: false
@@ -81,17 +96,16 @@ starwars |>
 ## `height` by `sex`
 
 ```{r}
+#| code-line-numbers: "2-4"
 starwars |>
-  # create groups:
   group_by(sex) |>
   # summarize within groups:
   summarize(mean_height = mean(height, na.rm = TRUE)) |>
-  # sort:
   arrange(mean_height) |>
   kable()
 ```
 
-## `height` by `sex` and `species`
+## `group_by` multiple variables
 
 ```{r}
 starwars |>
@@ -120,9 +134,7 @@ starwars |>
 starwars |>
   group_by(species) |>
   # you can use any string as a separator:
-  summarize(names = paste(name, collapse = " ✨ ")) |>
-  # not readable in a pretty table:
-  print()
+  summarize(names = paste(name, collapse = "🌵🌵🌵️"))
 ```
 
 # `groupby() |> summarize() |> ggplot()`
@@ -131,6 +143,7 @@ starwars |>
 
 ```{r}
 starwars |>
+  filter(!is.na(sex)) |> 
   group_by(sex) |>
   summarize(
     mean_height = mean(height, na.rm = TRUE),
@@ -142,9 +155,10 @@ starwars |>
   geom_text_repel(aes(label = sex), size = 5)
 ```
 
-## Who are our outliers?
+## Why the outlier(s)?
 
 ```{r}
+#| code-fold: false
 starwars |>
   filter(sex == "hermaphroditic") |>
   select(name, height, mass, sex) |>
@@ -157,3 +171,11 @@ starwars |>
 - Be aware of missing data
 - Be aware of outliers
 - Be aware of the number of items in each group
+
+# Summary
+
+- Use `summarize()` to compute summary statistics.
+- Combine `summarize()` with `group_by()` to perform group-wise summaries.
+- Beware missing data! `na`, `None`, etc.
+  - Handle missing data with `na.rm = TRUE`.
+- Visualize group summaries with `ggplot2`.

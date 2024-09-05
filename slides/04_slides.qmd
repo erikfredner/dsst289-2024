@@ -29,11 +29,11 @@ format:
 - It's pronounced "d plier," as in "data plier, because just as you can use
 pliers to manipulate physical objects, so too can you use `dplyr` to manipulate data.
 
-## Single- vs. multi-table
+## Single-table today, multi-table later
 
 - Today's notes and slides focused on single-table verbs.
-- We will also discuss multi-table verbs, which are used to combine data from
-multiple tables.
+- We will eventually discuss multi-table verbs, which are used to combine data
+from multiple tables.
   - Combining data from several places is one of the most common tasks
   in data science.
   
@@ -49,13 +49,18 @@ library(tidyverse)
 library(knitr)
 
 starwars <- read_csv("../data/starwars.csv")
+starwars |>
+  slice_head() |>
+  kable()
 ```
+
 
 ## `select`
 
 With `select`, we can choose specific columns:
 
 ```{r}
+#| code-line-numbers: "2-3"
 starwars |>
   # let's see the names and heights of the characters
   select(name, height) |>
@@ -68,6 +73,7 @@ starwars |>
 `slice` is used to select rows by position:
 
 ```{r}
+#| code-line-numbers: "3-4"
 starwars |>
   select(name, height) |>
   # get rows 10 through 13:
@@ -80,6 +86,7 @@ starwars |>
 Often you want to see the top (head) or bottom (tail) of a `tibble`:
 
 ```{r}
+#| code-line-numbers: "3-4"
 starwars |>
   select(name, height) |>
   # let's see the last 5 rows, the `tail`:
@@ -93,6 +100,7 @@ starwars |>
 We can select rows based on values in one or more columns using `filter`:
 
 ```{r}
+#| code-line-numbers: "2-3"
 starwars |>
   # let's see who isn't human:
   filter(species != "Human") |>
@@ -101,8 +109,6 @@ starwars |>
 ```
 
 ## `filter` multiple conditions
-
-You can `filter` on multiple conditions:
 
 ```{r}
 #| code-fold: false
@@ -114,14 +120,24 @@ starwars |>
   kable()
 ```
 
+## `filter` and `between`
+
+```{r}
+#| code-line-numbers: "2"
+starwars |>
+  filter(between(height, 180, 185)) |>
+  select(name, height) |>
+  kable()
+```
+
+
 ## `filter` and `%in%`
 
 Use `%in%` to filter based on multiple values in a vector:
 
 ```{r}
-#| code-line-numbers: "3"
+#| code-line-numbers: "2"
 starwars |>
-  # who's a droid or a Wookiee?
   filter(species %in% c("Droid", "Wookiee")) |>
   select(name, species) |>
   kable()
@@ -161,42 +177,47 @@ starwars |>
 Like `filter`, `arrange` can handle multiple conditions:
 
 ```{r}
-#| code-line-numbers: "3"
+#| code-line-numbers: "2"
 starwars |>
-  # who's the lightest and the shortest?
-  arrange(mass, height) |>
-  select(name, mass, height) |>
-  slice_head(n = 3) |>
+  arrange(height, mass) |>
+  filter(between(height, 183, 184), mass > 0) |>
+  select(name, height, mass) |>
   kable()
 ```
 
 ## `desc()` sorts in descending order
 
 ```{r}
-#| code-line-numbers: "3"
+#| code-line-numbers: "2"
 starwars |>
-  # who's the heaviest and the tallest?
-  arrange(desc(mass), desc(height)) |>
-  select(name, mass, height) |>
-  slice_head(n = 3) |>
+  arrange(desc(height), desc(mass)) |>
+  filter(between(height, 183, 184), mass > 0) |>
+  select(name, height, mass) |>
   kable()
 ```
 
-## `fct_inorder()` orders factors for plots
+## `count`ing factors
 
 ```{r}
-# let's see what the most frequent hair colors are:
+#| code-line-numbers: "2"
+starwars |> 
+  count(hair_color, sort = TRUE) |>
+  kable()
+```
+
+
+## `fct_inorder()` useful for plotting factors:
+
+```{r}
 starwars |>
-  # fct_infreq orders by frequency:
-  ggplot(aes(y = fct_infreq(hair_color))) +
-  # Note that `NA` values are not ordered in the same way as other values
-  geom_bar() +
-  labs(y = "Hair color", x = "Count")
+  ggplot() +
+  geom_bar(aes(y = fct_infreq(hair_color)))
 ```
 
 # Summary
 
-We explored how `dplyr` verbs manipulate data, similar to how verbs in language describe actions.
+We explored how `dplyr` verbs manipulate data, similar to how verbs in
+language describe actions.
 
 ## Single-Table Verbs
 
@@ -210,4 +231,5 @@ We explored how `dplyr` verbs manipulate data, similar to how verbs in language 
 
 - `%in%`: Filter based on one or more values in a vector `c()`.
 - `desc()`: Sort in descending order.
+- `count()`: Count factor levels.
 - `fct_infreq()`: Order factors by frequency for plotting.
