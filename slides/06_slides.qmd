@@ -1,5 +1,5 @@
 ---
-title: "Summarizing and grouping *Star Wars* data"
+title: "Creating features with *Animal Crossing* data"
 subtitle: "DSST 289: Introduction to Data Science"
 author: "Erik Fredner"
 date: "`r Sys.Date()`"
@@ -14,11 +14,13 @@ format:
 
 # Overview
 
-- Homework
-- Summarizing data with `summarize()`
-- Grouping data with `group_by()`
-- Handling missing values
-- Visualizing summaries with `ggplot2`
+- *Animal Crossing* 🐟 data
+- `mutate()`
+- `if_else()`
+- `mutate` summaries
+- exam review
+
+
 
 # Homework
 
@@ -168,7 +170,7 @@ starwars |>
 
 # additional `group` operations
 
-## `n()` returns how many rows are in each group
+## `n()` gives group sizes
 
 ```{r}
 #| code-line-numbers: "3"

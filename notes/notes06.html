@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Erik Fredner">
-<meta name="dcterms.date" content="2024-09-04">
+<meta name="dcterms.date" content="2024-09-05">
 
 <title>06. Creating Features</title>
 <style>
@@ -4358,10 +4358,24 @@ window.onload = function() {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#mutate-verb" id="toc-mutate-verb" class="nav-link active" data-scroll-target="#mutate-verb">Mutate verb</a></li>
-  <li><a href="#conditional-values" id="toc-conditional-values" class="nav-link" data-scroll-target="#conditional-values">Conditional values</a></li>
-  <li><a href="#mutate-summaries" id="toc-mutate-summaries" class="nav-link" data-scroll-target="#mutate-summaries">Mutate summaries</a></li>
+  <li><a href="#mutate" id="toc-mutate" class="nav-link active" data-scroll-target="#mutate"><code>mutate()</code></a>
+  <ul class="collapse">
+  <li><a href="#conditional-values-with-if_else" id="toc-conditional-values-with-if_else" class="nav-link" data-scroll-target="#conditional-values-with-if_else">Conditional values with <code>if_else</code></a></li>
+  <li><a href="#multiple-if_else-statements" id="toc-multiple-if_else-statements" class="nav-link" data-scroll-target="#multiple-if_else-statements">Multiple <code>if_else</code> statements</a></li>
+  <li><a href="#case_when-alternative" id="toc-case_when-alternative" class="nav-link" data-scroll-target="#case_when-alternative"><code>case_when</code> alternative</a>
+  <ul class="collapse">
+  <li><a href="#true-default" id="toc-true-default" class="nav-link" data-scroll-target="#true-default"><code>TRUE ~ &quot;default&quot;</code></a></li>
+  <li><a href="#why-instead-of" id="toc-why-instead-of" class="nav-link" data-scroll-target="#why-instead-of">Why <code>~</code> instead of <code>=</code>?</a></li>
+  </ul></li>
+  <li><a href="#mutate-summaries" id="toc-mutate-summaries" class="nav-link" data-scroll-target="#mutate-summaries"><code>mutate</code> summaries</a></li>
+  <li><a href="#mutate-and-group_by" id="toc-mutate-and-group_by" class="nav-link" data-scroll-target="#mutate-and-group_by"><code>mutate</code> and <code>group_by</code></a>
+  <ul class="collapse">
+  <li><a href="#n-and-count" id="toc-n-and-count" class="nav-link" data-scroll-target="#n-and-count"><code>n</code> and <code>count</code></a></li>
+  <li><a href="#max-and-min" id="toc-max-and-min" class="nav-link" data-scroll-target="#max-and-min"><code>max</code> and <code>min</code></a></li>
+  </ul></li>
+  <li><a href="#ungrouping-data" id="toc-ungrouping-data" class="nav-link" data-scroll-target="#ungrouping-data"><code>ungroup</code>ing data</a></li>
   <li><a href="#homework-questions" id="toc-homework-questions" class="nav-link" data-scroll-target="#homework-questions">Homework Questions</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -4387,7 +4401,7 @@ window.onload = function() {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 4, 2024</p>
+      <p class="date">September 5, 2024</p>
     </div>
   </div>
   
@@ -4399,10 +4413,10 @@ window.onload = function() {
 </header>
 
 
-<section id="mutate-verb" class="level2">
-<h2 class="anchored" data-anchor-id="mutate-verb">Mutate verb</h2>
+<section id="mutate" class="level1">
+<h1><code>mutate()</code></h1>
 <p>The final core <strong>dplyr</strong> verb that we will look at is used to create a new feature in our data set based on other features that are already present. This verb is called <code>mutate</code>, and works by giving it the name of the feature you want to create followed by the code that describes how to construct the feature in terms of the rest of the data.</p>
-<p>As an example, consider computing the number of calories in an 200g portion of each food. All of the features in the data set are currently given as 100g portions, so to compute this we need to multiply the <code>calories</code> feature by 2. To do this, we use the <code>mutate</code> verb to name and describe a new feature <code>calories_200g</code>.</p>
+<p>As an example, consider computing the number of calories in a 200g portion of each food. All of the features in the data set are currently given as 100g portions, so to compute this we need to multiply the <code>calories</code> feature by 2. To do this, we use the <code>mutate</code> verb to name and describe a new feature <code>calories_200g</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>food <span class="sc">|&gt;</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">calories_200g =</span> calories <span class="sc">*</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -4429,12 +4443,12 @@ window.onload = function() {
 </div>
 <p>And now we can see that the new column has been created by doubling the number given the <code>calories</code> column.</p>
 <p>Note that <code>mutate</code> can also be used to modify any existing column in the data set by using the name of an extant feature. In this case the position of the feature within the tables does not change.</p>
-<p>The mutate verb itself has a relatively straightforward syntax. The main challenge is knowing how to apply and chain together the various transformations that are useful within an analysis. In the next section, we highlight several common types of operations that we will be useful in subsequent applications.</p>
-</section>
-<section id="conditional-values" class="level2">
-<h2 class="anchored" data-anchor-id="conditional-values">Conditional values</h2>
-<p>Many of the uses for the mutate verb involve assigning one value when a set of conditions is true and another if the conditions are false. For example, consider creating a new feature called <code>sugar_level</code> based on the relative amount of sugar in each food item. We might classify a food has having a “high” sugar level if has more than 10g of sugar per 100g serving, and a “normal” amount otherwise. In order to create this feature, we need the function <code>if_else</code>.</p>
-<p>The <code>if_else</code> function has three parts: a TRUE/FALSE statement, the value to use when the statement is true, and the value to use when it is false. Here is an example to create our new feature:</p>
+<p><code>mutate</code> has a relatively straightforward syntax. The main challenge is knowing how to apply and chain together the various transformations that are useful within an analysis. In the next section, we highlight several common types of operations that we will be useful in subsequent applications.</p>
+<section id="conditional-values-with-if_else" class="level2">
+<h2 class="anchored" data-anchor-id="conditional-values-with-if_else">Conditional values with <code>if_else</code></h2>
+<p>Many of the uses for <code>mutate</code> involve assigning one value when a set of conditions is true and another if the conditions are false.</p>
+<p>For example, consider creating a new feature called <code>sugar_level</code> based on the relative amount of sugar in each food item. We might classify a food has having a “high” sugar level if has more than 10g of sugar per 100g serving, and a “normal” amount otherwise. In order to create this feature, we need the function <code>if_else</code>.</p>
+<p>The <code>if_else</code> function has three parts: a <code>TRUE</code>/<code>FALSE</code> statement, the value to use when the statement is true, and the value to use when it is false. Here is an example to create our new feature:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>food <span class="sc">|&gt;</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sugar_level =</span> <span class="fu">if_else</span>(</span>
@@ -4453,6 +4467,9 @@ window.onload = function() {
 </div>
 </div>
 <p>Looking at the first rows of data, we see that apples and bananas are classified as high sugar foods, whereas the other sugar levels are given the sugar level category of “normal”.</p>
+</section>
+<section id="multiple-if_else-statements" class="level2">
+<h2 class="anchored" data-anchor-id="multiple-if_else-statements">Multiple <code>if_else</code> statements</h2>
 <p>The <code>if_else</code> function can be used to produce any number of categories by using it multiple times. Let’s modify our sugar level feature to now have three categories: “high” (over 10g), “low” (less than 1g), and “normal” (between 1g and 10g). There are several different ways to get to the same result, but I find the easiest is to start by assigning a default value and then changing the value of the new feature in sequence. For example, here some code that produces our new categories:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>food <span class="sc">|&gt;</span></span>
@@ -4469,20 +4486,50 @@ window.onload = function() {
 </div>
 </div>
 </div>
-<p>In each <code>if_else</code> step we are telling the mutate function that if the condition is false set <code>sugar_level</code> equal to itself. In other words, if the condition does not hold, do not change the value of the feature.</p>
-<p>You may wonder why we created a “default” value for the feature <code>sugar_level</code>. It would have been one less line of code to set the default value to “normal” and remove the final mutate function. The reason for the approach above is three-fold:</p>
+<p>In each <code>if_else</code> step we are telling <code>mutate</code>: If the condition is false, set <code>sugar_level</code> equal to itself. In other words, if the condition does not hold, do not change the value of the feature.</p>
+<p>You may wonder why we created a <code>&quot;default&quot;</code> value for the feature <code>sugar_level</code>. It would have been one less line of code to set the default value to “normal” and remove the final mutate function. The reason for the approach above is three-fold:</p>
 <ol type="1">
 <li>It’s easier to understand what the code is doing in it’s current format because each condition (“high”, “normal”, and “low”) is explicitly coded.</li>
 <li>It creates a nice check on our code and data. If we find a row of the output that still has the value “default” we will know that there is a problem somewhere.</li>
 <li>The code above will more safely handle the issues with missing values, and issue that we will return to shortly.</li>
 </ol>
 </section>
-<section id="mutate-summaries" class="level2">
-<h2 class="anchored" data-anchor-id="mutate-summaries">Mutate summaries</h2>
-<p>All of summary functions that were introduced in the previous notebook can also be applied within the mutate version. Instead of reducing the data to a single summary row, summarizing within the mutate verb duplicates the summary statistic in each row of the data set. Here is an example of including the average number of calories across all rows of the data set:</p>
+<section id="case_when-alternative" class="level2">
+<h2 class="anchored" data-anchor-id="case_when-alternative"><code>case_when</code> alternative</h2>
+<p>The <code>case_when</code> function is a more concise way to write multiple <code>if_else</code> statements, but the syntax can be a little trickier. Here’s a rewrite of the above code using <code>case_when</code>:`</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>food <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">calories_mean =</span> <span class="fu">mean</span>(calories))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sugar_level =</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    sugar <span class="sc">&lt;</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;low&quot;</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    sugar <span class="sc">&gt;</span> <span class="dv">10</span> <span class="sc">~</span> <span class="st">&quot;high&quot;</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">between</span>(sugar, <span class="dv">1</span>, <span class="dv">10</span>) <span class="sc">~</span> <span class="st">&quot;normal&quot;</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;default&quot;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(item, food_group, sugar, sugar_level)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source type="application/json">
+{"columns":[{"label":["item"],"name":[1],"type":["chr"],"align":["left"]},{"label":["food_group"],"name":[2],"type":["chr"],"align":["left"]},{"label":["sugar"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["sugar_level"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Apple","2":"fruit","3":"10.39","4":"high"},{"1":"Asparagus","2":"vegetable","3":"1.88","4":"normal"},{"1":"Avocado","2":"fruit","3":"0.66","4":"low"},{"1":"Banana","2":"fruit","3":"12.23","4":"high"},{"1":"Chickpea","2":"grains","3":"5.29","4":"normal"},{"1":"String Bean","2":"vegetable","3":"1.40","4":"normal"},{"1":"Beef","2":"meat","3":"0.00","4":"low"},{"1":"Bell Pepper","2":"vegetable","3":"4.20","4":"normal"},{"1":"Crab","2":"fish","3":"0.00","4":"low"},{"1":"Broccoli","2":"vegetable","3":"1.70","4":"normal"},{"1":"Cabbage","2":"vegetable","3":"3.58","4":"normal"},{"1":"Cantaloupe","2":"fruit","3":"7.86","4":"normal"},{"1":"Carrot","2":"vegetable","3":"4.54","4":"normal"},{"1":"Catfish","2":"fish","3":"0.85","4":"low"},{"1":"Cauliflower","2":"vegetable","3":"2.40","4":"normal"},{"1":"Celery","2":"vegetable","3":"1.83","4":"normal"},{"1":"Cheese","2":"dairy","3":"3.54","4":"normal"},{"1":"Chicken","2":"meat","3":"0.00","4":"low"},{"1":"Clam","2":"fish","3":"0.85","4":"low"},{"1":"Cod","2":"fish","3":"0.82","4":"low"},{"1":"Corn","2":"vegetable","3":"3.22","4":"normal"},{"1":"Cucumber","2":"vegetable","3":"1.38","4":"normal"},{"1":"Duck","2":"meat","3":"0.00","4":"low"},{"1":"Flounder","2":"fish","3":"0.09","4":"low"},{"1":"Grapefruit","2":"fruit","3":"6.98","4":"normal"},{"1":"Grape","2":"fruit","3":"15.48","4":"high"},{"1":"Halibut","2":"fish","3":"0.00","4":"low"},{"1":"Haddock","2":"fish","3":"0.11","4":"low"},{"1":"Kiwi","2":"fruit","3":"8.99","4":"normal"},{"1":"Lamb","2":"meat","3":"0.00","4":"low"},{"1":"Lemon","2":"fruit","3":"2.50","4":"normal"},{"1":"Lettuce","2":"vegetable","3":"1.76","4":"normal"},{"1":"Lime","2":"fruit","3":"1.69","4":"normal"},{"1":"Lobster","2":"fish","3":"0.00","4":"low"},{"1":"Milk","2":"dairy","3":"5.26","4":"normal"},{"1":"Mushroom","2":"vegetable","3":"1.65","4":"normal"},{"1":"Oat","2":"grains","3":"0.00","4":"low"},{"1":"Onion","2":"vegetable","3":"4.28","4":"normal"},{"1":"Orange","2":"fruit","3":"9.35","4":"normal"},{"1":"Oyster","2":"fish","3":"0.71","4":"low"},{"1":"Peach","2":"fruit","3":"8.39","4":"normal"},{"1":"Pear","2":"fruit","3":"9.80","4":"normal"},{"1":"Penne","2":"grains","3":"0.56","4":"low"},{"1":"Pineapple","2":"fruit","3":"9.26","4":"normal"},{"1":"Plum","2":"fruit","3":"9.92","4":"normal"},{"1":"Pork","2":"meat","3":"0.00","4":"low"},{"1":"Quinoa","2":"grains","3":"0.00","4":"low"},{"1":"Brown Rice","2":"grains","3":"0.35","4":"low"},{"1":"Salmon","2":"fish","3":"0.11","4":"low"},{"1":"Scallop","2":"fish","3":"0.82","4":"low"},{"1":"Shrimp","2":"fish","3":"0.00","4":"low"},{"1":"Sour Cream","2":"dairy","3":"0.16","4":"low"},{"1":"Strawberry","2":"fruit","3":"4.66","4":"normal"},{"1":"Sweet Potato","2":"vegetable","3":"4.18","4":"normal"},{"1":"Swordfish","2":"fish","3":"0.11","4":"low"},{"1":"Tangerine","2":"fruit","3":"10.58","4":"high"},{"1":"Tomato","2":"vegetable","3":"2.63","4":"normal"},{"1":"Tuna","2":"fish","3":"0.09","4":"low"},{"1":"Turkey","2":"meat","3":"0.00","4":"low"},{"1":"Potato","2":"vegetable","3":"0.82","4":"low"},{"1":"Yogurt","2":"dairy","3":"18.64","4":"high"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<section id="true-default" class="level3">
+<h3 class="anchored" data-anchor-id="true-default"><code>TRUE ~ &quot;default&quot;</code></h3>
+<p><code>TRUE ~ &quot;default&quot;</code> is a catch-all condition that gives any unmatched cases the value “default”. Since <code>case_when()</code> evaluates conditions in order, the <code>TRUE</code> condition will onlybe reached if none of the other conditions are met.</p>
+</section>
+<section id="why-instead-of" class="level3">
+<h3 class="anchored" data-anchor-id="why-instead-of">Why <code>~</code> instead of <code>=</code>?</h3>
+<p>The <code>~</code> symbol is used to separate the condition from the value that should be returned if the condition is true. It’s part of R’s formula syntax, where it’s used to define relationships between variables.</p>
+<p><code>=</code> is used in R for assignment or function arguments, while <code>~</code> in <code>case_when()</code> is specifically for pairing a condition with the corresponding output value.</p>
+</section>
+</section>
+<section id="mutate-summaries" class="level2">
+<h2 class="anchored" data-anchor-id="mutate-summaries"><code>mutate</code> summaries</h2>
+<p>All of the summary functions that were introduced in the previous notebook can also be applied within the mutate version. Instead of reducing the data to a single summary row, summarizing within the mutate verb duplicates the summary statistic in each row of the data set. Here is an example of including the average number of calories across all rows of the data set:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>food <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">calories_mean =</span> <span class="fu">mean</span>(calories))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source type="application/json">
@@ -4491,11 +4538,11 @@ window.onload = function() {
 </div>
 </div>
 </div>
-<p>As with any call to mutate, all of the original features are kept in the output and the new feature is added at the end. Using <code>select</code> we can verify that the average calories has in fact been added to each row of the table.</p>
+<p>As with any call to <code>mutate</code>, all of the original features are kept in the output and the new feature is added at the end. Using <code>select</code>, we can verify that the average calories has in fact been added to each row of the table.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>food <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">calories_mean =</span> <span class="fu">mean</span>(calories)) <span class="sc">|&gt;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(item, food_group, calories, calories_mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>food <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">calories_mean =</span> <span class="fu">mean</span>(calories)) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(item, food_group, calories, calories_mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source type="application/json">
@@ -4504,25 +4551,122 @@ window.onload = function() {
 </div>
 </div>
 </div>
-<p>The power of mutate summaries becomes particularly clear when grouping the data. If we group the data set by one or more features and apply a summary function within a mutation, the repeated summaries will be done within each group. Here is an example of adding the average calories of each food group to the data set:</p>
+</section>
+<section id="mutate-and-group_by" class="level2">
+<h2 class="anchored" data-anchor-id="mutate-and-group_by"><code>mutate</code> and <code>group_by</code></h2>
+<p>The power of <code>mutate</code> summaries becomes particularly clear when grouping the data. If we <code>group_by</code> one or more features and apply a summary function within a mutation, the repeated summaries will be done within each group.</p>
+<section id="n-and-count" class="level3">
+<h3 class="anchored" data-anchor-id="n-and-count"><code>n</code> and <code>count</code></h3>
+<p>For example, we could count the number of items in each food group using <code>group_by</code> and <code>n()</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>food <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(food_group) <span class="sc">|&gt;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">calories_mean =</span> <span class="fu">mean</span>(calories)) <span class="sc">|&gt;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(item, food_group, calories, calories_mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>food <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(food_group) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">food_group_count =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(food_group, food_group_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["item"],"name":[1],"type":["chr"],"align":["left"]},{"label":["food_group"],"name":[2],"type":["chr"],"align":["left"]},{"label":["calories"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["calories_mean"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Apple","2":"fruit","3":"52","4":"54.9375"},{"1":"Asparagus","2":"vegetable","3":"20","4":"37.4375"},{"1":"Avocado","2":"fruit","3":"160","4":"54.9375"},{"1":"Banana","2":"fruit","3":"89","4":"54.9375"},{"1":"Chickpea","2":"grains","3":"180","4":"195.8000"},{"1":"String Bean","2":"vegetable","3":"31","4":"37.4375"},{"1":"Beef","2":"meat","3":"288","4":"234.5000"},{"1":"Bell Pepper","2":"vegetable","3":"26","4":"37.4375"},{"1":"Crab","2":"fish","3":"87","4":"166.9286"},{"1":"Broccoli","2":"vegetable","3":"34","4":"37.4375"},{"1":"Cabbage","2":"vegetable","3":"24","4":"37.4375"},{"1":"Cantaloupe","2":"fruit","3":"34","4":"54.9375"},{"1":"Carrot","2":"vegetable","3":"41","4":"37.4375"},{"1":"Catfish","2":"fish","3":"240","4":"166.9286"},{"1":"Cauliflower","2":"vegetable","3":"25","4":"37.4375"},{"1":"Celery","2":"vegetable","3":"14","4":"37.4375"},{"1":"Cheese","2":"dairy","3":"350","4":"180.7500"},{"1":"Chicken","2":"meat","3":"237","4":"234.5000"},{"1":"Clam","2":"fish","3":"180","4":"166.9286"},{"1":"Cod","2":"fish","3":"211","4":"166.9286"},{"1":"Corn","2":"vegetable","3":"86","4":"37.4375"},{"1":"Cucumber","2":"vegetable","3":"12","4":"37.4375"},{"1":"Duck","2":"meat","3":"132","4":"234.5000"},{"1":"Flounder","2":"fish","3":"133","4":"166.9286"},{"1":"Grapefruit","2":"fruit","3":"32","4":"54.9375"},{"1":"Grape","2":"fruit","3":"69","4":"54.9375"},{"1":"Halibut","2":"fish","3":"239","4":"166.9286"},{"1":"Haddock","2":"fish","3":"128","4":"166.9286"},{"1":"Kiwi","2":"fruit","3":"61","4":"54.9375"},{"1":"Lamb","2":"meat","3":"292","4":"234.5000"},{"1":"Lemon","2":"fruit","3":"29","4":"54.9375"},{"1":"Lettuce","2":"vegetable","3":"14","4":"37.4375"},{"1":"Lime","2":"fruit","3":"30","4":"54.9375"},{"1":"Lobster","2":"fish","3":"97","4":"166.9286"},{"1":"Milk","2":"dairy","3":"60","4":"180.7500"},{"1":"Mushroom","2":"vegetable","3":"22","4":"37.4375"},{"1":"Oat","2":"grains","3":"389","4":"195.8000"},{"1":"Onion","2":"vegetable","3":"42","4":"37.4375"},{"1":"Orange","2":"fruit","3":"47","4":"54.9375"},{"1":"Oyster","2":"fish","3":"160","4":"166.9286"},{"1":"Peach","2":"fruit","3":"39","4":"54.9375"},{"1":"Pear","2":"fruit","3":"58","4":"54.9375"},{"1":"Penne","2":"grains","3":"157","4":"195.8000"},{"1":"Pineapple","2":"fruit","3":"48","4":"54.9375"},{"1":"Plum","2":"fruit","3":"46","4":"54.9375"},{"1":"Pork","2":"meat","3":"271","4":"234.5000"},{"1":"Quinoa","2":"grains","3":"143","4":"195.8000"},{"1":"Brown Rice","2":"grains","3":"110","4":"195.8000"},{"1":"Salmon","2":"fish","3":"171","4":"166.9286"},{"1":"Scallop","2":"fish","3":"217","4":"166.9286"},{"1":"Shrimp","2":"fish","3":"144","4":"166.9286"},{"1":"Sour Cream","2":"dairy","3":"214","4":"180.7500"},{"1":"Strawberry","2":"fruit","3":"32","4":"54.9375"},{"1":"Sweet Potato","2":"vegetable","3":"86","4":"37.4375"},{"1":"Swordfish","2":"fish","3":"177","4":"166.9286"},{"1":"Tangerine","2":"fruit","3":"53","4":"54.9375"},{"1":"Tomato","2":"vegetable","3":"18","4":"37.4375"},{"1":"Tuna","2":"fish","3":"153","4":"166.9286"},{"1":"Turkey","2":"meat","3":"187","4":"234.5000"},{"1":"Potato","2":"vegetable","3":"104","4":"37.4375"},{"1":"Yogurt","2":"dairy","3":"99","4":"180.7500"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["food_group"],"name":[1],"type":["chr"],"align":["left"]},{"label":["food_group_count"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"fruit","2":"16"},{"1":"vegetable","2":"16"},{"1":"fruit","2":"16"},{"1":"fruit","2":"16"},{"1":"grains","2":"5"},{"1":"vegetable","2":"16"},{"1":"meat","2":"6"},{"1":"vegetable","2":"16"},{"1":"fish","2":"14"},{"1":"vegetable","2":"16"},{"1":"vegetable","2":"16"},{"1":"fruit","2":"16"},{"1":"vegetable","2":"16"},{"1":"fish","2":"14"},{"1":"vegetable","2":"16"},{"1":"vegetable","2":"16"},{"1":"dairy","2":"4"},{"1":"meat","2":"6"},{"1":"fish","2":"14"},{"1":"fish","2":"14"},{"1":"vegetable","2":"16"},{"1":"vegetable","2":"16"},{"1":"meat","2":"6"},{"1":"fish","2":"14"},{"1":"fruit","2":"16"},{"1":"fruit","2":"16"},{"1":"fish","2":"14"},{"1":"fish","2":"14"},{"1":"fruit","2":"16"},{"1":"meat","2":"6"},{"1":"fruit","2":"16"},{"1":"vegetable","2":"16"},{"1":"fruit","2":"16"},{"1":"fish","2":"14"},{"1":"dairy","2":"4"},{"1":"vegetable","2":"16"},{"1":"grains","2":"5"},{"1":"vegetable","2":"16"},{"1":"fruit","2":"16"},{"1":"fish","2":"14"},{"1":"fruit","2":"16"},{"1":"fruit","2":"16"},{"1":"grains","2":"5"},{"1":"fruit","2":"16"},{"1":"fruit","2":"16"},{"1":"meat","2":"6"},{"1":"grains","2":"5"},{"1":"grains","2":"5"},{"1":"fish","2":"14"},{"1":"fish","2":"14"},{"1":"fish","2":"14"},{"1":"dairy","2":"4"},{"1":"fruit","2":"16"},{"1":"vegetable","2":"16"},{"1":"fish","2":"14"},{"1":"fruit","2":"16"},{"1":"vegetable","2":"16"},{"1":"fish","2":"14"},{"1":"meat","2":"6"},{"1":"vegetable","2":"16"},{"1":"dairy","2":"4"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
 </div>
-<p>Following this with a filter, for example, would allow us to select all of the foods that have a less than average number of calories within their food group. We will see many examples of grouped mutate summaries throughout our applications.</p>
+<p>As we would expect, this produces a new column on the <code>food</code> data set containing counts of the number of items in each food group.</p>
+<p>Alternatively, if we only needed the counts of the number of items in the groups, we could use the <code>count</code> function, which implicitly groups the data for us:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>food <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(food_group)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source type="application/json">
+{"columns":[{"label":["food_group"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"dairy","2":"4"},{"1":"fish","2":"14"},{"1":"fruit","2":"16"},{"1":"grains","2":"5"},{"1":"meat","2":"6"},{"1":"vegetable","2":"16"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p>Note that the default column that <code>count</code> creates is called <code>n</code>. You can change that column name by passing <code>name = &quot;whatever&quot;</code> argument in <code>count()</code>.</p>
+</section>
+<section id="max-and-min" class="level3">
+<h3 class="anchored" data-anchor-id="max-and-min"><code>max</code> and <code>min</code></h3>
+<p>Here is an example of adding the average calories of each food group to the data set:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>food <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(food_group) <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">food_group_calories_max =</span> <span class="fu">max</span>(calories)) <span class="sc">|&gt;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(item, food_group, calories, food_group_calories_max)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source type="application/json">
+{"columns":[{"label":["item"],"name":[1],"type":["chr"],"align":["left"]},{"label":["food_group"],"name":[2],"type":["chr"],"align":["left"]},{"label":["calories"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["food_group_calories_max"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Apple","2":"fruit","3":"52","4":"160"},{"1":"Asparagus","2":"vegetable","3":"20","4":"104"},{"1":"Avocado","2":"fruit","3":"160","4":"160"},{"1":"Banana","2":"fruit","3":"89","4":"160"},{"1":"Chickpea","2":"grains","3":"180","4":"389"},{"1":"String Bean","2":"vegetable","3":"31","4":"104"},{"1":"Beef","2":"meat","3":"288","4":"292"},{"1":"Bell Pepper","2":"vegetable","3":"26","4":"104"},{"1":"Crab","2":"fish","3":"87","4":"240"},{"1":"Broccoli","2":"vegetable","3":"34","4":"104"},{"1":"Cabbage","2":"vegetable","3":"24","4":"104"},{"1":"Cantaloupe","2":"fruit","3":"34","4":"160"},{"1":"Carrot","2":"vegetable","3":"41","4":"104"},{"1":"Catfish","2":"fish","3":"240","4":"240"},{"1":"Cauliflower","2":"vegetable","3":"25","4":"104"},{"1":"Celery","2":"vegetable","3":"14","4":"104"},{"1":"Cheese","2":"dairy","3":"350","4":"350"},{"1":"Chicken","2":"meat","3":"237","4":"292"},{"1":"Clam","2":"fish","3":"180","4":"240"},{"1":"Cod","2":"fish","3":"211","4":"240"},{"1":"Corn","2":"vegetable","3":"86","4":"104"},{"1":"Cucumber","2":"vegetable","3":"12","4":"104"},{"1":"Duck","2":"meat","3":"132","4":"292"},{"1":"Flounder","2":"fish","3":"133","4":"240"},{"1":"Grapefruit","2":"fruit","3":"32","4":"160"},{"1":"Grape","2":"fruit","3":"69","4":"160"},{"1":"Halibut","2":"fish","3":"239","4":"240"},{"1":"Haddock","2":"fish","3":"128","4":"240"},{"1":"Kiwi","2":"fruit","3":"61","4":"160"},{"1":"Lamb","2":"meat","3":"292","4":"292"},{"1":"Lemon","2":"fruit","3":"29","4":"160"},{"1":"Lettuce","2":"vegetable","3":"14","4":"104"},{"1":"Lime","2":"fruit","3":"30","4":"160"},{"1":"Lobster","2":"fish","3":"97","4":"240"},{"1":"Milk","2":"dairy","3":"60","4":"350"},{"1":"Mushroom","2":"vegetable","3":"22","4":"104"},{"1":"Oat","2":"grains","3":"389","4":"389"},{"1":"Onion","2":"vegetable","3":"42","4":"104"},{"1":"Orange","2":"fruit","3":"47","4":"160"},{"1":"Oyster","2":"fish","3":"160","4":"240"},{"1":"Peach","2":"fruit","3":"39","4":"160"},{"1":"Pear","2":"fruit","3":"58","4":"160"},{"1":"Penne","2":"grains","3":"157","4":"389"},{"1":"Pineapple","2":"fruit","3":"48","4":"160"},{"1":"Plum","2":"fruit","3":"46","4":"160"},{"1":"Pork","2":"meat","3":"271","4":"292"},{"1":"Quinoa","2":"grains","3":"143","4":"389"},{"1":"Brown Rice","2":"grains","3":"110","4":"389"},{"1":"Salmon","2":"fish","3":"171","4":"240"},{"1":"Scallop","2":"fish","3":"217","4":"240"},{"1":"Shrimp","2":"fish","3":"144","4":"240"},{"1":"Sour Cream","2":"dairy","3":"214","4":"350"},{"1":"Strawberry","2":"fruit","3":"32","4":"160"},{"1":"Sweet Potato","2":"vegetable","3":"86","4":"104"},{"1":"Swordfish","2":"fish","3":"177","4":"240"},{"1":"Tangerine","2":"fruit","3":"53","4":"160"},{"1":"Tomato","2":"vegetable","3":"18","4":"104"},{"1":"Tuna","2":"fish","3":"153","4":"240"},{"1":"Turkey","2":"meat","3":"187","4":"292"},{"1":"Potato","2":"vegetable","3":"104","4":"104"},{"1":"Yogurt","2":"dairy","3":"99","4":"350"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p>There is also a <code>min</code> function that can be used in the same way.</p>
+</section>
+</section>
+<section id="ungrouping-data" class="level2">
+<h2 class="anchored" data-anchor-id="ungrouping-data"><code>ungroup</code>ing data</h2>
+<p>With the group mean above, you could perform subsequent calculations. For example, if you wanted to calculate the ratio of an individual food’s calories to the average calories of its food group, you could do the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>food <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(food_group) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">food_group_calories_mean =</span> <span class="fu">mean</span>(calories)) <span class="sc">|&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">calories_ratio =</span> calories <span class="sc">/</span> food_group_calories_mean) <span class="sc">|&gt;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(item, food_group, calories, calories_ratio) <span class="sc">|&gt;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(calories_ratio))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source type="application/json">
+{"columns":[{"label":["item"],"name":[1],"type":["chr"],"align":["left"]},{"label":["food_group"],"name":[2],"type":["chr"],"align":["left"]},{"label":["calories"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["calories_ratio"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Cheese","2":"dairy","3":"350","4":"1.9363762"},{"1":"Sour Cream","2":"dairy","3":"214","4":"1.1839557"},{"1":"Yogurt","2":"dairy","3":"99","4":"0.5477178"},{"1":"Milk","2":"dairy","3":"60","4":"0.3319502"},{"1":"Catfish","2":"fish","3":"240","4":"1.4377407"},{"1":"Halibut","2":"fish","3":"239","4":"1.4317501"},{"1":"Scallop","2":"fish","3":"217","4":"1.2999572"},{"1":"Cod","2":"fish","3":"211","4":"1.2640137"},{"1":"Clam","2":"fish","3":"180","4":"1.0783055"},{"1":"Swordfish","2":"fish","3":"177","4":"1.0603338"},{"1":"Salmon","2":"fish","3":"171","4":"1.0243902"},{"1":"Oyster","2":"fish","3":"160","4":"0.9584938"},{"1":"Tuna","2":"fish","3":"153","4":"0.9165597"},{"1":"Shrimp","2":"fish","3":"144","4":"0.8626444"},{"1":"Flounder","2":"fish","3":"133","4":"0.7967480"},{"1":"Haddock","2":"fish","3":"128","4":"0.7667950"},{"1":"Lobster","2":"fish","3":"97","4":"0.5810869"},{"1":"Crab","2":"fish","3":"87","4":"0.5211810"},{"1":"Avocado","2":"fruit","3":"160","4":"2.9124005"},{"1":"Banana","2":"fruit","3":"89","4":"1.6200228"},{"1":"Grape","2":"fruit","3":"69","4":"1.2559727"},{"1":"Kiwi","2":"fruit","3":"61","4":"1.1103527"},{"1":"Pear","2":"fruit","3":"58","4":"1.0557452"},{"1":"Tangerine","2":"fruit","3":"53","4":"0.9647327"},{"1":"Apple","2":"fruit","3":"52","4":"0.9465301"},{"1":"Pineapple","2":"fruit","3":"48","4":"0.8737201"},{"1":"Orange","2":"fruit","3":"47","4":"0.8555176"},{"1":"Plum","2":"fruit","3":"46","4":"0.8373151"},{"1":"Peach","2":"fruit","3":"39","4":"0.7098976"},{"1":"Cantaloupe","2":"fruit","3":"34","4":"0.6188851"},{"1":"Grapefruit","2":"fruit","3":"32","4":"0.5824801"},{"1":"Strawberry","2":"fruit","3":"32","4":"0.5824801"},{"1":"Lime","2":"fruit","3":"30","4":"0.5460751"},{"1":"Lemon","2":"fruit","3":"29","4":"0.5278726"},{"1":"Oat","2":"grains","3":"389","4":"1.9867211"},{"1":"Chickpea","2":"grains","3":"180","4":"0.9193054"},{"1":"Penne","2":"grains","3":"157","4":"0.8018386"},{"1":"Quinoa","2":"grains","3":"143","4":"0.7303371"},{"1":"Brown Rice","2":"grains","3":"110","4":"0.5617978"},{"1":"Lamb","2":"meat","3":"292","4":"1.2452026"},{"1":"Beef","2":"meat","3":"288","4":"1.2281450"},{"1":"Pork","2":"meat","3":"271","4":"1.1556503"},{"1":"Chicken","2":"meat","3":"237","4":"1.0106610"},{"1":"Turkey","2":"meat","3":"187","4":"0.7974414"},{"1":"Duck","2":"meat","3":"132","4":"0.5628998"},{"1":"Potato","2":"vegetable","3":"104","4":"2.7779633"},{"1":"Corn","2":"vegetable","3":"86","4":"2.2971619"},{"1":"Sweet Potato","2":"vegetable","3":"86","4":"2.2971619"},{"1":"Onion","2":"vegetable","3":"42","4":"1.1218698"},{"1":"Carrot","2":"vegetable","3":"41","4":"1.0951586"},{"1":"Broccoli","2":"vegetable","3":"34","4":"0.9081803"},{"1":"String Bean","2":"vegetable","3":"31","4":"0.8280467"},{"1":"Bell Pepper","2":"vegetable","3":"26","4":"0.6944908"},{"1":"Cauliflower","2":"vegetable","3":"25","4":"0.6677796"},{"1":"Cabbage","2":"vegetable","3":"24","4":"0.6410684"},{"1":"Mushroom","2":"vegetable","3":"22","4":"0.5876461"},{"1":"Asparagus","2":"vegetable","3":"20","4":"0.5342237"},{"1":"Tomato","2":"vegetable","3":"18","4":"0.4808013"},{"1":"Celery","2":"vegetable","3":"14","4":"0.3739566"},{"1":"Lettuce","2":"vegetable","3":"14","4":"0.3739566"},{"1":"Cucumber","2":"vegetable","3":"12","4":"0.3205342"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p>You will notice, however, that these items have been <code>arrange</code>d <em>within</em> groups.</p>
+<p>If you want to sort the entire data set by the ratio, you will first need to <code>ungroup</code> the data, so that the <code>arrange</code> operation is not applied to the groups:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>food <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(food_group) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">food_group_calories_mean =</span> <span class="fu">mean</span>(calories)) <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">calories_ratio =</span> calories <span class="sc">/</span> food_group_calories_mean) <span class="sc">|&gt;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(item, food_group, calories, calories_ratio) <span class="sc">|&gt;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># new:</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(calories_ratio))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source type="application/json">
+{"columns":[{"label":["item"],"name":[1],"type":["chr"],"align":["left"]},{"label":["food_group"],"name":[2],"type":["chr"],"align":["left"]},{"label":["calories"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["calories_ratio"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Avocado","2":"fruit","3":"160","4":"2.9124005"},{"1":"Potato","2":"vegetable","3":"104","4":"2.7779633"},{"1":"Corn","2":"vegetable","3":"86","4":"2.2971619"},{"1":"Sweet Potato","2":"vegetable","3":"86","4":"2.2971619"},{"1":"Oat","2":"grains","3":"389","4":"1.9867211"},{"1":"Cheese","2":"dairy","3":"350","4":"1.9363762"},{"1":"Banana","2":"fruit","3":"89","4":"1.6200228"},{"1":"Catfish","2":"fish","3":"240","4":"1.4377407"},{"1":"Halibut","2":"fish","3":"239","4":"1.4317501"},{"1":"Scallop","2":"fish","3":"217","4":"1.2999572"},{"1":"Cod","2":"fish","3":"211","4":"1.2640137"},{"1":"Grape","2":"fruit","3":"69","4":"1.2559727"},{"1":"Lamb","2":"meat","3":"292","4":"1.2452026"},{"1":"Beef","2":"meat","3":"288","4":"1.2281450"},{"1":"Sour Cream","2":"dairy","3":"214","4":"1.1839557"},{"1":"Pork","2":"meat","3":"271","4":"1.1556503"},{"1":"Onion","2":"vegetable","3":"42","4":"1.1218698"},{"1":"Kiwi","2":"fruit","3":"61","4":"1.1103527"},{"1":"Carrot","2":"vegetable","3":"41","4":"1.0951586"},{"1":"Clam","2":"fish","3":"180","4":"1.0783055"},{"1":"Swordfish","2":"fish","3":"177","4":"1.0603338"},{"1":"Pear","2":"fruit","3":"58","4":"1.0557452"},{"1":"Salmon","2":"fish","3":"171","4":"1.0243902"},{"1":"Chicken","2":"meat","3":"237","4":"1.0106610"},{"1":"Tangerine","2":"fruit","3":"53","4":"0.9647327"},{"1":"Oyster","2":"fish","3":"160","4":"0.9584938"},{"1":"Apple","2":"fruit","3":"52","4":"0.9465301"},{"1":"Chickpea","2":"grains","3":"180","4":"0.9193054"},{"1":"Tuna","2":"fish","3":"153","4":"0.9165597"},{"1":"Broccoli","2":"vegetable","3":"34","4":"0.9081803"},{"1":"Pineapple","2":"fruit","3":"48","4":"0.8737201"},{"1":"Shrimp","2":"fish","3":"144","4":"0.8626444"},{"1":"Orange","2":"fruit","3":"47","4":"0.8555176"},{"1":"Plum","2":"fruit","3":"46","4":"0.8373151"},{"1":"String Bean","2":"vegetable","3":"31","4":"0.8280467"},{"1":"Penne","2":"grains","3":"157","4":"0.8018386"},{"1":"Turkey","2":"meat","3":"187","4":"0.7974414"},{"1":"Flounder","2":"fish","3":"133","4":"0.7967480"},{"1":"Haddock","2":"fish","3":"128","4":"0.7667950"},{"1":"Quinoa","2":"grains","3":"143","4":"0.7303371"},{"1":"Peach","2":"fruit","3":"39","4":"0.7098976"},{"1":"Bell Pepper","2":"vegetable","3":"26","4":"0.6944908"},{"1":"Cauliflower","2":"vegetable","3":"25","4":"0.6677796"},{"1":"Cabbage","2":"vegetable","3":"24","4":"0.6410684"},{"1":"Cantaloupe","2":"fruit","3":"34","4":"0.6188851"},{"1":"Mushroom","2":"vegetable","3":"22","4":"0.5876461"},{"1":"Grapefruit","2":"fruit","3":"32","4":"0.5824801"},{"1":"Strawberry","2":"fruit","3":"32","4":"0.5824801"},{"1":"Lobster","2":"fish","3":"97","4":"0.5810869"},{"1":"Duck","2":"meat","3":"132","4":"0.5628998"},{"1":"Brown Rice","2":"grains","3":"110","4":"0.5617978"},{"1":"Yogurt","2":"dairy","3":"99","4":"0.5477178"},{"1":"Lime","2":"fruit","3":"30","4":"0.5460751"},{"1":"Asparagus","2":"vegetable","3":"20","4":"0.5342237"},{"1":"Lemon","2":"fruit","3":"29","4":"0.5278726"},{"1":"Crab","2":"fish","3":"87","4":"0.5211810"},{"1":"Tomato","2":"vegetable","3":"18","4":"0.4808013"},{"1":"Celery","2":"vegetable","3":"14","4":"0.3739566"},{"1":"Lettuce","2":"vegetable","3":"14","4":"0.3739566"},{"1":"Milk","2":"dairy","3":"60","4":"0.3319502"},{"1":"Cucumber","2":"vegetable","3":"12","4":"0.3205342"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p>You could follow this kind of pipeline with any number of operations. For example, suppose we only wanted to see those foods that have far fewer calories than average foods in their group. That would be a good use of <code>filter</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>food <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(food_group) <span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">food_group_calories_mean =</span> <span class="fu">mean</span>(calories)) <span class="sc">|&gt;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">calories_ratio =</span> calories <span class="sc">/</span> food_group_calories_mean) <span class="sc">|&gt;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># new:</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(calories_ratio <span class="sc">&lt;=</span> <span class="fl">0.5</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(item, food_group, calories, calories_ratio) <span class="sc">|&gt;</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(calories_ratio))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source type="application/json">
+{"columns":[{"label":["item"],"name":[1],"type":["chr"],"align":["left"]},{"label":["food_group"],"name":[2],"type":["chr"],"align":["left"]},{"label":["calories"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["calories_ratio"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Tomato","2":"vegetable","3":"18","4":"0.4808013"},{"1":"Celery","2":"vegetable","3":"14","4":"0.3739566"},{"1":"Lettuce","2":"vegetable","3":"14","4":"0.3739566"},{"1":"Milk","2":"dairy","3":"60","4":"0.3319502"},{"1":"Cucumber","2":"vegetable","3":"12","4":"0.3205342"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p>We will see many examples of grouped <code>mutate</code> summaries throughout our applications.</p>
 </section>
 <section id="homework-questions" class="level2">
 <h2 class="anchored" data-anchor-id="homework-questions">Homework Questions</h2>
 <p>Your only homework for these notes is to look over the topics on the first exam and come to class with any questions or topics that you would like me to review before the exam.</p>
+</section>
 </section>
 
 </main>

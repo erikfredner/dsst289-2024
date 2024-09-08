@@ -172,6 +172,48 @@ This tells us how many rows are in each group. This can be useful to figure out
 how many items are in each group, or to see if there are any groups that are
 missing data.
 
+### `n_distinct()`
+
+The `n_distinct` function counts the number of unique (distinct) values
+in a column. This is more useful for data sets that contain repeated observations.
+
+For example, let's look at a sample of food pricing data over time:
+
+```{r}
+#| echo: false
+food_prices_longer <- food_prices |>
+  pivot_longer(cols = !"year", names_to = "food", values_to = c("price"))
+
+food_prices_longer |>
+  slice_sample(n = 10) |>
+  arrange(year)
+```
+
+This is a big table, and it's not obvious how many unique types of food are
+included in `food`. We can use `n_distinct` to find out:
+
+```{r}
+food_prices_longer |>
+  summarize(distinct_foods = n_distinct(food))
+```
+
+And we can see what those are with `pull` and `unique`:
+
+```{r}
+food_prices_longer |>
+  pull(food) |>
+  unique()
+```
+
+`n_distinct()` is different from `n()`, which counts the number of observations of
+each value:
+
+```{r}
+food_prices_longer |>
+  group_by(food) |>
+  summarize(n = n())
+```
+
 ### `paste()`
 
 The summary function `paste` collapses all of the values in a character

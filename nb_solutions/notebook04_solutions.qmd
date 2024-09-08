@@ -1,13 +1,15 @@
 ---
 title: "Notebook 04 -- Solutions"
-output:
-  html_document:
-    df_print: paged
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: "`r Sys.Date()`"
+format:
+  html:
+    embed-resources: true
+    link-external-newwindow: true
+    df-print: paged
+    smooth-scroll: true
     toc: true
-    toc_depth: 3
-    toc_float: true
-    number_sections: true
-    highlight: tango
 ---
 
 ## Getting Started
@@ -228,6 +230,7 @@ us |>
   arrange(population) |>
   ggplot(aes(population, fct_inorder(city))) +
   geom_col() +
+  # `population + 3` moves the `text` labels to the right of the bars:
   geom_text(aes(population + 3, fct_inorder(city), label = population), size = 3)
 ```
 You should now notice that the cities are arranged by population. We will talk

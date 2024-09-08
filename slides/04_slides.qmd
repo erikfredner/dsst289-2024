@@ -10,9 +10,60 @@ format:
     footer: "https://fredner.org"
     embed-resources: true
     scrollable: true
-    code-fold: true
-    tables: true
 ---
+
+# Homework
+
+```{r}
+library(tidyverse)
+library(ggrepel)
+library(knitr)
+
+hans <- read_csv("../data/hans_roslin.csv")
+
+hans <- hans |>
+  filter(year == 2007) |>
+  filter(country %in% c(
+    "United States", "France", "Canada", "Ireland",
+    "Netherlands", "Spain", "Portugal"
+  )) |>
+  select(country, continent, life_exp, gdp)
+```
+
+## 1. Filter to include only those countries that have a life expectancy above 80 years.
+
+```{r}
+hans |>
+  filter(life_exp > 80)
+```
+
+## 2. Order the data set from the highest life expectancy to the lowest life expectancy.
+
+```{r}
+hans |>
+  arrange(desc(life_exp))
+```
+
+## 3. Select only those rows that are located in Europe.
+
+```{r}
+hans |>
+  filter(continent == "Europe")
+```
+
+## 4. Create a data set that only has all seven rows of the original data but includes only the features `country` and `gdp`.
+
+```{r}
+hans |>
+  select(country, gdp)
+```
+
+## 5. Create a data set that takes only the first two rows of the starting data.
+
+```{r}
+hans |>
+  slice_head(n = 2)
+```
 
 # Verbs 
 

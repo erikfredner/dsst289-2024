@@ -2,9 +2,12 @@
 title: "Notebook 05"
 output:
   html_document:
-    theme: cosmo
-    highlight: zenburn
-    css: "../css/note-style.css"
+    df_print: paged
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    highlight: tango
 ---
 
 ## Getting Started

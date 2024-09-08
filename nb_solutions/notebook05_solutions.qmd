@@ -1,13 +1,15 @@
 ---
 title: "Notebook 05 -- Solutions"
-output:
-  html_document:
-    df_print: paged
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: "`r Sys.Date()`"
+format:
+  html:
+    embed-resources: true
+    link-external-newwindow: true
+    df-print: paged
+    smooth-scroll: true
     toc: true
-    toc_depth: 3
-    toc_float: true
-    number_sections: true
-    highlight: tango
 ---
 
 ## Getting Started
@@ -133,7 +135,7 @@ us |>
 ```
 
 The population feature in this data set is given in thousands of people. In
-2000 there were approximately 300 million people living in the Unite States.
+2000 there were approximately 300 million people living in the United States.
 Roughly what fraction of people in the year 2000 appear to have lived in one of
 the largest 300 cities according to this plot? **Answer**: It looks like about
 80 million live in these cities, so about 25%.
@@ -164,7 +166,9 @@ us |>
   group_by(year) |>
   arrange(desc(population)) |>
   slice(1:5) |>
-  summarize(cities = paste(city, collapse = "|"))
+  summarize(cities = paste(city, collapse = "|")) |> 
+  # again, just for ease of viewing in the solutions; `print` is not needed:
+  print()
 ```
 
 In the code below, write the code to select one row for each city corresponding

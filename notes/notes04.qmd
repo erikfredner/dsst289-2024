@@ -14,7 +14,6 @@ format:
     toc_float: true
     number_sections: true
     number_depth: 3
-    highlight: tango
 ---
 
 ```{r, include=FALSE, message=FALSE}
@@ -37,7 +36,7 @@ data frame in memory.
 
 There are many verbs in the `dplyr` package, though most are
 a minor variant or specific application of another verb. In this notebook
-we will see only three of them:
+we will see only some of them:
 
 | Verb       | Description                                                    |
 |------------|----------------------------------------------------------------|
@@ -111,8 +110,7 @@ Another way to take a subset of our data is to select rows based on conditions
 about the features in the data set. To do this we use the `filter` function,
 which accepts a statement about features in the data set. Only rows where the
 statements are `TRUE` will be returned. For example, here is how we use the
-`filter` command to select the foods that have more than 150 grams of
-sugar in each serving:
+`filter` command to select the foods that have more than 150 calories in each serving:
 
 ```{r}
 food |>
@@ -120,13 +118,15 @@ food |>
 ```
 
 The output data set has only 20 rows, compared to the 62 in the original data.
-Other comparisons can be done with `<` ("less than"), `>=` ("greater than or equal to") and `<=`. There is also a special
-function called `between` that is often useful. For example, here are the rows
-that have between 2 and 3 grams of total fat:
+Other comparisons can be done with `<` ("less than"), `>=` ("greater than or equal to") and `<=`. 
+
+### `filter(between())`
+
+The function `between` is often useful in combination with `filter`. For example,
+here are the rows that have between 2 and 3 grams of total fat:
 
 ```{r}
 food |>
-  # filter for foods with between 2 and 3 grams of total fat:
   filter(between(total_fat, left = 2, right = 3))
 ```
 
@@ -165,6 +165,8 @@ food |>
 ```
 
 Which results in a reduced data set with only 1 row (avocados).
+
+### Exact matches `==` and `!=`
 
 You can also test whether features are equal using `==`
 (e.g., `food_group == "fruit"`). Or you can test for inequality,
@@ -272,7 +274,8 @@ shorthand notation to inherit aesthetics across layers, like this:
 
 ```{r}
 food |>
-  ggplot(aes(calories, total_fat)) +
+  # note the assignment of our x and y values in the `ggplot` call:
+  ggplot(aes(x = calories, y = total_fat)) +
   geom_point(color = "grey85") +
   geom_point(color = "navy", data = food_meat) +
   geom_text_repel(aes(label = item), color = "navy", data = food_meat)
@@ -337,7 +340,7 @@ food |>
 
 If we give `arrange` one or more feature names,
 it sorts the data by the first feature from smallest to largest
-(or alphabetically for character feature). In the case of ties, the second
+(or alphabetically for character features). In the case of ties, the second
 feature is used if given. More features can be given to further break
 additional ties. Here is an example where we order the data set first by
 `food_group` and then by `calories`:
