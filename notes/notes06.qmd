@@ -147,11 +147,11 @@ food |>
   select(item, food_group, sugar, sugar_level)
 ```
 
-### `TRUE ~ "default"`
+### `TRUE ~ "default"`?
 
 `TRUE ~ "default"` is a catch-all condition that gives any unmatched cases
-the value "default". Since `case_when()` evaluates conditions in order, the
-`TRUE` condition will onlybe reached if none of the other conditions are met.
+the value "default." Since `case_when()` evaluates conditions in order, the
+`TRUE` condition will only be reached if none of the other conditions are met.
 
 ### Why `~` instead of `=`?
 
@@ -160,30 +160,28 @@ returned if the condition is true. It's part of R's formula syntax, where it's
 used to define relationships between variables.
 
 `=` is used in R for assignment or function arguments, while `~` in `case_when()`
-is specifically for pairing a condition with the corresponding output value.
+is specifically for pairing a condition with the corresponding output value if
+that condition is met.
 
 ## `mutate` summaries
 
 All of the summary functions that were introduced in the previous notebook can also
-be applied within the mutate version. Instead of reducing the data to a single
-summary row, summarizing within the mutate verb duplicates the summary statistic
-in each row of the data set. Here is an example of including the average number
+be applied within the mutate version.
+
+However, instead of reducing the data to a single summary row, summarizing
+within the mutate verb duplicates the summary statistic
+**in each row of the data set**. Here is an example including the average number
 of calories across all rows of the data set:
 
 ```{r}
 food |>
-  mutate(calories_mean = mean(calories))
+  mutate(calories_mean = mean(calories)) |> 
+  select(item, food_group, calories, calories_mean)
 ```
 
 As with any call to `mutate`, all of the original features are kept in the output
 and the new feature is added at the end. Using `select`, we can verify that the
 average calories has in fact been added to each row of the table.
-
-```{r}
-food |>
-  mutate(calories_mean = mean(calories)) |>
-  select(item, food_group, calories, calories_mean)
-```
 
 ## `mutate` and `group_by`
 
@@ -220,7 +218,21 @@ that column name by passing `name = "whatever"` argument in `count()`.
 
 ### `max` and `min`
 
-Here is an example of adding the average calories of each food
+`max` and `min` can be used in the same way as `mean` or `sum`:
+
+```{r}
+# choose 50 random numbers between 0 and 100:
+numbers <- runif(50, 0, 100)
+mean(numbers)
+sum(numbers)
+# what was the largest number chosen?
+max(numbers)
+# what was the smallest number chosen?
+min(numbers)
+
+```
+
+This might be useful if we want to add the `max` calories of each food
 group to the data set:
 
 ```{r}
@@ -230,27 +242,28 @@ food |>
   select(item, food_group, calories, food_group_calories_max)
 ```
 
-There is also a `min` function that can be used in the same way.
-
-## `ungroup`ing data
-
-With the group mean above, you could perform subsequent calculations.
+With group values, you could perform subsequent calculations.
 For example, if you wanted to calculate the ratio of an individual food's
-calories to the average calories of its food group, you could do the following:
+calories to the average calories within its food group,you could do
+something like the following:
 
 ```{r}
 food |>
   group_by(food_group) |>
   mutate(food_group_calories_mean = mean(calories)) |>
   mutate(calories_ratio = calories / food_group_calories_mean) |>
-  select(item, food_group, calories, calories_ratio) |>
+  select(item, food_group, calories, food_group_calories_mean, calories_ratio) |>
   arrange(desc(calories_ratio))
 ```
 
-You will notice, however, that these items have been `arrange`d *within* groups.
+You will notice, however, that these items have been `arrange`d **within** groups.
+This might not be what you want!
 
-If you want to sort the entire data set by the ratio, you will first need to `ungroup`
-the data, so that the `arrange` operation is not applied to the groups:
+## `ungroup`ing data
+
+If you want to sort the *entire* data set by the `calories_ratio`, you will
+first need to `ungroup` the data, so that the `arrange` operation is not
+applied to the groups:
 
 ```{r}
 food |>

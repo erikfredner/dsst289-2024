@@ -150,8 +150,8 @@ Meeting No. | Date  | Topic
 10          | 09-30 | Table joins
 11          | 10-02 | Table pivots
 12          | 10-07 | Review 1
-13          | 10-09 | Review 2
-14          | 10-16 | Review 3
+13          | 10-09 | *No class*
+14          | 10-16 | Review 2
 15          | 10-21 | Tidy models
 16          | 10-23 | Exam 2 review
 17          | 10-28 | **Exam 2**

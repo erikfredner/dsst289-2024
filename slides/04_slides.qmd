@@ -228,10 +228,10 @@ starwars |>
 Like `filter`, `arrange` can handle multiple conditions:
 
 ```{r}
-#| code-line-numbers: "2"
+#| code-line-numbers: "2,3"
 starwars |>
   arrange(height, mass) |>
-  filter(between(height, 183, 184), mass > 0) |>
+  filter(height == 183, mass > 0) |>
   select(name, height, mass) |>
   kable()
 ```
@@ -239,7 +239,7 @@ starwars |>
 ## `desc()` sorts in descending order
 
 ```{r}
-#| code-line-numbers: "2"
+#| code-line-numbers: "2,3"
 starwars |>
   arrange(desc(height), desc(mass)) |>
   filter(between(height, 183, 184), mass > 0) |>
@@ -257,7 +257,7 @@ starwars |>
 ```
 
 
-## `fct_inorder()` useful for plotting factors:
+## `fct_infreq()` useful for plotting factors:
 
 ```{r}
 starwars |>

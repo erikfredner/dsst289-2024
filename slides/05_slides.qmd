@@ -43,6 +43,13 @@ hans |>
   summarize(mean_life_exp = mean(life_exp))
 ```
 
+```{r}
+hans |>
+  filter(year == 2007) |>
+  pull(life_exp) |>
+  mean()
+```
+
 ## 2. Compute the average GDP from the year 2007.
 
 ```{r}
@@ -50,6 +57,14 @@ hans |>
   filter(year == 2007) |>
   summarize(mean_gdp = mean(gdp))
 ```
+
+```{r}
+hans |>
+  filter(year == 2007) |>
+  pull(gdp) |>
+  mean()
+```
+
 
 ## 3. Compute the average life expectancy of each continent in the year 2002.
 
@@ -75,6 +90,14 @@ hans |>
 hans |>
   group_by(continent) |>
   summarize(n_countries = n_distinct(country))
+```
+
+```{r}
+hans |>
+  # this works because there's one observation per country per year:
+  filter(year == 2007) |>
+  group_by(continent) |>
+  summarize(n_countries = n())
 ```
 
 # `summarize()`
@@ -116,6 +139,8 @@ starwars |>
 ```
 
 ## How to find `na` values?
+
+This is a common real world problem.
 
 ```{r}
 #| code-fold: false
@@ -159,6 +184,7 @@ starwars |>
 ## `group_by` multiple variables
 
 ```{r}
+#| code-line-numbers: "2-3"
 starwars |>
   group_by(sex, species) |>
   summarize(mean_height = mean(height, na.rm = TRUE)) |>
@@ -171,7 +197,7 @@ starwars |>
 ## `n()` returns how many rows are in each group
 
 ```{r}
-#| code-line-numbers: "3"
+#| code-line-numbers: "2-3"
 starwars |>
   group_by(species) |>
   summarize(n = n()) |>
@@ -186,7 +212,7 @@ starwars |>
 starwars |>
   group_by(species) |>
   # you can use any string as a separator:
-  summarize(names = paste(name, collapse = "🌵🌵🌵️"))
+  summarize(names = paste(name, collapse = "️👽🛸🚀"))
 ```
 
 # `groupby() |> summarize() |> ggplot()`
@@ -210,23 +236,24 @@ starwars |>
   geom_text_repel(aes(label = sex), size = 5)
 ```
 
-## Why the outlier(s)?
+## Who are the outliers?
 
 ```{r}
 #| code-fold: false
+#| code-line-numbers: "2"
 starwars |>
-  filter(sex == "hermaphroditic") |>
+  filter(sex %in% c("hermaphroditic", "none")) |>
   select(name, height, mass, sex) |>
   kable()
 ```
 
-## Notes of caution for summarizing groups
+## When summarizing groups
 
-- Make sure that the groups are comparable
 - Be aware of missing data
 - Be aware of outliers
-- Be aware of the number of items in each group
+- Be aware of how many items are in each group
   - The Jabba the Hutt problem
+- Make sure that groups are comparable
 
 # Summary
 

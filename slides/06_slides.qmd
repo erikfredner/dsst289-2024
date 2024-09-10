@@ -10,230 +10,215 @@ format:
     footer: "https://fredner.org"
     embed-resources: true
     scrollable: true
+editor_options: 
+  chunk_output_type: inline
 ---
 
 # Overview
 
-- *Animal Crossing* 🐟 data
-- `mutate()`
-- `if_else()`
-- `mutate` summaries
-- exam review
+-   *Animal Crossing* 🐟 data
+-   `mutate()`
+-   `if_else()`
+-   `case_when()`
+-   exam review
 
+# 🐟 = 💰
 
+What's the best strategy to get rich fishing?
 
-# Homework
+![Fishing in *Animal Crossing*](images/fishing.jpg)
+
+## *Animal Crossing* fish data
 
 ```{r}
+#| echo: false
+
 library(tidyverse)
-library(ggrepel)
 library(knitr)
+library(ggrepel)
+library(clipr)
 
-hans <- read_csv("../data/hans_roslin.csv")
-hans |>
-  select(country, continent, year, life_exp, gdp, pop) |> 
-  # get a random sample of rows:
-  slice_sample(n = 2) |>
+fish <- read_csv(file.path("..", "data", "acnh_fish.csv"))
+
+# separate the spawn_rates
+fish <- fish |>
+  separate(spawn_rates, into = c("spawn_low", "spawn_high"), sep = "–", fill = "right") |>
+  mutate(spawn_high = if_else(is.na(spawn_high), spawn_low, spawn_high)) |>
+  mutate(
+    spawn_low = as.numeric(spawn_low),
+    spawn_high = as.numeric(spawn_high)
+  ) |>
+  # separate location
+  separate(location, into = c("location", "location_condition"), sep = " \\(", fill = "right") |>
+  # remove trailing )
+  mutate(location_condition = gsub("\\)", "", location_condition))
+
+fish |>
+  select(name, value, location, spawn_low, spawn_high) |>
+  slice_sample(n = 5) |>
   kable()
 ```
 
-## 1. Compute the average life expectancy from the year 2007.
+# `mutate`ing spawn rates
+
+-   Spawn rates tell us how likely we are to see a fish.
+-   Higher values are more common than low values.
 
 ```{r}
-hans |>
-  filter(year == 2007) |>
-  summarize(mean_life_exp = mean(life_exp))
+#| output-location: fragment
+#| code-line-numbers: "2|3|4"
+fish |>
+  mutate(spawn_rate = (spawn_low + spawn_high) / 2) |>
+  select(name, spawn_low, spawn_high, spawn_rate) |>
+  arrange(desc(spawn_rate)) |>
+  slice_head(n = 5)
 ```
 
-## 2. Compute the average GDP from the year 2007.
+# `mutate` with `if_else`
 
 ```{r}
-hans |>
-  filter(year == 2007) |>
-  summarize(mean_gdp = mean(gdp))
+#| output-location: fragment
+#| code-line-numbers: "5"
+fish |>
+  mutate(
+    spawn_rate = (spawn_low + spawn_high) / 2,
+    # new:
+    spawn_freq = if_else(spawn_rate > 10, "common", "rare")
+  ) |>
+  select(name, spawn_rate, spawn_freq) |>
+  arrange(desc(spawn_rate)) |>
+  slice_sample(n = 5)
 ```
 
-## 3. Compute the average life expectancy of each continent in the year 2002.
+## Is common vs. rare enough?
 
 ```{r}
-hans |>
-  filter(year == 2002) |>
-  group_by(continent) |>
-  summarize(mean_life_exp = mean(life_exp))
+#| output-location: slide
+#| code-line-numbers: "2-5"
+fish |>
+  mutate(
+    spawn_rate = (spawn_low + spawn_high) / 2,
+    spawn_freq = if_else(spawn_rate > 10, "common", "rare")
+  ) |>
+  ggplot(aes(x = spawn_rate, y = value, color = spawn_freq)) +
+  geom_point() +
+  geom_text_repel(aes(label = name))
 ```
 
-## 4. Compute the total number of people living in each continent in the year 1957.
+# `case_when` for multiple categories
 
 ```{r}
-hans |>
-  filter(year == 1957) |>
-  group_by(continent) |>
-  summarize(total_pop = sum(pop))
-```
-
-## 5. Compute the total number of countries in each continent.
-
-```{r}
-hans |>
-  group_by(continent) |>
-  summarize(n_countries = n_distinct(country))
-```
-
-# `summarize()`
-
-`summarize()` reduces elements of a data frame with one of several summary
-functions. It is a `dplyr` *verb*.
-
-## *Star Wars* data
-
-```{r}
-starwars <- read_csv(file.path("..", "data", "starwars.csv"))
-
-starwars |>
-  select(name, height, mass, sex) |>
-  slice_head(n = 5) |>
-  # make the tables look nice on the slides:
-  kable()
-```
-
-## `summarize`-ing height
-
-```{r}
-#| code-fold: false
-starwars |>
-  summarize(mean_height = mean(height, na.rm = TRUE))
-```
-
-## Why `na.rm = TRUE`?
-
-The `na.rm` argument is used to remove `NA` values from the calculation.
-It would be inaccurate to assume that these should be `0` (or any other value).
-If `na.rm = FALSE`, the result will be not available:
-
-```{r}
-#| code-fold: false
-
-starwars |> 
-  summarize(mean_height = mean(height, na.rm = FALSE))
-```
-
-## How to find `na` values?
-
-```{r}
-#| code-fold: false
-#| code-line-numbers: "3,4"
-# Which starwars characters have missing heights?
-starwars |>
-  # is.na() returns TRUE if the value is NA:
-  filter(is.na(height)) |>
-  select(name, height) |>
-  kable()
-```
-
-## `summarize`-ing height and mass
-
-```{r}
-#| code-fold: false
-starwars |>
-  summarize(
-    mean_height = mean(height, na.rm = TRUE),
-    mean_mass = mean(mass, na.rm = TRUE)
+#| code-line-numbers: "4-10"
+fish <- fish |>
+  mutate(
+    spawn_rate = (spawn_low + spawn_high) / 2,
+    spawn_freq = case_when(
+      spawn_rate > 15 ~ "very common",
+      spawn_rate > 10 ~ "common",
+      spawn_rate > 5 ~ "uncommon",
+      spawn_rate > 2 ~ "rare",
+      spawn_rate <= 2 ~ "very rare",
+      TRUE ~ "default"
+    )
   )
 ```
 
-# `group_by`
-
-- `summarize`-ing single columns is not very interesting.
-- `summarize()` gets interesting when we combine it with `group_by()`.
-
-## `height` by `sex`
+## What that looks like
 
 ```{r}
-#| code-line-numbers: "2-4"
-starwars |>
-  group_by(sex) |>
-  # summarize within groups:
-  summarize(mean_height = mean(height, na.rm = TRUE)) |>
-  arrange(mean_height) |>
+fish |>
+  arrange(desc(spawn_rate)) |>
+  select(name, spawn_rate, spawn_freq) |>
+  slice_sample(n = 5) |>
   kable()
 ```
 
-## `group_by` multiple variables
+# Valuable *and* common?
 
 ```{r}
-starwars |>
-  group_by(sex, species) |>
-  summarize(mean_height = mean(height, na.rm = TRUE)) |>
-  arrange(mean_height) |>
-  kable()
-```
+#| output-location: slide
+#| code-line-numbers: "2"
 
-# additional `group` operations
-
-## `n()` gives group sizes
-
-```{r}
-#| code-line-numbers: "3"
-starwars |>
-  group_by(species) |>
-  summarize(n = n()) |>
-  arrange(desc(n)) |>
-  kable()
-```
-
-## `paste()` collapses values in character colums to strings
-
-```{r}
-#| code-line-numbers: "3,4"
-starwars |>
-  group_by(species) |>
-  # you can use any string as a separator:
-  summarize(names = paste(name, collapse = "🌵🌵🌵️"))
-```
-
-# `groupby() |> summarize() |> ggplot()`
-
-## `height` and `mass` grouped by `sex`
-
-```{r}
-#| echo: true
-#| output-location: fragment
-#| code-line-numbers: "2|3|4-8|9|10|11"
-starwars |>
-  filter(!is.na(sex)) |> 
-  group_by(sex) |>
-  summarize(
-    mean_height = mean(height, na.rm = TRUE),
-    mean_mass = mean(mass, na.rm = TRUE),
-    n = n()
-  ) |>
-  ggplot(aes(x = mean_height, y = mean_mass, size = n)) +
+fish |>
+  ggplot(aes(x = spawn_rate, y = value, color = spawn_freq)) +
   geom_point() +
-  geom_text_repel(aes(label = sex), size = 5)
+  geom_text_repel(aes(label = name)) +
+  # draw line from origin to max
+  geom_segment(aes(x = 0,
+                   y = 0,
+                   xend = max(spawn_rate),
+                   yend = max(value)),
+               linetype = "dashed",
+               color = "gray",
+               alpha = 0.1)
 ```
 
-## Why the outlier(s)?
+# Where should we fish?
 
 ```{r}
-#| code-fold: false
-starwars |>
-  filter(sex == "hermaphroditic") |>
-  select(name, height, mass, sex) |>
-  kable()
+#| output-location: slide
+#| code-line-numbers: "2-3|4-5|6-8|9-15"
+fish |>
+  # get rid of common or very common fish:
+  filter(!spawn_freq %in% c("common", "very common")) |>
+  # only keep fish above median value:
+  filter(value > median(value)) |>
+  ggplot(aes(x = spawn_rate, y = value, color = location)) +
+  geom_point() +
+  geom_text_repel(aes(label = name)) +
+  geom_segment(aes(x = 0,
+                   y = 0,
+                   xend = max(spawn_rate),
+                   yend = max(value)),
+               linetype = "dashed",
+               color = "gray",
+               alpha = 0.1)
 ```
 
-## Notes of caution for summarizing groups
+## From spawn rate to spawn probability
 
-- Make sure that the groups are comparable
-- Be aware of missing data
-- Be aware of outliers
-- Be aware of the number of items in each group
-  - The Jabba the Hutt problem
+```{r}
+#| code-line-numbers: "2|3|4"
+fish |>
+  group_by(location) |>
+  mutate(spawn_prob = spawn_rate / sum(spawn_rate)) |>
+  ungroup() |>
+  select(name, spawn_rate, location, spawn_prob) |>
+  slice_sample(n = 5)
+```
 
-# Summary
+## Sneak preview: simulation
 
-- Use `summarize()` to compute summary statistics.
-- Combine `summarize()` with `group_by()` to perform group-wise summaries.
-- Beware missing data! `na`, `None`, etc.
-  - One way to handle missing data for grouping operations: `na.rm = TRUE`
-- Visualize group summaries with `ggplot2`
+```{r}
+#| echo: false
+
+simulate_fishing <- function(sim_number) {
+  fish |> 
+    group_by(location) |> 
+    mutate(spawn_prob = spawn_rate / sum(spawn_rate)) |> 
+    ungroup() |> 
+    group_by(location) |> 
+    reframe(
+      caught_fish = sample(name, size = 100, prob = spawn_prob, replace = TRUE),
+      value_per_fish = value[match(caught_fish, name)],
+      fish_number = 1:100
+    ) |> 
+    group_by(location) |> 
+    mutate(cumulative_value = cumsum(value_per_fish)) |> 
+    ungroup() |> 
+    ggplot(aes(x = fish_number, y = cumulative_value, color = location)) +
+    geom_line(size = 1.2) +
+    labs(
+      title = paste("Cumulative Money Made per Fish Caught - Simulation", sim_number),
+      x = "Number of Fish Caught",
+      y = "Cumulative Value",
+      color = "Location"
+    ) +
+    theme_minimal()
+}
+
+walk(1:25, ~print(simulate_fishing(.x)))
+```
+
+# Exam review
+

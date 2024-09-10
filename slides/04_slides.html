@@ -444,7 +444,7 @@
   <meta name="generator" content="quarto-1.5.57">
 
   <meta name="author" content="Erik Fredner">
-  <meta name="dcterms.date" content="2024-09-05">
+  <meta name="dcterms.date" content="2024-09-09">
   <title>Organizing Star Wars data</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1221,7 +1221,7 @@ Erik Fredner
 </div>
 </div>
 
-  <p class="date">2024-09-05</p>
+  <p class="date">2024-09-09</p>
 </section>
 <section>
 <section id="homework" class="title-slide slide level1 center">
@@ -2375,9 +2375,9 @@ Erik Fredner
 <h2><code>arrange</code> multiple conditions</h2>
 <p>Like <code>filter</code>, <code>arrange</code> can handle multiple conditions:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22" data-code-line-numbers="2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href></a>starwars <span class="sc">|&gt;</span></span>
+<div class="sourceCode cell-code" id="cb22" data-code-line-numbers="2,3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href></a>starwars <span class="sc">|&gt;</span></span>
 <span id="cb22-2"><a href></a>  <span class="fu">arrange</span>(height, mass) <span class="sc">|&gt;</span></span>
-<span id="cb22-3"><a href></a>  <span class="fu">filter</span>(<span class="fu">between</span>(height, <span class="dv">183</span>, <span class="dv">184</span>), mass <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb22-3"><a href></a>  <span class="fu">filter</span>(height <span class="sc">==</span> <span class="dv">183</span>, mass <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
 <span id="cb22-4"><a href></a>  <span class="fu">select</span>(name, height, mass) <span class="sc">|&gt;</span></span>
 <span id="cb22-5"><a href></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -2410,11 +2410,6 @@ Erik Fredner
 <td style="text-align: right;">183</td>
 <td style="text-align: right;">84.0</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">Adi Gallia</td>
-<td style="text-align: right;">184</td>
-<td style="text-align: right;">50.0</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -2423,7 +2418,7 @@ Erik Fredner
 <section id="desc-sorts-in-descending-order" class="slide level2">
 <h2><code>desc()</code> sorts in descending order</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23" data-code-line-numbers="2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href></a>starwars <span class="sc">|&gt;</span></span>
+<div class="sourceCode cell-code" id="cb23" data-code-line-numbers="2,3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href></a>starwars <span class="sc">|&gt;</span></span>
 <span id="cb23-2"><a href></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(height), <span class="fu">desc</span>(mass)) <span class="sc">|&gt;</span></span>
 <span id="cb23-3"><a href></a>  <span class="fu">filter</span>(<span class="fu">between</span>(height, <span class="dv">183</span>, <span class="dv">184</span>), mass <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
 <span id="cb23-4"><a href></a>  <span class="fu">select</span>(name, height, mass) <span class="sc">|&gt;</span></span>
@@ -2536,8 +2531,8 @@ Erik Fredner
 </div>
 </div>
 </section>
-<section id="fct_inorder-useful-for-plotting-factors" class="slide level2">
-<h2><code>fct_inorder()</code> useful for plotting factors:</h2>
+<section id="fct_infreq-useful-for-plotting-factors" class="slide level2">
+<h2><code>fct_infreq()</code> useful for plotting factors:</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href></a>starwars <span class="sc">|&gt;</span></span>
 <span id="cb25-2"><a href></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
