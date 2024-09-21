@@ -1,0 +1,74 @@
+---
+title: "Data Feminism"
+subtitle: "DSST 289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+date-format: long
+echo: true
+format:
+  revealjs:
+    logo: "images/by-sa.png"
+    footer: "https://fredner.org"
+    embed-resources: true
+    scrollable: true
+editor_options:
+  markdown:
+    wrap: 72
+  chunk_output_type: inline
+---
+
+# Opening discussion
+
+- How do you see the relationship between data and power in your everyday life?
+- Do you believe that it is possible to use data to change that balance of power?
+  - Why or why not?
+
+# Big questions
+
+- How do power structures influence the creation and analysis of data?
+- Can data produced under unjust conditions be used to create a more just and equitable society?
+
+# What is data feminism?
+
+:::{.r-fit-text}
+> The starting point for data  feminism is something that goes mostly unacknowledged in data science: power is not  distributed equally in the world. Those who wield power are disproportionately elite,  straight, white, able-bodied, cisgender men from the Global North. The work of data  feminism is first to tune into how standard practices in data science serve to reinforce  these existing inequalities and second to use data science to challenge and change the distribution of power. Underlying data feminism is a belief in and commitment to  *co-liberation*: the idea that oppressive systems of power harm all of us, that they undermine the quality and validity of our work, and that they hinder us from creating true  and lasting social impact with data science.
+
+Catherine D’Ignazio and Lauren F. Klein. *Data Feminism*. Strong Ideas Series. Cambridge, Massachusetts: The MIT Press, 2020, 8-9.
+:::
+
+## Principles of data feminism
+
+1. Use data to create more just, equitable, and livable futures
+2. Recognize that data is never neutral or objective
+3. Make labor visible
+
+
+# "Datasheets for Datasets"
+
+:::{.r-fit-text}
+> Despite the importance of data to machine learning, there is currently no
+> standardized process for documenting machine learning datasets. To address
+> this gap, we propose datasheets for datasets... [W]e propose that every
+> dataset be accompanied with a datasheet that documents its motivation,
+> composition, collection process, recommended uses, and so on. Datasheets for
+> datasets have the potential to increase transparency and accountability within
+> the machine learning community, mitigate unwanted societal biases in machine
+> learning models, facilitate greater reproducibility of machine learning
+> results, and help researchers and practitioners to select more appropriate
+> datasets for their chosen tasks.
+
+Timnit Gebru, Jamie Morgenstern, Briana Vecchione, Jennifer Wortman Vaughan, Hanna Wallach, Hal Daumé Iii, and Kate Crawford. “Datasheets for Datasets.” *Communications of the ACM* 64, no. 12 (December 2021): 86–92. <https://doi.org/10.1145/3458723>.
+:::
+
+# Feminist Datasheets
+
+## Eight ideas
+
+- Metadata: Title, publication date, version, citation, contact information.
+- Motivation: Reasons for creating the dataset and funding sources.
+- Composition: Data dictionary with tables, units of observation, and feature descriptions.
+- Narrative: Description of data collection methods and design choices.
+- Distribution: Information on data format, licensing, access, and modifications.
+- Attributions: List of all contributors to the dataset.
+- References: Related resources and similar datasets.
+- Notes: Additional information, such as dataset updates.

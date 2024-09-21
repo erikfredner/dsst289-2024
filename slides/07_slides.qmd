@@ -1,0 +1,95 @@
+---
+title: "Creating data ourselves"
+subtitle: "DSST 289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+date-format: long
+echo: true
+format:
+  revealjs:
+    logo: "images/by-sa.png"
+    footer: "https://fredner.org"
+    embed-resources: true
+    scrollable: true
+    r-fit-text: true
+editor_options:
+  markdown:
+    wrap: 72
+  chunk_output_type: inline
+---
+
+# Overview
+
+- Exam follow-up
+- DIY data
+- 🎥 Movies data set
+
+# Exam follow-up
+
+- Goal is to complete grading by Monday the 30th
+- We will review the answers for the take-home and in-class part once grades are out
+
+## Survey
+
+Please fill out the following survey to help me understand how you are feeling after the the exam. This will also help me plan what we need to review.
+
+**Survey is anonymous!**
+
+<https://richmond.ca1.qualtrics.com/jfe/form/SV_8J8eGwk8zA7vz0y>
+
+(Also available as a link on Blackboard in the Course Documents folder for today.)
+
+# DIY Data
+
+- So far we have been using pre-made data
+- Often, you need to create (or update) your own data
+  - It's possible to do this badly!
+- We'll practice some good habits
+
+## Tidy data principles
+
+- Rows contain observations
+- Columns contain variables
+  - Columns all have the same data type (character, numeric, etc.)
+- Cells contains values
+  - Each cell contains *only one* piece of information
+- See the ["Data tidying"](https://r4ds.hadley.nz/data-tidy.html) chapter
+
+## Making tables
+
+- Each table should contain comparable observations
+- When observing different things (even if they're closely related), you probably need different tables
+- Each table should begin from cell A1, have a header row, and be rectangular
+
+## Explicitness
+
+- Choices made in data collection should be explicit and documented
+- Data dictionaries describe your choices and assumptions
+- Leaving decisions implicit will harm your future self and your analyses
+
+## Bad example: color for meaning
+
+:::{.callout-warning}
+Using color to convey meaning is bad because it is **not** explicit
+:::
+
+![Example of why color for meaning is bad (`food_group`)](images/color-sheet.png)
+
+## Good example: explicitness and consistency with data validation
+
+![Example of data validation in Excel](images/validation-1.png)
+
+## Practice: 🎥 Movies data
+
+- We will create a data set about movies to practice
+- The link is in the Blackboard folder for today and [here](https://docs.google.com/spreadsheets/d/189QVmv5_2raf_ii-49UKnud4n3ITPmRcKOdHZzNs0G8/edit?usp=sharing)
+
+## Review
+
+1. Tidy data
+2. When to make tables
+3. How to make tables (Microsoft Excel or Google Sheets)
+4. Data dictionaries
+5. Data validation
+6. Conditional formatting
+7. Exporting to `.csv` for preservation and analysis

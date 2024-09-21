@@ -124,7 +124,8 @@ smallest. The labels are short so put the categorical variable on the x-axis.
 ```{r question-06}
 cities |>
   count(koppen_code) |>
-  ggplot(aes(fct_reorder(koppen_code, -n), n)) +
+  arrange(desc(n)) |> 
+  ggplot(aes(x = fct_inorder(koppen_code), y = n)) +
   geom_col()
 ```
 
@@ -133,7 +134,7 @@ In the code below, create a new feature called `hemisphere` which is equal to
 Pipe the data to a plot and color the cities by their hemisphere to verify that
 your code is correct.
 
-```{r question-07}
+```{r question-07a}
 cities |>
   mutate(hemisphere = if_else(lat > 0, "North", "South")) |>
   ggplot(aes(lon, lat)) +
@@ -147,15 +148,45 @@ defining a default value and them fill in the quadrants with four uses of the
 `if_else` function. Note: use the `&` operator to combine two conditions
 (i.e., `(lat > 0) & (lon > 0)`).
 
-As above, pipe the data into a plot colored by quadrant to verify your work.
-
-```{r question-08}
+```{r question-07b}
 cities |>
   mutate(quadrant = "default") |>
   mutate(quadrant = if_else((lat > 0) & (lon > 0), "NE", quadrant)) |>
   mutate(quadrant = if_else((lat > 0) & (lon < 0), "NW", quadrant)) |>
   mutate(quadrant = if_else((lat < 0) & (lon > 0), "SE", quadrant)) |>
-  mutate(quadrant = if_else((lat < 0) & (lon < 0), "SW", quadrant)) |>
+  mutate(quadrant = if_else((lat < 0) & (lon < 0), "SW", quadrant)) |> 
+  select(country, quadrant)
+```
+
+Now, try rewriting the code above to use the `case_when` function instead of
+multiple `if_else` statements.
+
+```{r question-07c}
+cities |>
+  mutate(
+    quadrant = case_when(
+      (lat > 0) & (lon > 0) ~ "NE",
+      (lat > 0) & (lon < 0) ~ "NW",
+      (lat < 0) & (lon > 0) ~ "SE",
+      (lat < 0) & (lon < 0) ~ "SW",
+      TRUE ~ "default"
+    )
+  )
+```
+
+Now, pipe the data into a plot colored by quadrant to verify your work.
+
+```{r question-08}
+cities |>
+  mutate(
+    quadrant = case_when(
+      (lat > 0) & (lon > 0) ~ "NE",
+      (lat > 0) & (lon < 0) ~ "NW",
+      (lat < 0) & (lon > 0) ~ "SE",
+      (lat < 0) & (lon < 0) ~ "SW",
+      TRUE ~ "default"
+    )
+  ) |>
   ggplot(aes(lon, lat)) +
   geom_point(aes(color = quadrant))
 ```

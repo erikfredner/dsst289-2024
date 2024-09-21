@@ -1,0 +1,203 @@
+---
+title: "Notebook 07"
+subtitle: "DSST289: Introduction to Data Science"
+date: "`r Sys.Date()`"
+format:
+  html:
+    embed-resources: true
+    link-external-newwindow: true
+    df-print: paged
+    smooth-scroll: true
+    toc: true
+editor_options:
+  markdown:
+    wrap: 72
+  chunk_output_type: inline
+---
+
+
+## Getting Started
+
+Before running this notebook, select **Session > Restart R and Clear Output** in
+the menu above to start a new R session. This will clear any old data sets and
+give us a blank slate to start with.
+
+After starting a new session, run the following code chunk to load the
+libraries and data that we will be working with today.
+
+```{r, include=FALSE, message=FALSE}
+library(tidyverse)
+library(ggrepel)
+
+if (!require(ggthemes)) {
+  install.packages("ggthemes")
+  library(ggthemes)
+} else {
+  library(ggthemes)
+}
+```
+
+I have set the options `include=FALSE` and `message=FALSE` to avoid cluttering
+the solutions with all the output from this code.
+
+## Practice
+
+### DIY movie data
+
+For this notebook, we will be creating a dataset, reading it into R, and
+producing a couple of different data visualizations.
+
+We will create a dataset as a class describing movies that we have seen recently.
+Each student will be tasked with creating **five** rows of data. We will record data in the Google Sheets file linked to on Blackboard and [here](https://docs.google.com/spreadsheets/d/189QVmv5_2raf_ii-49UKnud4n3ITPmRcKOdHZzNs0G8/edit?usp=sharing).
+
+### Data collection process
+
+It is a good idea to collect data in a structured (and, ideally, reproducible) way.
+In the Google Sheet above, we're going to collect the data in the columns
+as defined in the `dictionary` tab.
+Categorical variables (like genres) will be filled in using 
+values from the `validation` tab.
+
+The principle of selection for our observations is as follows:
+
+Everyone will enter data for **five movies you remember seeing**. This could be
+a movie you saw last night, or it could be a memorable experience in childhood.
+Think of five memorable movie-watching experiences, and collect data about those
+movies.
+
+Most information about our memorable movies will come directly from [IMDB](https://www.imdb.com/), but some will also capture our class's tastes and preferences.
+
+## `read_csv` movie data
+
+Once you are finished with your entries, save the current version of the data set as a `.csv`.
+
+In Google Sheets, do this by going to **File > Download > Comma Separated Values (.csv)**
+
+This should download a file called `movies - data.csv` to your computer. The
+general pattern for Google Sheets is `filename - sheet.csv`, where `filename` is the name of the workbook
+in Google Sheets, and `sheet` is the name of the sheet that you *are viewing*
+when you download the `.csv`
+
+Move that file to your `DSST289/data` directory.
+
+Then, read it into R with the following block of code:
+
+```{r, message=FALSE}
+movies <- read_csv("../data/movies - data.csv")
+
+movies |>
+  arrange(year) |>
+  select(title, year, imdb_rating)
+```
+
+Then, produce a scatterplot below with the budget on the x-axis, gross worldwide
+earnings on the y-axis, points colored by the year of release, and the size of
+the points corresponding to contributors' ratings. Use a text repel layer to
+label the movies by their title. Try using `scale_color_viridis_b()` to color
+the points in **bins** (hence `_b`). If you think it is needed, you may also
+include logarithmic scales for the x- and y-axes
+
+```{r, warning=FALSE, q1}
+
+```
+
+### `mutate` review
+
+Let's use the data about the length of our films to create a new variable that
+describes the **total** length in minutes. This is the kind of thing `mutate` is
+great for:
+
+```{r, q2}
+
+```
+
+Now, let's see if there appears to be any relationship between budget and length.
+Plot `budget` on the x-axis and `total_minutes` on y. As before, color points by
+`year`. Label the films and use viridis.
+
+```{r, q3}
+
+```
+
+
+### Class rating vs. IMDB rating
+
+Let's compare the ratings that we have given to the movies with IMDB ratings for
+the movies.
+
+First, since there are probably going to be some overlapping movies, we
+might want to calculate the `mean` of our reviews for each movie.
+We also need the IMDB rating in the resulting table.
+
+We can group our results by title, and summarize the `contributor_rating`s.
+All of the IMDB ratings *should* be the same, so we can use the `first()`
+summary function, which will take the first value in a column.^[If we are not certain
+that our data is perfect, this may not be the best choice! It would be smarter
+to check and see that all values in the `imdb_rating` column are the same before
+taking the `first()`.]
+
+We can also size the points based on the ratio of the `mean_class_rating` to the
+`imdb_rating`. If the class gave the film a higher review than IMDB, the value will be
+greater than 1. If the class gave the film a lower review than IMDB, the value will be
+less than 1.
+
+```{r, q4}
+
+```
+
+
+### Labels and Themes
+
+For the last few questions, let's finish a few loose ends about how to make
+data visualizations in R. The function `labs()` is an important element that
+can be added to any ggplot graphic. Inside the `labs()` function, you can
+set aesthetics from the plot equal to a string to change the corresponding
+label in the plot. For example, adding `labs(x = "HELLO!")` will change the
+label of the x-axis to the string "HELLO!" In the code below, take the
+previous code from above and add an appropriate label to the x-axis.
+
+```{r, q5}
+
+```
+
+Now, copy the code above and in the next block add appropriate labels for
+the y-axis, the color aesthetic, and the size aesthetic.
+
+```{r, q6}
+
+```
+
+There are three special additional elements that we can set inside of 
+`labs()` called `title` (the main title of the plot), `subtitle`,
+and `caption` (the description at the bottom of the plot). Take the
+code above and add a title, subtitle, and caption.
+
+```{r, q7}
+
+```
+
+As a final step, we can add another element called a theme to change
+the additional visual elements of the plot, such as what fonts are 
+used in the labels, and what colors are used in the interior parts
+of the graphic. The default that I have set for you in class is
+called `theme_minimal()`. It's great for a first-pass of some graphics.
+
+In the plot below, copy your graphic from above and add one final
+element called `theme_tufte()`. This theme is named after [Edward Tufte](https://en.wikipedia.org/wiki/Edward_Tufte), who has been highly influential
+in data visualization. Among the many differences between his style and
+what we have seen so far, Tufte uses serif rather than sans-serif fonts
+in his graphics. We can change the font `family` used by default (Helvetica)
+to match this style with Times New Roman in `geom_text_repel()`.
+We can do the same by setting the `base_family` argument in `theme_tufte()` to
+`"Times New Roman"`.
+
+```{r, q8}
+
+```
+
+I like this theme a lot for creating graphics for publication because 
+it is very clean and avoids using extra ink that I can make better use
+of with manual annotations. There are other themes that you can read about in 
+the R documentation to change the way a `ggplot` object looks.
+Several other R packages also provide additional
+themes ready to use out of the box. 

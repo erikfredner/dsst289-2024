@@ -14,11 +14,13 @@ format:
 
 # Overview
 
-- Homework
-- Summarizing data with `summarize()`
-- Grouping data with `group_by()`
-- Handling missing values
-- Visualizing summaries with `ggplot2`
+-   Homework
+-   🧶Knitting
+-   Exam overview
+-   Summarizing data with `summarize()`
+-   Grouping data with `group_by()`
+-   Handling missing values
+-   Visualizing summaries with `ggplot2`
 
 # Homework
 
@@ -65,7 +67,6 @@ hans |>
   mean()
 ```
 
-
 ## 3. Compute the average life expectancy of each continent in the year 2002.
 
 ```{r}
@@ -84,7 +85,33 @@ hans |>
   summarize(total_pop = sum(pop))
 ```
 
-## 5. Compute the total number of countries in each continent.
+## 5. Compute the total number of countries in each continent
+
+::: callout-warning
+This is wrong! (But the way it's wrong is instructive.)
+:::
+
+```{r}
+hans |>
+  group_by(continent) |>
+  summarize(n_countries = n())
+```
+
+Why is this wrong? Because we have many repeated observations of both continent and country. For example:
+
+```{r}
+hans |> 
+  group_by(continent) |> 
+  filter(country == "Cuba") |> 
+  select(continent, country, year) |> 
+  slice_head(n = 5)
+```
+
+## 5. Compute the total number of countries in each continent
+
+::: callout-note
+These are all correct.
+:::
 
 ```{r}
 hans |>
@@ -93,17 +120,126 @@ hans |>
 ```
 
 ```{r}
+hans |> 
+  distinct(continent, country) |> 
+  count(continent)
+```
+
+```{r}
+hans |> 
+  distinct(continent, country) |>
+  group_by(continent) |> 
+  summarize(n_countries = n())
+```
+
+```{r}
 hans |>
-  # this works because there's one observation per country per year:
+  # this is hacky but works
+  # because there's one observation per country per year:
   filter(year == 2007) |>
   group_by(continent) |>
   summarize(n_countries = n())
 ```
 
+# 🧶Knitting
+
+-   `.Rmd` files can produce pretty `.html` documents.
+-   These documents can be viewed in your web browser.
+- That makes them ideal for sharing.
+
+## How to knit
+
+1.  Open your notebook from last class: `notebook04.Rmd`
+2.  Click the `Knit` button in RStudio:
+
+![Knit button](images/knit_button.png)
+
+## Where knitted documents go
+
+Knitted documents appear as `.html` files in the same directory as the `.Rmd` file:
+
+![Knit output](images/knit_output.png)
+
+## Viewing your knitted documents
+
+Click on the `.html` file, and select "view in web browser:"
+
+![View knitted files in browser](images/knit_browser.png)
+
+## Practice
+
+1.  Open your `.Rmd` notebook from last class.
+2.  Knit it.
+3.  View the `.html` file in your browser.
+4.  If you have trouble, let me know!
+
+## Why knit?
+
+-   You will need to knit your exams.
+-   `.html` files are easy to share.
+    -   They combine code, data, and outputs into a single document.
+
+# Exam overview
+
+-   Two parts:
+    -   Take-home on a computer with open notes
+    -   In-class on paper without notes
+-   Take-home exam resembles the notebooks we do in class.
+    -   Available on Monday, Sep. 16 after class
+    -   Due at the start of class on Wednesday, Sep. 18
+    -   Late take-home exams automatically drop your exam at least one letter grade
+
+# Exam topics
+
+## R Basics
+
+-   Assigning variables `<-`
+-   Using pipes `|>`
+-   packages in the `tidyverse`: `ggplot`, `dplyr`, etc.
+-   `read_csv()`
+-   `c()`
+
+## Plotting
+
+-   `ggplot()`
+    -   `aes()`: x, y, color, size
+    -   `geom_`: point, line, bar, text
+        -   `alpha` (transparency)
+    -   `scale_`: x, y, color, `viridis`
+-   `fct_inorder()`
+-   Fixed vs. non-fixed aesthetics
+
+## Data wrangling 1
+
+-   `select()`
+    -   `distinct()`
+-   `filter()` (`==`, `!=`, `>`, `%in%`, etc.)
+    -   `filter(between())`
+-   `arrange()`
+    -   `arrange(desc())`
+
+## Data wrangling 2
+
+-   `group_by()`
+    -   `summarize()`
+    -   `mean()`, `min()`, `max()`, `n()`, `n_distinct()`
+-   `mutate()`
+    -   `if_else()`
+    -   `case_when()`
+-   `count()`
+
+## Study tips
+
+0. Practice the material in the preceding slides.
+1. Review the notes.
+2. Review the slides.
+3. Review the notebook solutions.
+4. Redo blank notebooks.
+5. If you've done all that and you still want more practice, you can try asking the class's [Custom GPT](https://chatgpt.com/g/g-eChIzwMNp-ur-intro-to-data-science-gpt) for sample problems.
+
 # `summarize()`
 
-`summarize()` reduces elements of a data frame with one of several summary
-functions. It is a `dplyr` *verb*.
+`summarize()` reduces elements of a data frame with one of several summary functions. It is a `dplyr` *verb*.
 
 ## *Star Wars* data
 
@@ -127,9 +263,7 @@ starwars |>
 
 ## Why `na.rm = TRUE`?
 
-The `na.rm` argument is used to remove `NA` values from the calculation.
-It would be inaccurate to assume that these should be `0` (or any other value).
-If `na.rm = FALSE`, the result will be not available:
+The `na.rm` argument is used to remove `NA` values from the calculation. It would be inaccurate to assume that these should be `0` (or any other value). If `na.rm = FALSE`, the result will be not available:
 
 ```{r}
 #| code-fold: false
@@ -145,7 +279,7 @@ This is a common real world problem.
 ```{r}
 #| code-fold: false
 #| code-line-numbers: "3,4"
-# Which starwars characters have missing heights?
+# Which star wars characters have missing heights?
 starwars |>
   # is.na() returns TRUE if the value is NA:
   filter(is.na(height)) |>
@@ -166,8 +300,8 @@ starwars |>
 
 # `group_by`
 
-- `summarize`-ing single columns is not very interesting.
-- `summarize()` gets interesting when we combine it with `group_by()`.
+-   `summarize`-ing single columns is not very interesting.
+-   `summarize()` gets interesting when we combine it with `group_by()`.
 
 ## `height` by `sex`
 
@@ -249,16 +383,16 @@ starwars |>
 
 ## When summarizing groups
 
-- Be aware of missing data
-- Be aware of outliers
-- Be aware of how many items are in each group
-  - The Jabba the Hutt problem
-- Make sure that groups are comparable
+-   Be aware of missing data
+-   Be aware of outliers
+-   Be aware of how many items are in each group
+    -   The Jabba the Hutt problem
+-   Make sure that groups are comparable
 
 # Summary
 
-- Use `summarize()` to compute summary statistics.
-- Combine `summarize()` with `group_by()` to perform group-wise summaries.
-- Beware missing data! `na`, `None`, etc.
-  - One way to handle missing data for grouping operations: `na.rm = TRUE`
-- Visualize group summaries with `ggplot2`
+-   Use `summarize()` to compute summary statistics.
+-   Combine `summarize()` with `group_by()` to perform group-wise summaries.
+-   Beware missing data! `na`, `None`, etc.
+    -   One way to handle missing data for grouping operations: `na.rm = TRUE`
+-   Visualize group summaries with `ggplot2`

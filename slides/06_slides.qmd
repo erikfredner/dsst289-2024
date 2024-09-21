@@ -11,20 +11,72 @@ format:
     embed-resources: true
     scrollable: true
 editor_options: 
-  chunk_output_type: inline
+  chunk_output_type: console
 ---
 
 # Overview
 
--   *Animal Crossing* 🐟 data
+- Exam reminders
+- 🧶 Knitting follow-up
+-   🐟 *Animal Crossing* data 
 -   `mutate()`
 -   `if_else()`
 -   `case_when()`
--   exam review
 
-# 🐟 = 💰
+# Exam reminders 1
 
-What's the best strategy to get rich fishing?
+- Exam 01 take-home will be available today at 2pm
+  - You will receive an automated email announcing availability
+  - It will be in Blackboard > Course Documents > Exams > Exam 01
+- Take-home is due by the beginning of our class Wednesday
+  - You may spend as much time as you want on it
+  - I expect it will take 60-90 minutes
+
+# Exam reminders 2 {.smaller}
+
+- You may reference notes, notebooks, and slides on the take-home
+  - Material from today **is** on the take-home
+- In class portion of the exam on Wednesday
+  - Not allowed to use anything other than pen and paper
+  - In class question types:
+    - recreate graph
+    - recreate table
+    - fill in blanks in code
+- Questions?
+
+# 🧶 Knitting follow-up
+
+- Turns out Blackboard does not permit students to upload `.html` files
+- Two alternatives:
+  - Knit to `.pdf`
+  - `.zip` the `.html`
+
+## Knit to `.pdf`
+
+![Knit to `.pdf` option](images/knit_pdf.png)
+
+## Knit to `.pdf` installation
+
+:::{.callout-tip title="If you need to install TinyTeX"}
+`tinytex::install_tinytex()`
+:::
+
+
+## `.zip` the `.html` (Mac)
+
+If knitting to `.pdf` does not work, compress your `.html` file like so:
+
+![Compress `.html` file (Mac)](images/zip_html.png)
+
+## `.zip` the `.html` (Windows)
+
+Instructions for Windows [here](https://support.microsoft.com/en-us/windows/zip-and-unzip-files-8d28fa72-f2f9-712f-67df-f80cf89fd4e5).
+
+![Compress files (Windows)](images/zip_windows.png)
+
+# 🎣 = 💰
+
+What is the best way to make money fishing?
 
 ![Fishing in *Animal Crossing*](images/fishing.jpg)
 
@@ -37,6 +89,8 @@ library(tidyverse)
 library(knitr)
 library(ggrepel)
 library(clipr)
+library(patchwork)
+library(scales)
 
 fish <- read_csv(file.path("..", "data", "acnh_fish.csv"))
 
@@ -65,36 +119,37 @@ fish |>
 -   Higher values are more common than low values.
 
 ```{r}
-#| output-location: fragment
+#| output-location: slide
 #| code-line-numbers: "2|3|4"
 fish |>
   mutate(spawn_rate = (spawn_low + spawn_high) / 2) |>
   select(name, spawn_low, spawn_high, spawn_rate) |>
   arrange(desc(spawn_rate)) |>
-  slice_head(n = 5)
+  slice_head(n = 5) |> 
+  kable()
 ```
 
 # `mutate` with `if_else`
 
 ```{r}
 #| output-location: fragment
-#| code-line-numbers: "5"
+#| code-line-numbers: "4"
 fish |>
   mutate(
     spawn_rate = (spawn_low + spawn_high) / 2,
-    # new:
     spawn_freq = if_else(spawn_rate > 10, "common", "rare")
   ) |>
   select(name, spawn_rate, spawn_freq) |>
   arrange(desc(spawn_rate)) |>
-  slice_sample(n = 5)
+  slice_sample(n = 2) |> 
+  kable()
 ```
 
 ## Is common vs. rare enough?
 
 ```{r}
 #| output-location: slide
-#| code-line-numbers: "2-5"
+#| code-line-numbers: "2-5|6-8"
 fish |>
   mutate(
     spawn_rate = (spawn_low + spawn_high) / 2,
@@ -102,10 +157,26 @@ fish |>
   ) |>
   ggplot(aes(x = spawn_rate, y = value, color = spawn_freq)) +
   geom_point() +
-  geom_text_repel(aes(label = name))
+  scale_color_viridis_d()
 ```
 
-# `case_when` for multiple categories
+## Common vs. rare probably isn't enough
+
+```{r}
+#| code-line-numbers: "6"
+fish |>
+  mutate(
+    spawn_rate = (spawn_low + spawn_high) / 2,
+    spawn_freq = if_else(spawn_rate > 10, "common", "rare")
+  ) |>
+  count(spawn_freq) |> 
+  kable()
+```
+
+
+# `mutate` + `case_when`
+
+A useful combination to create new variables based on multiple conditions:
 
 ```{r}
 #| code-line-numbers: "4-10"
@@ -123,102 +194,212 @@ fish <- fish |>
   )
 ```
 
-## What that looks like
+```{r}
+#| echo: false
+
+# set factor order for plotting sanity
+fish <- fish |> 
+  mutate(spawn_freq = factor(spawn_freq, levels = c("very rare", "rare",
+                                                    "uncommon", "common",
+                                                    "very common", "default")))
+```
+
+
+## What that data looks like
 
 ```{r}
 fish |>
-  arrange(desc(spawn_rate)) |>
   select(name, spawn_rate, spawn_freq) |>
   slice_sample(n = 5) |>
+  arrange(spawn_rate) |>
   kable()
 ```
 
-# Valuable *and* common?
+## Is the distribution better?
+
+```{r}
+fish |> 
+  count(spawn_freq) |> 
+  kable()
+```
+
+
+## Which fish are relatively valuable *and* relatively common?
 
 ```{r}
 #| output-location: slide
-#| code-line-numbers: "2"
 
 fish |>
   ggplot(aes(x = spawn_rate, y = value, color = spawn_freq)) +
   geom_point() +
-  geom_text_repel(aes(label = name)) +
-  # draw line from origin to max
-  geom_segment(aes(x = 0,
-                   y = 0,
-                   xend = max(spawn_rate),
-                   yend = max(value)),
-               linetype = "dashed",
-               color = "gray",
-               alpha = 0.1)
+  scale_color_viridis_d()
 ```
+
 
 # Where should we fish?
 
 ```{r}
-#| output-location: slide
-#| code-line-numbers: "2-3|4-5|6-8|9-15"
 fish |>
-  # get rid of common or very common fish:
-  filter(!spawn_freq %in% c("common", "very common")) |>
-  # only keep fish above median value:
-  filter(value > median(value)) |>
+  select(name, location, location_condition) |>
+  filter(!is.na(location_condition)) |>
+  slice_sample(n = 3) |>
+  kable()
+```
+
+## Where are the above-average fish?
+
+```{r}
+#| code-line-numbers: "2|3|4"
+#| output-location: fragment
+fish |>
+  filter(value > mean(value)) |>
+  count(location, location_condition) |>
+  arrange(desc(n)) |>
+  kable()
+```
+
+## Mean and median value by location
+
+```{r}
+#| code-line-numbers: "2-6"
+
+fish |>
+  group_by(location) |>
+  summarize(median_value = median(value),
+            mean_value = mean(value),
+            min_value = min(value),
+            max_value = max(value)) |>
+  arrange(desc(mean_value)) |>
+  kable()
+```
+
+## Location, location, location
+
+```{r}
+#| output-location: slide
+#| code-line-numbers: "2|3|4|5"
+fish |>
+  filter(value > mean(value)) |>
   ggplot(aes(x = spawn_rate, y = value, color = location)) +
   geom_point() +
-  geom_text_repel(aes(label = name)) +
-  geom_segment(aes(x = 0,
-                   y = 0,
-                   xend = max(spawn_rate),
-                   yend = max(value)),
-               linetype = "dashed",
-               color = "gray",
-               alpha = 0.1)
+  geom_label_repel(aes(label = name)) +
+  scale_color_viridis_d()
 ```
+
+
+# Will we make more money if we catch less valuable fish more often?
 
 ## From spawn rate to spawn probability
 
 ```{r}
 #| code-line-numbers: "2|3|4"
 fish |>
-  group_by(location) |>
-  mutate(spawn_prob = spawn_rate / sum(spawn_rate)) |>
-  ungroup() |>
-  select(name, spawn_rate, location, spawn_prob) |>
-  slice_sample(n = 5)
+  mutate(spawn_prob = spawn_rate / 100) |>
+  select(name, location, spawn_rate, spawn_prob) |>
+  slice_sample(n = 5) |>
+  kable()
 ```
 
-## Sneak preview: simulation
+# Sneak preview: Fishing simulation
+
+```{r}
+#| echo: false
+simulate_fishing <- function(sim_number, sample_size) {
+  fish |>
+    filter(location != "Pier") |> 
+    mutate(spawn_prob = spawn_rate / 100) |>
+    group_by(location) |>
+    reframe(
+      caught_fish = sample(name, size = sample_size, prob = spawn_prob, replace = TRUE),
+      value_per_fish = value[match(caught_fish, name)],
+      fish_number = 1:sample_size
+    ) |>
+    group_by(location) |>
+    mutate(cumulative_value = cumsum(value_per_fish)) |>
+    ungroup() |>
+    ggplot(aes(x = fish_number, y = cumulative_value, color = location)) +
+    geom_line(linewidth = 1.2) +
+    scale_color_viridis_d()
+}
+```
+
+## Catch 5 fish in each location 6 times
 
 ```{r}
 #| echo: false
 
-simulate_fishing <- function(sim_number) {
-  fish |> 
-    group_by(location) |> 
-    mutate(spawn_prob = spawn_rate / sum(spawn_rate)) |> 
-    ungroup() |> 
-    group_by(location) |> 
-    reframe(
-      caught_fish = sample(name, size = 100, prob = spawn_prob, replace = TRUE),
-      value_per_fish = value[match(caught_fish, name)],
-      fish_number = 1:100
-    ) |> 
-    group_by(location) |> 
-    mutate(cumulative_value = cumsum(value_per_fish)) |> 
-    ungroup() |> 
-    ggplot(aes(x = fish_number, y = cumulative_value, color = location)) +
-    geom_line(size = 1.2) +
-    labs(
-      title = paste("Cumulative Money Made per Fish Caught - Simulation", sim_number),
-      x = "Number of Fish Caught",
-      y = "Cumulative Value",
-      color = "Location"
-    ) +
-    theme_minimal()
-}
+sample_size <- 5
 
-walk(1:25, ~print(simulate_fishing(.x)))
+plots <- lapply(1:6, function(sim_number) {
+  simulate_fishing(sim_number, sample_size)
+})
+
+grid_plot <- wrap_plots(plots, ncol = 2)
+
+print(grid_plot)
 ```
 
-# Exam review
+## Catch 50 fish 6 times
+
+```{r}
+#| echo: false
+
+sample_size <- 50
+
+plots <- lapply(1:6, function(sim_number) {
+  simulate_fishing(sim_number, sample_size)
+})
+
+grid_plot <- wrap_plots(plots, ncol = 2)
+
+print(grid_plot)
+```
+
+## Catch 5,000 fish 6 times
+
+```{r}
+#| echo: false
+
+sample_size <- 5000
+
+plots <- lapply(1:6, function(sim_number) {
+  simulate_fishing(sim_number, sample_size)
+})
+
+grid_plot <- wrap_plots(plots, ncol = 2)
+
+print(grid_plot)
+```
+
+## 🏆 MVF (Most Valuable Fish)
+
+```{r}
+#| echo: false
+
+simulate_fishing_summary <- function(sample_size) {
+  fish |>
+    filter(location != "Pier") |> 
+    mutate(spawn_prob = spawn_rate / 100) |> 
+    reframe(
+      caught_fish = sample(name, size = sample_size, prob = spawn_prob, replace = TRUE),
+      value_per_fish = value[match(caught_fish, name)]
+    ) |> 
+    group_by(caught_fish) |> 
+    summarize(
+      total_caught = n(),
+      total_value = sum(value_per_fish)
+    ) |> 
+    ungroup() |> 
+    arrange(desc(total_value)) |> 
+    mutate(
+      total_value = dollar(total_value)
+    )
+}
+
+sample_size <- 50000
+simulation_results <- simulate_fishing_summary(sample_size)
+
+simulation_results |> 
+  knitr::kable()
+```
 

@@ -10,6 +10,8 @@ format:
     df-print: paged
     smooth-scroll: true
     toc: true
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ## Getting Started
@@ -97,7 +99,7 @@ city names (`name`).
 ```{r, question-04}
 cities |>
   group_by(continent) |>
-  summarize(names = paste(name, collapse = "|")) |>
+  summarize(names = paste(name, collapse = "🌵🌵🌵")) |> 
   # passing to `print` to make the solutions easy to read;
   # you don't need this in your code:
   print()
@@ -195,7 +197,6 @@ us |>
   group_by(city) |>
   arrange(desc(population)) |>
   slice(1) |>
-  arrange(year) |>
   ungroup() |>
   arrange(year)
 ```

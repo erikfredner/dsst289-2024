@@ -3,13 +3,12 @@ title: DSST 289
 subtitle: Introduction to Data Science
 bibliography: /Users/erik/book/references.bib
 csl: /Users/erik/code/styles/chicago-fullnote-bibliography-short-title-subsequent.csl
-fontfamily: ebgaramond-maths
 fontsize: 12pt
+fontfamily: ebgaramond
 geometry: margin=1in
 papersize: letter
 documentclass: article
 indent: true
-strip-comments: true
 link-citations: true
 link-bibliography: true
 lang: en-US
@@ -17,14 +16,14 @@ colorlinks: true
 linkcolor: blue
 urlcolor: blue
 nocite: |
-    @arnoldHumanitiesDataExploring2015,
-    @brucePracticalStatisticsData2020,
+    @arnoldHumanitiesDataExploring2015
+    @brucePracticalStatisticsData2020
     @cottonLearning2013
     @grolemundHandsonProgramming2014
-    @jockersTextAnalysisStudents2020,
-    @kuhnTidyModelingFramework2022,
+    @jockersTextAnalysisStudents2020
+    @kuhnTidyModelingFramework2022
     @silgeTextMiningTidy2017
-    @wickhamDataScienceImport2023,
+    @wickhamDataScienceImport2023
 ---
 
 -----           -----
@@ -135,7 +134,7 @@ F               0-69
   - I will inform you of any changes as far in advance as possible.
 - **Bold** items are worth a large percentage of your grade.
 
-Meeting No. | Date  | Topic
+Bb No. | Date  | Topic
 ------------|-------|--------------------------------
 00          | 08-26 | Introduction
 01          | 08-28 | Tabular data
@@ -144,27 +143,27 @@ Meeting No. | Date  | Topic
 04          | 09-09 | Organizing data
 05          | 09-11 | Summarizing data
 06          | 09-16 | Creating features
-07          | 09-18 | **Exam 1**
-08          | 09-23 | Creating data
-09          | 09-25 | Data feminism
-10          | 09-30 | Table joins
-11          | 10-02 | Table pivots
-12          | 10-07 | Review 1
-13          | 10-09 | *No class*
-14          | 10-16 | Review 2
-15          | 10-21 | Tidy models
-16          | 10-23 | Exam 2 review
-17          | 10-28 | **Exam 2**
-18          | 10-30 | Project assignments
-19          | 11-04 | Dates and times
-20          | 11-06 | Spatial data
-21          | 11-11 | Spatial joins
-22          | 11-13 | Time zones
-23          | 11-18 | **Exam 3**
-24          | 11-20 | Workshop 1
-25          | 11-25 | Workshop 2
-26          | 12-02 | Workshop 3
-27          | 12-04 | **Final projects**
+--          | 09-18 | **Exam 1**
+07          | 09-23 | Creating data
+08          | 09-25 | Data feminism
+09          | 09-30 | Table joins
+10          | 10-02 | Table pivots
+11          | 10-07 | Review 1
+--          | 10-09 | *No class*
+12          | 10-16 | Review 2
+13          | 10-21 | Tidy models
+14          | 10-23 | Exam 2 review
+--          | 10-28 | **Exam 2**
+15          | 10-30 | Project assignments
+16          | 11-04 | Dates and times
+17          | 11-06 | Spatial data
+18          | 11-11 | Spatial joins
+19          | 11-13 | Time zones
+--          | 11-18 | **Exam 3**
+--          | 11-20 | Workshop 1
+--          | 11-25 | Workshop 2
+--          | 12-02 | Workshop 3
+--          | 12-04 | **Final projects**
 
 ## Assignments
 
@@ -234,7 +233,8 @@ If you get stuck on a homework problem, I ask you to try these things in this or
   - Do not expect responses over the weekend.
 - If you have not received a response after 2 business days, feel free to write me again.
 - For the most prompt response, schedule your email to arrive early in the morning (e.g., 7 or 8 AM).
-  - Follow [these instructions](https://support.microsoft.com/en-us/office/delay-or-schedule-sending-email-messages-in-outlook-026af69f-c287-490a-a72f-6c65793744ba) to schedule messages in Outlook.
+  - [Gmail instructions](https://support.google.com/mail/answer/9214606)
+  - [Outlook instructions](https://support.microsoft.com/en-us/office/delay-or-schedule-sending-email-messages-in-outlook-026af69f-c287-490a-a72f-6c65793744ba)
 
 ## Resources
 
