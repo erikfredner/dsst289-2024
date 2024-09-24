@@ -1,7 +1,8 @@
 ---
 title: "Notebook 08"
 subtitle: "DSST289: Introduction to Data Science"
-date: "`r Sys.Date()`"
+date: today
+date-format: long
 format:
   html:
     embed-resources: true
@@ -25,7 +26,7 @@ After starting a new session, run the following code chunk to load the
 libraries that we will be working with today.
 
 ```{r, include=FALSE, message=FALSE}
-source("../funs/funs.R")
+library(tidyverse)
 ```
 
 I have set the options `include=FALSE` and `message=FALSE` to avoid cluttering
@@ -90,7 +91,7 @@ This general understanding is sufficient for our course. If you would like to le
 
 ## Making a density plot
 
-In the code block below, take on the data points from the major "Psychology"
+In the code block below, `filter` the data points from the major "Psychology"
 and draw a ggplot graphic with `earnings` on the x-axis using a `geom_density()`
 layer.
 
@@ -128,12 +129,12 @@ the estimated lifetime earnings of these three majors?
 # Plotting Percentiles
 
 Let's now look at all of the majors in the data. In the plot below, take just 
-the rows of the data corresponding to the 50th percentile of earnings (i.e., average earnings *within* a major). Draw a
+the rows of the data corresponding to the 50th percentile of earnings (i.e., median earnings *within* a major). Draw a
 scatterplot with earnings on the x-axis and major on the y-axis. Order the
 majors from the smallest to the largest earnings.
 
 ::: {.callout-note title="Hint"}
-One way to approach this would be to combine `mutate` with `fct_inorder` to order the majors for plotting.
+One way to approach this would be to combine `mutate` with `fct_inorder` to order the `arrange`d majors for plotting, like so: `mutate(major = fct_inorder(major))`
 :::
 
 ```{r, fig.height=10, question-04}
@@ -147,7 +148,7 @@ get a different picture of how major influences lifetime earnings. In the plot
 below, create a new version of the previous plot, but include two dots for 
 each major, one for the 25th percentile of earnings and another for the 75th
 percentile of earnings. Color the 25th percentile in `"olivedrab"` and the 75th
-percentile `"navy"`. Order the majors based on earnings.
+percentile `"navy"`. Order the majors based on earnings from smallest to largest.
 
 Note: There are at least two different ways to do this task. Either is fine,
 but try to do it without creating a second dataset using `mutate` and `if_else`
@@ -164,13 +165,17 @@ percentiles of each major.
 
 ```
 
+What is one important thing that you observe in the plots above?
+
+**Answer**: Some majors have a wider *range* of possible earnings than others.
+For example, the difference between the 10th percentile and the 90th percentile
+of earnings for theology majors is much smaller than the difference between the
+10th and 90th percentiles of earnings for median majors like Art History or
+top-earning majors like Chemical Engineering.
+
 ## Comparing Percentages to Major
 
-The 10th percentile of earnings for Chemical Engineers is $2.63 million USD
-over their lifetime. In the plot below, draw a scatter plot that shows the 
-percentage of people in each major that are expected to make at least 2.63
-million dollars over the course of their life. Put major on the y-axis and
-the percentage on the x-axis and order by the percentage.
+The 10th percentile of earnings for Chemical Engineers is $2.63 million USD over their lifetime. For each major, calculate the percentage of individuals expected to earn at least $2.63 million over their lifetime. This is done by finding the lowest percentile at which earnings meet or exceed $2.63 million for each major, and then computing `100 - percentile` to get the percentage. Arrange the majors based on this percentage and use `fct_inorder` to sort them accordingly. In the plot below, draw a scatter plot with the percentage on the x-axis and majors on the y-axis.
 
 ```{r, fig.height=10, question-07}
 
@@ -199,7 +204,7 @@ Data Feminism says that we should consider the values and power structures that
 are baked into the data and data analyses that we do. What values seem to be 
 expressed in the data here regarding college majors and life goals?
 
-**Answer**:
+**Answer**: 
 
 Data Feminism also says that data is never neutral or non-political. The data
 here was an attempt to add nuance to studies focused only on a single summary
@@ -207,12 +212,12 @@ showing the relationship between college majors and earnings. Can you think of
 another quantitative dataset that would help augment the story told by the data
 we looked at above?
 
-**Answer**:
+**Answer**: 
 
 Can you think of a qualitative source of information that would help augment
 the story told by the quantitative data?
 
-**Answer**:
+**Answer**: 
 
 It should be clear from these plots that while there is a relationship between
 college majors and lifetime earnings, the situation is a bit more complicated
@@ -221,7 +226,7 @@ Can you construct a story that would use some of the results here to encourage
 someone to major in a field that interests them rather than overly optimizing
 for major that have the highest typical salaries?
 
-**Answer**:
+**Answer**: 
 
 It is also possible to turn the data visualizations here into a fairly negative
 story about lifetime earnings. Try to describe in the most pessimistic way 
@@ -229,4 +234,4 @@ possible how you might summarize the data here. The goal of this exercise is to
 show how data analysis is never neutral and the same results can be interpreted
 very differently.
 
-**Answer**:
+**Answer**: 

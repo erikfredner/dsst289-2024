@@ -99,6 +99,8 @@ include logarithmic scales for the x- and y-axes
 
 ```{r, warning=FALSE, question-01}
 movies |>
+  # filter to retain only numeric values:
+  filter(budget > 0 & gross_worldwide > 0) |>
   ggplot(aes(budget, gross_worldwide)) +
   geom_point(aes(color = year, size = contributor_rating)) +
   geom_text_repel(aes(label = title)) +
@@ -118,7 +120,9 @@ movies <- movies |>
   mutate(total_minutes = (runtime_hrs * 60) + runtime_min)
 
 movies |>
-  select(title, total_minutes)
+  select(title, total_minutes) |> 
+  # we only want one row per title:
+  distinct()
 ```
 
 Now, let's see if there appears to be any relationship between budget and length.
@@ -127,6 +131,9 @@ Plot `budget` on the x-axis and `total_minutes` on y. As before, color points by
 
 ```{r}
 movies |>
+  select(title, budget, total_minutes, year) |>
+  # ensure that we only have one point per title:
+  distinct() |> 
   ggplot(aes(budget, total_minutes)) +
   geom_point(aes(color = year)) +
   geom_text_repel(aes(label = title)) +
@@ -144,11 +151,11 @@ might want to calculate the `mean` of our reviews for each movie.
 We also need the IMDB rating in the resulting table.
 
 We can group our results by title, and summarize the `contributor_rating`s.
-All of the IMDB ratings *should* be the same, so we can use the `first()`
+All of the IMDB ratings *should* be the same, so we could use the `first()`
 summary function, which will take the first value in a column.^[If we are not certain
 that our data is perfect, this may not be the best choice! It would be smarter
 to check and see that all values in the `imdb_rating` column are the same before
-taking the `first()`.]
+taking the `first()`.] Alternatively, we can also use `mean()`; the result should be the same if the data is entered properly.
 
 We can also size the points based on the ratio of the `mean_class_rating` to the
 `imdb_rating`. If the class gave the film a higher review than IMDB, the value will be

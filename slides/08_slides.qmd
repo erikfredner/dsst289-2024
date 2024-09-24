@@ -11,13 +11,46 @@ format:
     footer: "https://fredner.org"
     embed-resources: true
     scrollable: true
+    toc: true
 editor_options:
   markdown:
     wrap: 72
   chunk_output_type: inline
 ---
 
-# Opening discussion
+# RStudio Update
+
+Version 2024.09.0+375 released Monday
+
+RStudio > Help > Check for Updates > Install
+
+# Survey results
+
+## Exam difficulty
+
+![Exam 01 difficulty survey results](images/exam01_survey.png)
+
+## Most important reviews to cover
+
+- `fct_`...(I agree!)
+- `scale_`...
+- `case_when()`
+- `if_else()`
+- `n()`
+- `distinct()`
+- `summarize()`
+- `mutate()`
+
+## Things you said would be helpful
+
+- Improve clarity of notebook questions
+  - Ensure good fit between question and suggested answers
+- Provide practice exam questions
+- More practice handwriting code
+
+# Data feminism
+
+## Opening discussion
 
 - How do you see the relationship between data and power in your everyday life?
 - Do you believe that it is possible to use data to change that balance of power?

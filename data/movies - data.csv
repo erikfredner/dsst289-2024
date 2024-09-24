@@ -1,6 +1,217 @@
 imdb_url,title,director,year,imdb_rating,genre_1,genre_2,runtime_hrs,runtime_min,budget,gross_worldwide,contributor_alias,dsst_section,contributor_rating,notes
-https://www.imdb.com/title/tt7984734/,The Lighthouse,Robert Eggers,2019,7.4,drama,comedy,1,49,"11,000,000","18,129,854",fredner,9:00:00 AM,8.3,Watched at The Byrd Theatre
-https://www.imdb.com/title/tt0166924/,Mulholland Drive,David Lynch,2001,7.9,mystery,thriller,2,27,"15,000,000","20,289,986",fredner,9:00:00 AM,9.4,Watched at home
-https://www.imdb.com/title/tt12037194/,Furiosa: A Mad Max Saga,George Miller,2024,7.5,sci-fi,action,2,28,"168,000,000","172,775,791",fredner,9:00:00 AM,7,Watched in DC
-https://www.imdb.com/title/tt0097216/,Do The Right Thing,Spike Lee,1989,8,comedy,drama,2,0,"6,500,000","37,295,445",fredner,9:00:00 AM,9,Watched on a plane
-https://www.imdb.com/title/tt1517268/,Barbie,Greta Gerwig,2023,6.8,comedy,adventure,1,54,"100,000,000","1,445,638,421",fredner,9:00:00 AM,8.5,Watched in DC
+https://www.imdb.com/find/?q=Airplane!&ref_=nv_sr_sm,Airplane!,Jim Abrahams,1980,7.7,comedy,adventure,1,28,"35,000,000.00","83,455,547.00",Tommy,12:00:00 PM,9.4,
+https://www.imdb.com/title/tt0038650/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_it%27s%2520a%2520wonderful%2520life,It's a Wonderful Life,Frank Capra,1946,8.6,seasonal,family,2,10,"3,180,000.00","3,180,000.00",kay,9:00:00 AM,7.5,
+https://www.imdb.com/title/tt0046183/?ref_=nv_sr_srsg_2_tt_8_nm_0_in_0_q_peter%2520pan,Peter Pan,Clyde Geronimi,1953,7.3,animation,family,1,17,"4,000,000.00","87,405,539.00",ashley,10:30:00 AM,8.9,
+https://www.imdb.com/title/tt0056058/?ref_=chttp_t_44,Harakiki,Masaki Kobayashi,1962,8.6,drama,mystery,2,13,,"15,222.00",Keyli,9:00:00 AM,3,
+https://www.imdb.com/title/tt0060028/?ref_=fn_al_tt_1,Despicable Me,Pierre Coffin,2010,7.6,animation,family,1,35,"69,000,000.00","544,174,973.00",kay,9:00:00 AM,8.2,
+https://www.imdb.com/title/tt0061852/?ref_=hm_tpks_tt_t_1_pd_tp1_pbr_ic,The Jungle Book,Wolfgang Reitherman,1967,7.6,animation,family,1,18,"4,000,000.00","205,843,612.00",ashley,10:30:00 AM,7,
+https://www.imdb.com/title/tt0066817/?ref_=nv_sr_srsg_0_tt_7_nm_1_in_0_q_bedkn,Bedknobs and Broomsticks,Robert Stevenson,1971,7,animation,adventure,1,57,"20,000,000.00",,gigi,9:00:00 AM,7,
+https://www.imdb.com/title/tt0068646/?ref_=chttp_t_2,The Godfather,Francis Ford Coppella,1972,9.2,crime,drama,2,55,"6,000,000.00","250,342,198.00",nomar,9:00:00 AM,9,
+https://www.imdb.com/title/tt0081505/?ref_=fn_al_tt_1,The Shining,Stanley Kubrick,1980,8.4,horror,drama,2,26,"19,000,000.00","47,548,151.00",Tommy,12:00:00 PM,9,
+https://www.imdb.com/title/tt0088323/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_The%2520never%2520ending%2520story,The Never Ending Story,Wolfgang Petersen,1984,7.3,adventure,fantasy,1,42,"27,000,000.00","20,288,595.00",kay,9:00:00 AM,6.7,
+https://www.imdb.com/title/tt0091419/,Little Shop of Horrors,Frank Oz,1986,7.1,musical,horror,1,34,"25,000,000.00","39,063,291.00",kayla,10:30:00 AM,7,
+https://www.imdb.com/title/tt0095705/?ref_=nv_sr_srsg_3_tt_8_nm_0_in_0_q_naked%2520gun,The Naked Gun: From the Files of Police Squad!,David Zucker,1988,7.6,comedy,crime,1,25,"12,000,000.00","78,756,177.00",Joe,12:00:00 PM,8,
+https://www.imdb.com/title/tt0097216/,Do The Right Thing,Spike Lee,1989,8,comedy,drama,2,0,"6,500,000.00","37,295,445.00",fredner,9:00:00 AM,9,Watched on a plane
+https://www.imdb.com/title/tt0099685/?ref_=nv_sr_srsg_0_tt_7_nm_1_in_0_q_goodfellas,Goodfellas,Martin Scorcese,1990,8.7,crime,drama,2,25,"25,000,000.00","47,054,093.00",Joe,12:00:00 PM,10,Favorite movie ever
+https://www.imdb.com/title/tt0102492/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_my%2520girl,My Girl,Howard Zieff,1991,6.9,family,comedy,1,42,"17,000,000.00","121,000,000.00",aw,10:30:00 AM,8,
+https://www.imdb.com/title/tt0107048/,Groundhog Day,Harold Ramis,1993,8,comedy,romance,1,41,"14,600,000.00","71,108,778.00",gracie,12:00:00 PM,7.5,whimsical
+https://www.imdb.com/title/tt0107290/?ref_=nv_sr_srsg_1_tt_7_nm_1_in_0_q_jura,Jurassic Park,Steven Spielberg,1993,8.2,action,sci-fi,2,2,"63,000,000.00","1,104,379,926.00",gloria,10:30:00 AM,9,
+https://www.imdb.com/title/tt0108052/?ref_=chttp_t_6,Schindler's List,Steven Spielberg,1993,9,history,drama,3,15,"22,000,000.00","322,161,245.00",spider,9:00:00 AM,8,Watched at home
+https://www.imdb.com/title/tt0109830/?ref_=chttp_t_11,Forrest Gump,Robert Zemeckis,1994,8.8,romance,drama,2,22,"55,000,000.00","678,226,465.00",spider,9:00:00 AM,10,Watched at home
+https://www.imdb.com/title/tt0110357/?ref_=chttp_t_36,The Lion King,Roger Allers,1994,8.5,adventure,animation,1,28,"45,000,000.00","981,586,438.00",Keyli,9:00:00 AM,3,
+https://www.imdb.com/title/tt0111161/?ref_=chttp_t_1,The Shawshank Redemption,Frank Darabont,1994,9.3,drama,drama,2,22,"25,000,000.00","29,331,551.00",spider,9:00:00 AM,9,Watched at home
+https://www.imdb.com/title/tt0111161/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_shawsh,The Shawshank Redemption,Frank Darabont,1994,9.3,drama,thriller,2,22,"25,000,000.00","73,300,000.00",aw,10:30:00 AM,9.5,
+https://www.imdb.com/title/tt0114369/?ref_=nv_sr_srsg_0_tt_5_nm_3_in_0_q_se7en,Se7en,David Fincher,1995,8.6,crime,thriller,2,7,"33,000,000.00","327,333,559.00",kay,9:00:00 AM,8.7,
+https://www.imdb.com/title/tt0114814/,The Usual Suspects,Bryan Singer,1995,8.5,gangster,heist,1,46,"6,000,000.00","23,341,568.00",Jason,12:00:00 PM,9.7,Get's better each time you watch it
+https://www.imdb.com/title/tt0117571/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_screa,Scream,Wes Craven,1996,7.4,horror,mystery,1,51,"14,000,000.00","173,046,663.00",anika,9:00:00 AM,8,
+https://www.imdb.com/title/tt0117705/?ref_=fn_al_tt_1,Space Jam,Joe Pytka,1996,6.5,sci-fi,adventure,1,28,"80,000,000.00","230,594,962.00",dema,9:00:00 AM,6,
+https://www.imdb.com/title/tt0117802/?ref_=fn_al_tt_1,Swingers,Jon Favreau,1996,7.2,comedy,drama,1,36,"200,000.00","4,555,020.00",holden,9:00:00 AM,6,
+https://www.imdb.com/title/tt0118799/?ref_=chttp_t_26,Life Is Beautiful,Roberto Benigni,1997,8.6,comedy,history,1,56,"20,000,000.00","230,099,013.00",spider,9:00:00 AM,10,Watched at home
+https://www.imdb.com/title/tt0120382,The Truman Show,Peter Weir,1998,8.2,comedy,drama,1,43,"60,000,000.00","264,118,712.00",fredner,12:00:00 PM,9.3,
+https://www.imdb.com/title/tt0120737/?ref_=nv_sr_srsg_3_tt_8_nm_0_in_0_q_lord%2520of%2520the%2520,The Lord of the Rings: The Fellowship of the Ring,Peter Jackson,2001,8.9,fantasy,adventure,2,58,"93,000,000.00","887,681,857.00",Gretchen,12:00:00 PM,10,This trilogy are my favorite movies of all time
+https://www.imdb.com/title/tt0121766/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_star%2520wars%2520reve,Spider-Man: Across the Spider-Verse,Joaquim Dos Santos,2023,8.6,animation,action,2,20,"150,000,000.00","690,824,738.00",Gretchen,12:00:00 PM,10,Stunning to see in theaters 
+https://www.imdb.com/title/tt0125439/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_notting%2520hill,Notting Hill,Roger Michell,1999,7.2,romance,comedy,2,4,"42,000,000.00","363,992,308.00",Lara,12:00:00 PM,9,
+https://www.imdb.com/title/tt0126029/,Shrek,Andrew Adamson,2001,7.9,comedy,fantasy,1,30,"60,000,000.00","488,628,188.00",kayla,10:30:00 AM,10,
+https://www.imdb.com/title/tt0133093/?ref_=chttp_t_16,The Matrix,Lana and Lily Wachowski,1999,8.7,action,sci-fi,2,16,"63,000,000.00","467,840,449.00",nomar,9:00:00 AM,9,
+https://www.imdb.com/title/tt0137523/?ref_=chttp_t_13,Fight Club,David Fincher,1999,8.8,drama,,2,19,"63,000,000.00","101,321,009.00",Frank,10:30:00 AM,10,HOW THIS IS NOT EVERYONE'S FAVORITE MOVIE IS BESIDE ME
+https://www.imdb.com/title/tt0147800/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_10%2520thi,10 Things I Hate About You,Gil Junger,1999,7.3,romance,comedy,1,37,"30,000,000.00","53,686,594.00",dema,9:00:00 AM,9.5,Watched at school
+https://www.imdb.com/title/tt0147800/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_10%2520things%2520i%2520ha,10 Things I Hate About You,Gil Junger,1999,7.3,romance,comedy,1,37,"30,000,000.00","53,686,594.00",Cooper,12:00:00 PM,8.5,
+https://www.imdb.com/title/tt0166924/,Mulholland Drive,David Lynch,2001,7.9,mystery,drama,2,27,"15,000,000.00","20,289,986.00",fredner,9:00:00 AM,9.4,Watched at home
+https://www.imdb.com/title/tt0198781/,"Monsters, Inc.",Pete Docter,2001,8.1,adventure,animation,1,32,"115,000,000.00","290,642,256.00",Frozone,12:00:00 PM,8.5,
+https://www.imdb.com/title/tt0198781/?ref_=chttp_t_196,"Monsters, Inc.",Pete Doctor,2001,8.1,animation,adventure,1,32,"115,000,000.00","290,642,256.00",Damien,12:00:00 PM,9.2,
+https://www.imdb.com/title/tt0198781/?ref_=tt_sims_tt_i_6,"Monsters, Inc.",Pete Doctor,2001,8.1,animation,adventure,1,32,"115,000,000.00","579,723,931.00",Jack ,9:00:00 AM,8,Watched at home
+https://www.imdb.com/title/tt0203009/,Moulin Rouge!,Baz Luhrmann,2001,7.6,musical,romance,2,7,"50,000,000.00","184,935,252.00",Anna,10:30:00 AM,9.8,MY FAVORITE MOVIE
+https://www.imdb.com/title/tt0245429/mediaviewer/rm4207852801/?ref_=tt_ov_i,Spirited Away ,Hayao Miyazaki,2001,9,anime,fantasy,2,4,"19,000,000.00","358,090,420.00",keyli,9:00:00 AM,9,
+https://www.imdb.com/title/tt0250494/?ref_=tt_tpks_tt_t_8_pd_detail_2_pbr_ic,Legally Blonde,Robert Luketic,2001,6.5,romance,comedy,1,36,"18,000,000.00","141,778,188.00",Sumina,10:30:00 AM,9.5,Inspiring and funny
+https://www.imdb.com/title/tt0253474/?ref_=tt_mv_close,The Pianist,Roman Polanski,2002,8.5,drama,documentary,2,30,"11,400,000","120,098,945.00",Keyli,9:00:00 AM,2,
+https://www.imdb.com/title/tt0264464/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_%2520catc,Catch Me If You Can,Steven Spielberg,2002,8.1,crime,drama,2,21,"52,000,000.00","352,114,312",qing,10:30:00 AM,9,
+https://www.imdb.com/title/tt0266543/,Finding Nemo,Andrew Stanton,2003,8.2,animation,adventure,1,40,"94,000,000.00","941,637,960.00",Nemo,12:00:00 PM,9.5,
+https://www.imdb.com/title/tt0266543/?ref_=nv_sr_srsg_1_tt_7_nm_1_in_0_q_finding%2520,Finding Nemo,Andrew Stanton,2003,8.2,animation,adventure,1,40,"94,000,000.00","941,637,960.00",gigi,9:00:00 AM,8.5,
+https://www.imdb.com/title/tt0266543/?ref_=tt_sims_tt_i_4,Finding Nimo,Andrew Stanton,2003,8.2,animation,adventure,1,40,"94,000,000.00","941,637,960.00",Jack ,9:00:00 AM,8,Watched at home
+https://www.imdb.com/title/tt0266697/?ref_=chttp_t_151,Kill Bill: Vol. 1,Quentin Tarantino,2003,8.2,action,crime,1,51,"30,000,000.00","180,908,413.00",Frank,10:30:00 AM,9,"Sweet movie, good for family night"
+https://www.imdb.com/title/tt0281358/,A Walk to Remember,Adam Shankman,2002,7.3,drama,romance,1,41,"11,800,000.00","47,494,916.00",Sumina,10:30:00 AM,10,"Watched it when I was 13, best romance movie ever"
+https://www.imdb.com/title/tt0317705/,The Incredibles,Brad Bird,2004,8,animation,action,1,55,"92,000,000.00","631,688,498.00",Frozone,12:00:00 PM,9.2,Where is my super suit?
+https://www.imdb.com/title/tt0332379/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_school%2520,School of Rock,Richard Linklater,2003,7.2,comedy,music,1,49,"35,000,000.00","131,098,967.00",Abbott,12:00:00 PM,8.8,
+https://www.imdb.com/title/tt0335266/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_lost%2520in%2520t,Lost In Translation,Sofia Coppola,2003,7.7,comedy,drama,1,42,"4,000,000.00","118,688,756.00",holden,9:00:00 AM,7,
+https://www.imdb.com/title/tt0338013/,Eternal Sunshine of the Spotless Mind,Michel Gondry,2004,8.3,romance,drama,1,48,"20,000,000.00","73,395,181.00",kayla,10:30:00 AM,9,
+https://www.imdb.com/title/tt0338013/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_eterna,Eternal Sunshine of the Spotless Mind,Michel Gondry,2004,8.3,drama,romance,1,48,"20,000,000.00","73,395,181.00",brett,12:00:00 PM,9,
+https://www.imdb.com/title/tt0349825/?ref_=fn_al_tt_1,Miracle,Gavin O'Connor,2004,7.5,drama,sport,2,15,"28,000,000.00","64,445,708.00",dema,9:00:00 AM,8.5,Watched on an airplane
+https://www.imdb.com/title/tt0377092/,Mean Girls,Mark Waters,2004,7.1,comedy,,1,37,"17,000,000.00","130,161,094.00",name,10:30:00 AM,8.5,So camp
+https://www.imdb.com/title/tt0381971/?ref_=nv_sr_srsg_0_tt_7_nm_1_in_0_q_curious%2520george%2520,Curious George ,Matthew O'Callaghan,2006,7.2,animation,family,1,27,"50,000,000.00","69,865,924.00",ashley,10:30:00 AM,9,
+https://www.imdb.com/title/tt0382932/?ref_=chttp_t_202,Ratatouille,"Brad Bird, Jan Pinkava",2007,8.1,animation,comedy,1,51,"150,000,000.00","623,728,318.00",patel,9:00:00 AM,8.5,
+https://www.imdb.com/title/tt0389790/?ref_=fn_al_tt_1,Bee Movie,Simon J. Smith,2007,6.1,animation,comedy,1,31,"150,000,000.00","293,514,336.00",sky,10:30:00 AM,9,
+https://www.imdb.com/title/tt0390022/?ref_=nv_sr_srsg_3_tt_8_nm_0_in_0_q_friday%2520night%2520lights,Friday Night Lights,Peter Berg,2004,7.2,sport,drama,1,58,"30,000,000.00","61,950,770.00",Jason,12:00:00 PM,9.6,My favorite movie
+https://www.imdb.com/title/tt0407887/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_the%2520departe,The Departed,Martin Scorsese,2006,8.5,action,mystery,2,31,"90,000,000.00","291,481,358.00",brett,12:00:00 PM,9.3,
+https://www.imdb.com/title/tt0414387/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_pride%2520an,Pride & Prejudice,Joe Wright,2005,7.8,drama,romance,2,9,"28,000,000.00","121,616,555.00",anika,9:00:00 AM,8.5,
+https://www.imdb.com/title/tt0432283/?ref_=nv_sr_srsg_0_tt_7_nm_1_in_0_q_fantastic%2520mr%2520,Fantastic Mr. Fox,Wes Anderson,2009,7.9,adventure,animation,1,27,"40,000,000.00","58,091,759.00",Cooper,12:00:00 PM,9,
+https://www.imdb.com/title/tt0434409/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_v%2520for%2520,V for Vendetta,James McTeigue,2005,8.1,thriller,action,2,12,"54,000,000.00","134,686,457.00",Tommy,12:00:00 PM,9.3,
+https://www.imdb.com/title/tt0435625/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_the%2520descent,The Descent,Neil Marshall,2005,7.2,horror,adventure,1,39,"4,671,205.00","57,130,027.00",Aaron,12:00:00 PM,7.5,
+https://www.imdb.com/title/tt0468569/?ref_=chtmvm_t_89,The Dark Knight,Christopher Nolan,2008,9,action,crime,2,32,"185,000,000.00","1,008,814,732.00",Lance,12:00:00 PM,9.4,
+https://www.imdb.com/title/tt0468569/?ref_=nv_sr_srsg_0_tt_7_nm_1_in_0_q_the%2520dark%2520,The Dark Knight,Christopher Nolan,2008,9,action,thriller,2,32,"185,000,000.00","1,003,845,358.00",nomar,9:00:00 AM,8,
+https://www.imdb.com/title/tt0472205/,Watching the Detectives,Paul Soter,2007,6.2,comedy,romance,1,31,"2,000,000.00","15,006.00",Anna,10:30:00 AM,8.5,Such a WACKY film
+https://www.imdb.com/title/tt0477348/?ref_=nv_sr_srsg_0_tt_7_nm_1_in_0_q_no%2520coun,No Country for Old Men,The Coen Brothers,2007,8.2,western,crime,2,2,"25,000,000.00","171,632,777.00",holden,9:00:00 AM,10,
+https://www.imdb.com/title/tt0482571/?ref_=chttp_t_43,The Prestige,Christopher Nolan,2006,8.5,drama,mystery,2,10,"40,000,000.00","109,676,311.00",patel,9:00:00 AM,8.8,
+https://www.imdb.com/title/tt0795421/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_mamma%2520mia,Mamma Mia ,Phyllida Lloyd,2008,6.5,comedy,romance,1,48,"52,000,000.00","694,667,804.00",Lara,12:00:00 PM,9.5,
+https://www.imdb.com/title/tt0796366/,Star Trek,J.J. Abrams,2009,7.9,sci-fi,adventure,2,7,"60,000,000.00","67,336,470.00",,9:00:00 AM,8.9,Watched at home
+https://www.imdb.com/title/tt0816692/?ref_=tt_sims_tt_t_6,Interstellar ,Christopher Nolan,2014,8.7,sci-fi,adventure,2,49,"165,000,000.00","719,545,691.00",Lance,12:00:00 PM,9.4,
+https://www.imdb.com/title/tt0816692/?ref_=tt_tpks_tt_i_17_pd_detail_2_pbr_ic,Interstellar,Christopher Nolan,2014,8.7,adventure,sci-fi,2,49,"165,000,000.00","719,545,691.00",qing,10:30:00 AM,9.5,
+https://www.imdb.com/title/tt0892769/?ref_=tt_sims_tt_i_10,How to train your dragon,Dean DeBlois,2010,8.1,action,animation,1,38,"165,000,000.00","494,879,860.00",Jack ,9:00:00 AM,9,Watched at cinema
+https://www.imdb.com/title/tt0947798/,Black Swan,Darren Aronofsky,2010,8,thriller,drama,1,48,"13,000,000.00","329,398,046.00",name,10:30:00 AM,7,for overachievers and perfectionists
+https://www.imdb.com/title/tt0952640/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_alvin%2520an,Alvin and the Chipmunks,Tim Hill,2007,5.2,comedy,family,1,32,"60,000,000.00","365,352,546.00",karen,10:30:00 AM,7.5,
+https://www.imdb.com/title/tt1041829/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_the%2520prop,The Proposal,Anne Fletcher,2009,6.8,romance,comedy,1,48,"40,000,000.00","317,375,435.00",Cooper,12:00:00 PM,7,
+https://www.imdb.com/title/tt1049413/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_up,Up,Pete Docter,2009,8.3,family,adventure,1,36,"175,000,000.00","735,102,136.00",Paige,12:00:00 PM,9,
+https://www.imdb.com/title/tt1049413/?ref_=tt_sims_tt_i_2,Up,Pete Doctor ,2009,8.3,adventure,animation,1,36,"175,000,000.00","735,102,136.00",Jack ,9:00:00 AM,8.5,Watched at cinema
+https://www.imdb.com/title/tt1049413/?ref_=tt_sims_tt_i_2,Up,Pete Doctor ,2009,8.3,adventure,animation,1,36,"175,000,000.00","735,102,136.00",Frozone,12:00:00 PM,8.3,
+https://www.imdb.com/title/tt10655524/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_it%2520ends,It Ends with Us ,Justin Baldoni,2024,6.7,drama,romance,2,10,"25,000,000.00","334,836,337.00",Katharine,9:00:00 AM,5,read book and watched
+https://www.imdb.com/title/tt10731256/?ref_=nv_sr_srsg_1_tt_8_nm_0_in_0_q_dont%2520worry,Don't Worry Darling,Olivia Wilde,2022,6.3,thriller,drama,2,3,"20,000,000.00","87,609,403.00",Katharine,9:00:00 AM,6.4,watched at home
+https://www.imdb.com/title/tt1130884/?ref_=chttp_t_139,Shutter Island,Martin Scorsese,2010,8.2,thriller,mystery,2,18,"80,000,000.00","294,944,618.00",patel,9:00:00 AM,8.8,
+https://www.imdb.com/title/tt1160419/?ref_=nv_sr_srsg_7_tt_8_nm_0_in_0_q_dune,Dune: Part One,Denis Villeneuve,2021,8,sci-fi,adventure,2,35,"165,000,000.00","407,573,628.00",fredner,9:00:00 AM,7,Watched at a theater in DC
+https://www.imdb.com/title/tt1187043/?ref_=tt_tpks_tt_i_1_pd_detail_2_pbr_ic,3 Idiots,Rajkumar Hirani,2009,8.4,comedy,drama,2,50,"6,500,000.00","60,262,836.00",patel,9:00:00 AM,9,
+https://www.imdb.com/title/tt12037194/,Furiosa: A Mad Max Saga,George Miller,2024,7.5,sci-fi,action,2,28,"168,000,000.00","172,775,791.00",fredner,9:00:00 AM,8,Watched at a theater in DC
+https://www.imdb.com/title/tt12075908/,Unconformity,Jonathan DiMaio,2022,6.5,drama,western,1,26,,,gloria,10:30:00 AM,6,
+https://www.imdb.com/title/tt12584954/?ref_=fn_al_tt_1,Twisters,Lee Isaac Chung,2024,6.6,action,adventure,2,2,"155,000,000.00","369,590,675.00",dema,9:00:00 AM,10,Watched in a drive-in theater in Kansas
+https://www.imdb.com/title/tt12584954/?ref_=fn_al_tt_1,Twisters,Lee Isaac Chung,2024,6.6,action,adventure,2,2,"155,000,000.00","369,590,675.00",dema,9:00:00 AM,10,Watched on a projector at school
+https://www.imdb.com/title/tt13651628/?ref_=nv_sr_srsg_6_tt_6_nm_2_in_0_q_belle,Belle,Mamoru Hosoda,2021,7.1,anime,fantasy,2,1,,"64,679,830.00",Grace,10:30:00 AM,10,One of the most georgous movies to ever exist
+https://www.imdb.com/title/tt1392170/?ref_=nv_sr_srsg_0_tt_7_nm_1_in_0_q_hunger%2520,The Hunger Games,Gary Ross,2012,7.2,action,sci-fi,2,22,"78,000,000.00","695,220,619.00",Paige,12:00:00 PM,8.7,
+https://www.imdb.com/title/tt1392170/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_hunger%2520games,The Hunger Games,Gary Ross,2012,7.2,action,sci-fi,2,22,"78,000,000.00","695,220,619.00",karen,10:30:00 AM,8.5,
+https://www.imdb.com/title/tt1392214/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_prisoners,Prisoners,Denis Villeneuve,2013,8.2,thriller,mystery,2,33,"46,000,000.00","122,127,446.00",Abbott,12:00:00 PM,9.5,
+https://www.imdb.com/title/tt1396484/?ref_=nv_sr_srsg_3_tt_6_nm_2_in_0_q_IT,IT,Andy Muschietti,2017,7.3,horror,,2,15,"35,000,000.00","702,781,748.00",nomar,9:00:00 AM,,
+https://www.imdb.com/title/tt14230388/,Asteroid City,Wes Anderson,2023,6.5,comedy,drama,1,45,"25,000,000.00","53,857,743.00",sky,10:30:00 AM,8,
+https://www.imdb.com/title/tt14444726/,Tár,Todd Field,2022,7.4,drama,music,2,38,"25,000,000.00","29,048,571.00",broening,10:30:00 AM,6,
+https://www.imdb.com/title/tt1457767/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_conj,The Conjuring,James Wan,2013,7.5,horror,thriller,1,52,"20,000,000.00","320,415,166.00",Nemo,12:00:00 PM,7.9,
+https://www.imdb.com/title/tt14864160/?ref_=nv_sr_srsg_0_tt_1_nm_0_in_0_q_jiaomatanghui,A New Old Play,Qiu Jiongjiong,2021,7.6,drama,,2,59,,"9,027.00",Frank,10:30:00 AM,8,
+https://www.imdb.com/title/tt1517268/,Barbie,Greta Gerwig,2023,6.8,comedy,adventure,1,54,"100,000,000.00","1,445,638,421.00",fredner,9:00:00 AM,8.5,Watched at a theater in DC
+https://www.imdb.com/title/tt1517268/?ref_=fn_al_tt_1,Barbie,Greta Gerwig,2023,6.8,comedy,adventure,1,54,"100,000,000.00","1,445,638,421.00",halleluya,9:00:00 AM,7.5,
+https://www.imdb.com/title/tt1517268/?ref_=nv_sr_srsg_3_tt_3_nm_5_in_0_q_barbi,Barbie,Greta Gerwig,2023,6.8,comedy,fantasy,1,54,"100,000,000.00","1,445,638,421.00",Paige,12:00:00 PM,7.5,
+https://www.imdb.com/title/tt15239678/?ref_=chttp_t_45,Dune: Part Two,Denis Villeneuve,2024,8.5,sci-fi,adventure,2,46,"190,000,000.00","711,844,358.00",spider,9:00:00 AM,7,Watched in theatre
+https://www.imdb.com/title/tt15239678/?ref_=fn_al_tt_1,Dune: Part Two,Denis Villeneuve,2024,8.5,sci-fi,adventure,2,46,"190,000,000.00","711,844,358.00",holden,9:00:00 AM,9,
+https://www.imdb.com/title/tt15239678/?ref_=tt_tpks_tt_t_23_pd_detail_2_pbr_ic,Dune: Part Two,Denis Villeneuve,2024,8.5,adventure,sci-fi,2,46,"190,000,000.00","711,844,358.00",qing,10:30:00 AM,9.5,
+https://www.imdb.com/title/tt15314262/?ref_=nv_sr_srsg_0_tt_6_nm_2_in_0_q_the%2520bee,The Beekeeper,David Ayer,2024,6.3,action,crime,1,45,"40,000,000.00","152,720,535.00",Lance,12:00:00 PM,2,"""We have John Wick at home"""
+https://www.imdb.com/title/tt15398776/,Oppenheimer,Christopher Nolan,2023,8.3,drama,documentary,3,0,"100,000,000.00","975,571,154.00",nomar,9:00:00 AM,8.5,
+https://www.imdb.com/title/tt15398776/?ref_=nv_sr_srsg_0_tt_2_nm_6_in_0_q_oppenhei,Oppenheimer,Christopher Nolan,2023,8.3,documentary,drama,3,0,"100,000,000.00","975,571,154.00",meklet,9:00:00 AM,8.3,
+https://www.imdb.com/title/tt15474916/?ref_=nv_sr_srsg_1_tt_7_nm_0_in_0_q_smile,Smile,Parker Finn,2022,6.5,horror,mystery,1,55,"17,000,000.00","105,935,048.00",Damien,12:00:00 PM,8.5,
+https://www.imdb.com/title/tt1606389/?ref_=tt_sims_tt_t_2,The Vow,Michael Sucsy,2012,6.8,drama,romance,1,44,"30,000,000.00","196,114,570.00",Sumina,10:30:00 AM,9,"Good love story... I think, it's been a while"
+https://www.imdb.com/title/tt1606389/?ref_=tt_sims_tt_t_2,Muppet Treasure Island,Brian Henson,1996,6.9,musical,comedy,1,39,,"34,327,391.00",gloria,10:30:00 AM,8,
+https://www.imdb.com/title/tt16426418/,Challengers,Luca Guadagnino,2024,7.2,drama,romance,2,11,"55,000,000.00","94,219,408.00",name,10:30:00 AM,7,"Very entertaining, you'll dislike every character"
+https://www.imdb.com/title/tt16426418/?ref_=nv_sr_srsg_0_tt_6_nm_2_in_0_q_Challen,Challengers,Luca Guadagnino,2024,7.2,drama,romance,2,11,"55,000,000.00","94,219,408.00",meklet,9:00:00 AM,8,
+https://www.imdb.com/title/tt16426418/?ref_=nv_sr_srsg_0_tt_6_nm_2_in_0_q_challen,Challengers,Luca Guadagnino,2024,7.2,drama,romance,2,11,"55,000,000.00","94,219,408.00",aw,10:30:00 AM,9,
+https://www.imdb.com/title/tt1670345/?ref_=tt_sims_tt_i_11,Now You See Me,Louis Leterrier,2013,7.2,crime,thriller,1,55,"75,000,000.00","351,723,989.00",karen,10:30:00 AM,8.5,
+https://www.imdb.com/title/tt1690953/,Despicable Me 2,Pierre Coffin,2013,7.3,family,comedy,1,38,"76,000,000.00","970,766,005.00",Jackson,9:00:00 AM,9,Watched at home
+https://www.imdb.com/title/tt1745960/?ref_=chttp_t_142,Top Gun: Maverick,Joseph Kosinski,2022,8.2,action,drama,2,10,"170,000,000.00","718,732,821.00",Damien,12:00:00 PM,8.5,
+https://www.imdb.com/title/tt1843303/,The VelociPastor,Brendan Steere,2018,5.1,action,horror,1,15,"11,000.00",,Grace,10:30:00 AM,2,Highly recommend watching with your family to ruin their weekend
+https://www.imdb.com/title/tt18925334/?ref_=nv_sr_srsg_0_tt_5_nm_3_in_0_q_pearl,Pearl,Ti West,2022,7,horror,thriller,1,43,"1,000,000.00","9,847,490.00",halleluya,9:00:00 AM,7,
+https://www.imdb.com/title/tt1981677/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_pitch%2520perfe,Pitch Perfect,Jason Moore,2012,7.1,comedy,music,1,52,"17,000,000.00","115,647,737.00",Nemo,12:00:00 PM,8.5,
+https://www.imdb.com/title/tt2049403/?ref_=hm_top_tt_t_5,Beetlejuice ,Tim Burton,2024,7,comedy,fantasy,1,45,"100,000,000.00","329,848,382.00",Katharine,9:00:00 AM,7,watched in theatre in RI
+https://www.imdb.com/title/tt2091935/?ref_=fn_al_tt_1,Mr. Right,Paco Cabezas,2015,6.3,action,comedy,1,35,"8,000,000.00","607,595.00",anika,9:00:00 AM,7.5,
+https://www.imdb.com/title/tt2096673/?ref_=nv_sr_srsg_3_tt_8_nm_0_in_0_q_ins,Inside Out,Pete Doctor ,2015,8.1,adventure,animation,1,35,"175,000,000.00","859,076,254.00",Jack ,9:00:00 AM,9,Watched at home
+https://www.imdb.com/title/tt22022452/?ref_=hm_fanfav_tt_t_13_pd_fp1_r,Inside Out 2,Kelsey Mann,2024,7.7,animation,adventure,1,36,"200,000,000.00","1,682,636,477.00",Katharine,9:00:00 AM,8.7,watched in theatre in RI
+https://www.imdb.com/title/tt2267998/?ref_=nv_sr_srsg_0_tt_7_nm_1_in_0_q_gone%2520,Gone Girl,David Fincher,2014,8.1,thriller,mystery,2,29,"61,000,000.00","370,890,259.00",Abbott,12:00:00 PM,8,
+https://www.imdb.com/title/tt2293640/,Minions ,Pierre Coffin,2015,6.4,family,comedy,1,31,"74,000,000.00","1,159,457,503.00",Jackson,9:00:00 AM,8,Watched at home
+https://www.imdb.com/title/tt2294629/?ref_=fn_al_tt_1,Frozen,"Chris Buck, Jennifer Lee",2013,7.4,family,fantasy,1,42,"150,000,000.00","1,306,000,529.00",halleluya,9:00:00 AM,9,
+https://www.imdb.com/title/tt23468450/?ref_=nv_sr_srsg_2_tt_8_nm_0_in_0_q_long%2520legs,Longlegs,Osgood Perkins,2024,6.8,horror,thriller,1,41,,"108,507,787.00",Jason,12:00:00 PM,3,Terrible movie. Enough said.
+https://www.imdb.com/title/tt23849204/?ref_=chttp_t_60,12th Fail,Vidhu Vinod Chopra,2023,8.9,documentary,drama,2,27,,,patel,9:00:00 AM,9,
+https://www.imdb.com/title/tt2404463/?ref_=fn_al_tt_1,The Heat,Paul Feig,2013,6.6,crime,comedy,1,57,"43,000,000.00","229,930,771.00",anika,9:00:00 AM,8.5,
+https://www.imdb.com/title/tt2543164/,Arrival,Denis Villeneuve,2016,7.9,sci-fi,drama,1,56,"47,000,000.00","203,389,228.00",Daniel,12:00:00 PM,7.2,
+https://www.imdb.com/title/tt2582802/?ref_=chttp_t_39,Whiplash,Damien Chazelle,2014,8.5,drama,music,1,46,"3,300,000.00","50,027,913.00",patel,9:00:00 AM,8.5,
+https://www.imdb.com/title/tt26047818/?ref_=tt_sims_tt_t_10,Anyone But You,Will Gluck,2023,6.1,comedy,romance,1,43,"25,000,000.00","220,242,225.00",Katharine,9:00:00 AM,6,watched at home
+https://www.imdb.com/title/tt26753003/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_trap,Trap,M. Night Shyamalan,2024,6,horror,thriller,1,45,,"81,644,767.00",Joe,12:00:00 PM,1,"Horrible, corniest thing ever. Me and Jason couldn't finish it."
+https://www.imdb.com/title/tt2771200/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_beauty%2520and,Beauty and the Beast,Bill Condon,2017,7.1,family,romance,2,9,"160,000,000.00","1,266,115,964.00",fredner,10:30:00 AM,,
+https://www.imdb.com/title/tt2820852/?ref_=tt_sims_tt_i_2,Fast & Furious 7,James Wan,2015,7.1,action,crime,2,17,"190,000,000.00","1,515,342,457.00",Michael Z,9:00:00 AM,9.5,Watched in theatre
+https://www.imdb.com/title/tt2872732/?ref_=fn_al_tt_1,Lucy,Luc Besson,2014,6.4,action,sci-fi,1,29,"40,000,000.00","469,058,574.00",Jasmine,10:30:00 AM,9,I like the fictional theories and physics behind the movie
+https://www.imdb.com/title/tt32615298/?ref_=ext_shr_lnk,Lobola Man,Thabang Moleya,2024,4.5,comedy,romance,1,48,,,Laeticia,12:00:00 PM,7.8,
+https://www.imdb.com/title/tt3291150/?ref_=nm_flmg_job_1_cred_t_2,Expend4bles,Scott Waugh,2023,4.8,action,crime,1,43,"100,000,000.00","37,917,985.00",Michael Z,9:00:00 AM,7.8,Watched in theatre
+https://www.imdb.com/title/tt3469046/,Despicable Me 3,Pierre Coffin,2017,6.2,family,comedy,1,29,"80,000,000.00","1,034,800,131.00",Jackson,9:00:00 AM,7,Watched with my buddy Jeff
+https://www.imdb.com/title/tt3811906/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_maligna,Malignant,James Wan,2021,6.2,horror,mystery,1,51,"40,000,000.00","34,891,791.00",Aaron,12:00:00 PM,8,
+https://www.imdb.com/title/tt3915174/,Puss in Boots: The Last Wish,Joel Crawford,2022,7.8,animation,adventure,1,42,"90,000,000.00","481,757,663.00",Anna,10:30:00 AM,9,Saw in theatres and loved the animation style
+https://www.imdb.com/title/tt4225622/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_the%2520babysitter,The Babysitter,McG,2017,6.4,horror,comedy,1,25,,,Grace,10:30:00 AM,6,"Trash horror, the best kind"
+https://www.imdb.com/title/tt4267026/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_hell%2520house%2520llc,Hell House LLC,Stephen Cognetti,2015,6.4,horror,mystery,1,33,,,Aaron,12:00:00 PM,8.5,
+https://www.imdb.com/title/tt4364194/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_peanut%2520butter%2520,The Peanut Butter Falcon,Tyler Nilson,2019,7.6,comedy,adventure,1,37,"6,200,000.00","23,712,097.00",Gretchen,12:00:00 PM,8.4,Such a good feel movie
+https://www.imdb.com/title/tt4500922/,Maze Runner The Death Cure,Wes Ball,2018,6.3,action,adventure,2,23,"62,000,000.00",,Jasmine,10:30:00 AM,7,A good ending to the series
+https://www.imdb.com/title/tt4698684/,Hunt for the Wilderpeople,Taika Waititi,2016,7.8,comedy,adventure,1,41,"2,500,000.00","38,560,308.00",gracie,12:00:00 PM,9,goodbye ricky baker
+https://www.imdb.com/title/tt4846340/?ref_=ext_shr_lnk,Hidden Figures,Theodore Melfi,2016,7.8,drama,history,2,7,"25,000,000.00","235,957,472.00",Laeticia,12:00:00 PM,8,
+https://www.imdb.com/title/tt4972582/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_split,Split,M. Night Shyamalan,2016,7.2,thriller,thriller,1,57,"9,000,000.00","278,454,417.00",kay,9:00:00 AM,9,
+https://www.imdb.com/title/tt5027774/?ref_=nv_sr_srsg_0_tt_7_nm_1_in_0_q_three%2520bil,"Three Billboards Outside Ebbing, Missouri",Martin McDonagh,2017,8.1,drama,comedy,1,55,"15,000,000.00","162,729,321.00",holden,9:00:00 AM,9,
+https://www.imdb.com/title/tt5052448/?ref_=ext_shr_lnk,Get Out,Jordan Peele,2017,7.8,horror,mystery,1,44,"4,500,000.00","255,751,443.00",Laeticia,12:00:00 PM,9,craziest plot twists!
+https://www.imdb.com/title/tt5052448/?ref_=nm_flmg_job_1_cred_c_3,Get Out,Jordan Peele,2017,7.8,thriller,horror,1,44,"4,500,000.00","255,751,443.00",meklet,9:00:00 AM,8.5,
+https://www.imdb.com/title/tt5113044/,Minions: The Rise of Gru,Kyle Balda,2022,6.5,family,comedy,1,29,"80,000,000.00","940,203,765.00",Jackson,9:00:00 AM,8.6,Watched with my buddy Jeff
+https://www.imdb.com/title/tt5164214/?ref_=nv_sr_srsg_1_tt_8_nm_0_in_0_q_oceans%25208,Ocean's Eight,Gary Ross,2018,6.3,action,comedy,1,50,"70,000,000.00","297,795,726.00",gigi,9:00:00 AM,8,
+https://www.imdb.com/title/tt5325452/?ref_=nv_sr_srsg_6_tt_5_nm_3_in_0_q_Boo!,Boo! A Madea Halloween,Tyler Perry,2016,4.7,comedy,horror,1,43,"20,000,000.00","74,827,344.00",meklet,9:00:00 AM,6.5,
+https://www.imdb.com/title/tt5439796/,Logan Lucky,Steven Soderbergh,2017,7,action,heist,1,58,"29,000,000.00","48,453,605.00",gracie,12:00:00 PM,8,appalachian Oceans 11
+https://www.imdb.com/title/tt5688932/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_sorry%2520to%2520bo,Sorry to Bother You,Boots Riley,2018,6.9,drama,comedy,1,52,"3,200,000.00","18,170,707.00",brett,12:00:00 PM,10,I've seen it 12 times
+https://www.imdb.com/title/tt6263850/?ref_=nv_sr_srsg_0_tt_6_nm_2_in_0_q_dea,Deadpool & Wolverine,Shawn Levy,2024,8,action,comedy,2,8,"200,000,000.00","1,316,684,625.00",sky,10:30:00 AM,9,
+https://www.imdb.com/title/tt6263850/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_deadpo,Deadpool & Wolverine,Shawn Levy,2024,8,comedy,action,2,8,"200,000,000.00","1,316,684,625.00",anika,9:00:00 AM,9.5,
+https://www.imdb.com/title/tt6710474/,Everything Everywhere All at Once,Daniel Kwan,2022,7.8,adventure,comedy,2,19,"14,300,000.00","143,412,671.00",broening,10:30:00 AM,8,
+https://www.imdb.com/title/tt6710474/,Everything Everywhere All at Once,Daniel Kwan,2022,7.8,sci-fi,action,2,19,"14,300,000.00","143,412,671.00",Marian,12:00:00 PM,9.5,
+https://www.imdb.com/title/tt6751668/?ref_=tt_mv_close,Parasite,Bong Joon Ho,2019,8.5,horror,thriller,2,12,"11,400,000","11,400,000",Keyli,9:00:00 AM,8,
+https://www.imdb.com/title/tt6806448/?ref_=fn_al_tt_2,Fast & Furious Presents: Hobbs & Shaw,David Leitch,2019,6.5,action,crime,2,17,"200,000,000.00","760,732,926.00",Michael Z,9:00:00 AM,9,Watched in theatre
+https://www.imdb.com/title/tt6857112/?ref_=fn_al_tt_2,US,Jordan Peele,2019,6.8,horror,mystery,1,56,"20,000,000.00","256,071,218.00",halleluya,9:00:00 AM,9.5,
+https://www.imdb.com/title/tt6966692/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_the%2520green%2520book,Green Book,Peter Farrelly,2018,8.2,drama,documentary,2,10,"23,000,000.00","85,080,171.00",Leah,10:30:00 AM,9,
+https://www.imdb.com/title/tt6980988/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_treasures%2520from%2520the,Treasures from the Wreck of the Unbelievable ,Sam Hobkinson,2017,6,documentary,,1,30,,,gigi,9:00:00 AM,,
+https://www.imdb.com/title/tt7394674/?ref_=nv_sr_srsg_0_tt_8_nm_0_in_0_q_blood%2520quan,Blood Quantum,Jeff Barnaby,2019,5.6,drama,horror,1,38,"5,500,000.00","30,132.00",gigi,9:00:00 AM,,
+https://www.imdb.com/title/tt7510222/,Despicable Me 4,Chris Renaud,2024,6.2,family,comedy,1,34,"100,000,000.00","948,140,610.00",Jackson,9:00:00 AM,7,Watched with my buddy Jeff
+https://www.imdb.com/title/tt7533152/?ref_=ext_shr_lnk,The Boy Who Harnessed The Wind,Chiwetel Ejiofor,2019,7.6,drama,history,1,53,,,Laeticia,12:00:00 PM,8.5,Beautiful and inspiring movie
+https://www.imdb.com/title/tt7939766/,I'm Thinking of Ending Things,Charlie Kaufman,2020,6.5,horror,drama,2,14,,,broening,10:30:00 AM,8.5,
+https://www.imdb.com/title/tt7984734/,The Lighthouse,Robert Eggers,2019,7.4,drama,comedy,1,49,"11,000,000.00","18,129,854.00",fredner,9:00:00 AM,8.8,Watched at The Byrd Theatre
+https://www.imdb.com/title/tt8772262/,Midsommar,Ari Aster,2019,7.1,horror,thriller,2,28,"9,000,000.00","48,015,416.00",Marian,12:00:00 PM,8,
+https://www.imdb.com/title/tt9114286/?ref_=fn_al_tt_1,Black Panther: Wakanda Forever,Ryan Coogler,2018,7.3,action,action,2,14,"200,000,000.00","1,349,926,083.00",halleluya,9:00:00 AM,9,some random theater in NoVA
+https://www.imdb.com/title/tt9362722/,Spider-Man: Across the Spiderverse,Joaquim Dos Santos,2023,8.6,action,animation,2,20,"150,000,000.00","690,824,738.00",Marian,12:00:00 PM,9,
+https://www.imdb.com/title/tt9586294/,Better Days,Derek Tsang,2019,7.6,crime,drama,2,15,,"227,011,328.00",Jasmine,10:30:00 AM,9,Very emotional movie
+https://www.imdb.com/title/tt9620288/?ref_=fn_al_tt_1,King Richard ,Reinaldo Marcus Green,2021,7.5,sport,drama,2,24,"50,000,000.00","39,429,285.00",Lara,12:00:00 PM,8.5,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,Keyli,9:00:00 AM,6,
