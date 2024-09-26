@@ -1,0 +1,211 @@
+---
+title: "Table Joins"
+subtitle: "DSST 289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+date-format: long
+echo: true
+format:
+  revealjs:
+    logo: "images/by-sa.png"
+    footer: "https://fredner.org"
+    embed-resources: true
+    scrollable: true
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+
+# From "knitting" to "rendering"
+
+- You may have noticed that the latest RStudio update changed **Knit** to **Render**
+- This is part of [the shift](https://quarto.org/docs/faq/rmarkdown.html#quarto-sounds-similar-to-r-markdown.-what-is-the-difference-and-why-create-a-new-project) from `.Rmd` to `.qmd` notebooks
+- `.qmd` refers to the [Quarto](https://quarto.org) format, the successor to `.Rmd`
+- `.qmd` notebooks are *essentially the same* as `.Rmd`
+- We're going to try `.qmd` for today's notebook
+- If you have not yet updated:
+  - RStudio > Help > Check for Updates
+
+# Overview
+
+- One of the most common tasks in data science is **joining** data from two or more datasets.
+- To do this, we need to identify a **key** common between the datasets.
+- A **key** uniquely identifies an observation.
+
+
+# "Key" terms
+
+## Primary key
+
+- A **primary key** is a feature or group of features that uniquely identifies a row in a dataset.
+- Example: In a dataset of students, the `student_id` might be a primary key.
+
+
+
+## Foreign key
+
+- A **foreign key** is a primary key from another table that appears in the current table.
+- It allows us to link tables together based on relationships.
+
+
+
+## Relation
+
+- A relation is the association between a primary key and a foreign key.
+- It allows us to map rows from one table to rows in another table.
+
+## Table join
+
+- A table join combines two tables based on relations.
+- Match up a foreign key in one table with the primary key in another table.
+- The goal is to add new columns from one dataset into another.
+
+# Data
+
+## Students
+
+```{r}
+library(tidyverse)
+
+students <- tibble(
+  student_id = 9991:9995,
+  name = c("Alice", "Bob", "Charlie", "David", "Eva"),
+  major = c("Math", "Physics", "Chemistry", "Biology", "Math")
+)
+students
+```
+
+
+## Majors
+
+```{r}
+majors <- tibble(
+  major = c("Math", "Physics", "Chemistry", "Biology"),
+  department = c("Mathematics", "Physics",
+                 "Chemistry", "Biological Sciences"),
+  building = c("Math Building", "Physics Building",
+               "Chemistry Building", "Biology Building")
+)
+majors
+```
+
+
+
+# Joining data by key
+
+```{r}
+students |>
+  left_join(majors, by = "major")
+```
+
+
+
+## Explanation of keys
+
+- In the `majors` dataset, `major` is a primary key.
+- In the `students` dataset, `major` is a foreign key.
+- The `left_join` adds the columns from `majors` to `students`, matching rows where `major` is the same.
+
+## Joining a single column
+
+If you only want to add one column, you select the column you want *plus* the key.
+
+```{r}
+students |>
+  left_join(majors |> select(major, building), by = "major")
+```
+
+
+
+## Joins with missing matches
+
+Let's add a student with a major not in our `majors` dataset.
+
+```{r}
+#| code-line-numbers: "1-5|7-8|10-11"
+#| output-location: fragment
+new_student <- tibble(
+  student_id = 9996,
+  name = "Felix",
+  major = "History"
+)
+
+# bind_rows adds a new row to the students dataset:
+students_new <- bind_rows(students, new_student)
+
+students_new |>
+  left_join(majors, by = "major")
+```
+
+
+
+# Inner and full joins
+
+- **left_join**: Keeps all rows from the left table, adds matching rows from the right table.
+- **right_join**: Keeps all rows from the right table, adds matching rows from the left table.
+- **inner_join**: Keeps only rows that have matches in both tables.
+- **full_join**: Keeps all rows from both tables, fills with NA where there's no match.
+
+
+
+## Inner join example
+
+:::{.callout-note}
+Felix is not included in the output. There are no `NA` values.
+:::
+
+```{r}
+students_new |>
+  inner_join(majors, by = "major")
+```
+
+## Full join example
+
+```{r}
+students_new |>
+  full_join(majors, by = "major")
+```
+
+
+# Filter joins
+
+- **semi_join**: Keeps all rows from the left table where there are matching values in the right table.
+- **anti_join**: Keeps all rows from the left table where there are **no** matching values in the right table.
+- Neither adds columns from the right table to the result.
+
+## More data: lab requirements
+
+```{r}
+major_labs <- tibble(
+  major = c("Physics", "Chemistry", "Biology"),
+  n_labs = c(1, 2, 3)
+)
+major_labs
+```
+
+
+## Semi-join example
+
+:::{.callout-note}
+The `n_labs` column from `major_labs` is *not* included.
+:::
+
+```{r}
+students_new |>
+  semi_join(major_labs, by = "major")
+```
+
+## Anti-join example
+
+```{r}
+students_new |>
+  anti_join(major_labs, by = "major")
+```
+
+
+# Summary
+
+- Understanding primary keys and foreign keys is essential for joining tables.
+- `left_join` is the most commonly used join.
+- Be mindful of missing matches and how different joins handle them.

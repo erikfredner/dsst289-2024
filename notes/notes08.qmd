@@ -2,7 +2,7 @@
 title: "08. Data Feminism"
 subtitle: "DSST289: Introduction to Data Science"
 author: "Erik Fredner"
-date: "`r Sys.Date()`"
+date: today
 format:
   html:
     embed-resources: true

@@ -1,0 +1,210 @@
+---
+title: "Notebook 09"
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+highlight-style: arrow
+format:
+  html:
+    anchor-sections: true
+    code-tools: true
+    df-print: paged
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+editor:
+  markdown:
+    wrap: 72
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Getting Started
+
+Before running this notebook, select **Session > Restart R and Clear Output**.
+
+After starting a new session, run the following code to load the libraries and data we'll use today.
+
+```{r}
+#| warning: false
+#| message: false
+library(tidyverse)
+library(ggrepel)
+```
+
+# Flights
+
+## Datasets
+
+In this notebook, we'll work with several data tables about commercial flights that departed from Richmond International Airport (RIC) in 2019. The data are in five tables that can be joined using different keys. Most variables are self-explanatory; ask if you have any questions.
+
+There is a table of airlines:
+
+```{r}
+#| message: false
+airlines <- read_csv("../data/flightsrva_airlines.csv.gz")
+airlines
+```
+
+A table of airports:
+
+```{r}
+#| message: false
+airports <- read_csv("../data/flightsrva_airports.csv.gz")
+airports
+```
+
+A table of flights:
+
+```{r}
+#| message: false
+flights <- read_csv("../data/flightsrva_flights.csv.gz") |>
+  select(-time_hour) # removing for now until we discuss datetime objects
+flights
+```
+
+A table of planes:
+
+```{r}
+#| message: false
+planes <- read_csv("../data/flightsrva_planes.csv.gz")
+planes
+```
+
+And a table of weather:
+
+```{r}
+#| message: false
+weather <- read_csv("../data/flightsrva_weather.csv.gz") |>
+  select(-time_hour) # removing for now until we discuss datetime objects
+weather
+```
+
+Before you proceed, take a moment to determine what (if any) is the primary
+key of each table. 
+
+:::{.callout-tip}
+Don't forget that you can click the table names in your Environment window (top-right quadrant of RStudio) to see the tables.
+:::
+
+## Carriers
+
+In the first question, create a barplot showing the number of flights each 
+carrier made in 2019 out of RIC. Order the barplot in descending order of the
+count of flights. Put the count on the x-axis and the airline on the y-axis.
+
+:::{.callout-note}
+This line may help: `mutate(carrier = fct_inorder(carrier))`
+:::
+
+```{r, question-01}
+```
+
+
+The plot above is hard to read because you may not know all the airline `carrier` codes.
+
+Repeat the plot using the full airline names on the y-axis instead of carrier codes. Use a `left_join` with the `airlines` dataset to obtain the full names.
+
+```{r, question-02}
+```
+
+Do you recognize the carrier with the most flights out of the city?
+
+## Destinations
+
+Now, produce a similar barplot counting the number of outbound flights from RIC based on the flight's destination. Put the destination code on the y-axis,
+counts on the x-axis, and order in descending order of count.
+
+```{r, question-03}
+```
+
+Airport codes are a bit easier to figure out than airline codes, but you might still only know the top few from the previous plot. Modify your plot to use the full airport names on the y-axis instead of destination codes. Join with the `airports` data to obtain the full names.
+
+Be careful with this; it is slightly more difficult than the
+join you did in question 2. You will need to use the `faa` column. "FAA" stands for the Federal Aviation Administration.
+
+```{r, question-04}
+```
+
+The `airports` table has longitude and latitude in addition to the airport
+names. Let's create a plot with longitude on the x-axis, latitude on the y-axis,
+and a point for each airport that had outbound flights from RIC in 2019. Make
+the size of the points scale with the number of flights and add text labels to
+give the airport FAA code for each city.
+Finally, use `labs` to add proper labels to the aesthetics and a title.
+
+```{r, question-05}
+```
+
+Let's add one more element to the plot above. In the code below, modify the 
+previous plot by including a large red dot showing RIC airport.
+
+```{r, question-06}
+```
+
+## Planes
+
+Take the `flights` table and join to the `planes` table using the key `tailnum`.
+Look at the resulting data, especially the name of the first column, and compare it to the first column in the original `flights` table.
+
+```{r, question-07}
+```
+
+Both `flights` and `planes` have a column called `year`. When this happens, by default, they will both be included in the join with names following the pattern `year.x` and `year.y`.
+
+In these datasets, `year` means different things. In `flights`, `year` is the year of the flight; in `planes`, it's the year the plane was built.
+
+Repeat the last question but add the option
+`suffix = c("", "_plane")` to the `left_join` function. Look at the new column names and see how this solved the problem.
+
+```{r, question-08}
+```
+
+Using the joined data, create a bar plot showing the number of flights from RIC for each plane's manufacturing year (`year_plane`). Place `year_plane` on the x-axis in chronological order (do not reorder by frequency). Do you notice any patterns?
+
+```{r, question-09}
+```
+
+## Weather
+
+Join the `flights` and `weather` tables below. You'll need **5** columns to properly define the join.
+
+```{r, question-10}
+```
+
+## `cut()`
+
+The [`cut` function](https://r4ds.hadley.nz/numbers.html#cutting-numbers-into-ranges) takes two arguments: a numeric variable and the number of buckets. It converts numeric values into ordered categories by binning them into equally sized intervals.
+
+Next, join the `flights` and `weather` tables, and create a new variable that cuts `wind_gust` into 10 buckets. Take a moment to examine and understand the output.
+
+```{r, question-11}
+```
+
+Starting with your code above, group the data by wind gust buckets. Then compute the average flight delay and the number of flights in each bucket (remember to remove missing values in the `mean` function). Create a scatter plot showing average delay on the x-axis, wind categories on the y-axis, and use point size to represent the number of flights.
+
+```{r, question-12}
+```
+
+Does there appear to be a relationship between high wind speeds and departure delays?
+
+## Big Planes
+
+To finish, let's see how we can make use of a filter join. Create a table called `big_planes` that contains only planes with more than 200 seats.
+
+```{r, question-13}
+```
+
+Repeat the code from question 4 to create a bar plot showing the number of flights to each destination, but only include flights taken by planes with more than 200 seats. Use a [filter join](https://r4ds.hadley.nz/joins.html#filtering-joins) with `big_planes` to filter the flights.
+
+```{r, question-14}
+```
+
+Where are all of the big that depart from RIC going?
+
+:::{.answer}
+Your answer here.
+:::

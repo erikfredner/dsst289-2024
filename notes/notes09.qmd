@@ -3,11 +3,16 @@ title: "09. Table Joins"
 subtitle: "DSST289: Introduction to Data Science"
 author: "Erik Fredner"
 date: today
+highlight-style: arrow
 format:
   html:
-    embed-resources: true
-    link-external-newwindow: true
+    anchor-sections: true
+    code-tools: true
     df-print: paged
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
     smooth-scroll: true
     toc: true
 editor:
@@ -224,7 +229,7 @@ to select rows in the first (left) table:
 
 These are useful for several tasks and will come up now and then.
 
-## Homework questions
+# Homework questions
 
 1. Hand-write a dataset that consists of at least two different tables where one table has a primary key that appears as a foreign key in the other table. The tables do not need to be large (10 rows between both tables is more than
 enough), and the subject of the tables is up to you. Be creative. Don't

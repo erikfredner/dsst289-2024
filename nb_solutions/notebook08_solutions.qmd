@@ -2,7 +2,6 @@
 title: "Notebook 08 -- Solutions"
 subtitle: "DSST289: Introduction to Data Science"
 date: today
-date-format: long
 format:
   html:
     embed-resources: true
@@ -13,7 +12,6 @@ format:
 editor_options:
   markdown:
     wrap: 72
-  chunk_output_type: inline
 ---
 
 # Getting Started
@@ -167,20 +165,29 @@ each major, one for the 25th percentile of earnings and another for the 75th
 percentile of earnings. Color the 25th percentile in `"olivedrab"` and the 75th
 percentile `"navy"`. Order the majors based on earnings from smallest to largest.
 
-Note: There are at least two different ways to do this task. Either is fine,
-but try to do it without creating a second dataset using `mutate` and `if_else`
-to construct a new color variable.
+There are multiple ways to do this task. Try to do it using `mutate` and `if_else` to construct a new color variable in your dataset. Then, use `scale_color_identity()` to map the selected colors to the points.
 
 ```{r, fig.height=10, question-05}
 majors |>
   filter(percentile %in% c(25, 75)) |>
   arrange(earnings) |>
-  mutate(major = fct_inorder(major)) |>
-  mutate(color = if_else(percentile == 25, "olivedrab", "navy")) |>
-  ggplot(aes(earnings, major)) +
-  geom_point(aes(color = color)) +
+  mutate(major = fct_inorder(major),
+         color = if_else(percentile == 25, "olivedrab", "navy")) |>
+  ggplot(aes(earnings, major, color = color)) +
+  geom_point() +
   scale_color_identity()
 ```
+
+```{r, fig.height=10}
+majors |>
+  filter(percentile %in% c(25, 75)) |>
+  arrange(earnings) |> 
+  mutate(color = if_else(percentile == 25, "olivedrab", "navy")) |>
+  ggplot(aes(earnings, fct_reorder(major, earnings), color = color)) +
+  geom_point() +
+  scale_color_identity()
+```
+
 
 Repeat the previous question but produce a plot showing the 10th and 90th
 percentiles of each major.
@@ -189,8 +196,8 @@ percentiles of each major.
 majors |>
   filter(percentile %in% c(10, 90)) |>
   arrange(earnings) |>
-  mutate(major = fct_inorder(major)) |>
-  mutate(color = if_else(percentile == 10, "olivedrab", "navy")) |>
+  mutate(major = fct_inorder(major),
+         color = if_else(percentile == 10, "olivedrab", "navy")) |>
   ggplot(aes(earnings, major)) +
   geom_point(aes(color = color)) +
   scale_color_identity()

@@ -4358,25 +4358,23 @@ window.onload = function() {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">1</span> Overview</a>
   <ul class="collapse">
-  <li><a href="#primary-key" id="toc-primary-key" class="nav-link" data-scroll-target="#primary-key">Primary Key</a></li>
-  <li><a href="#foreign-key" id="toc-foreign-key" class="nav-link" data-scroll-target="#foreign-key">Foreign Key</a></li>
-  <li><a href="#relation" id="toc-relation" class="nav-link" data-scroll-target="#relation">Relation</a></li>
-  <li><a href="#table-join" id="toc-table-join" class="nav-link" data-scroll-target="#table-join">Table Join</a></li>
+  <li><a href="#primary-key" id="toc-primary-key" class="nav-link" data-scroll-target="#primary-key"><span class="header-section-number">1.1</span> Primary Key</a></li>
+  <li><a href="#foreign-key" id="toc-foreign-key" class="nav-link" data-scroll-target="#foreign-key"><span class="header-section-number">1.2</span> Foreign Key</a></li>
+  <li><a href="#relation" id="toc-relation" class="nav-link" data-scroll-target="#relation"><span class="header-section-number">1.3</span> Relation</a></li>
+  <li><a href="#table-join" id="toc-table-join" class="nav-link" data-scroll-target="#table-join"><span class="header-section-number">1.4</span> Table Join</a></li>
   </ul></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">2</span> Examples</a>
   <ul class="collapse">
-  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
-  <li><a href="#joining-data-by-key" id="toc-joining-data-by-key" class="nav-link" data-scroll-target="#joining-data-by-key">Joining data by key</a></li>
-  <li><a href="#joining-a-single-column" id="toc-joining-a-single-column" class="nav-link" data-scroll-target="#joining-a-single-column">Joining a single column</a></li>
-  <li><a href="#using-joined-data" id="toc-using-joined-data" class="nav-link" data-scroll-target="#using-joined-data">Using joined data</a></li>
-  <li><a href="#joins-with-missing-matches" id="toc-joins-with-missing-matches" class="nav-link" data-scroll-target="#joins-with-missing-matches">Joins with missing matches</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="header-section-number">2.1</span> Data</a></li>
+  <li><a href="#joining-data-by-key" id="toc-joining-data-by-key" class="nav-link" data-scroll-target="#joining-data-by-key"><span class="header-section-number">2.2</span> Joining data by key</a></li>
+  <li><a href="#joining-a-single-column" id="toc-joining-a-single-column" class="nav-link" data-scroll-target="#joining-a-single-column"><span class="header-section-number">2.3</span> Joining a single column</a></li>
+  <li><a href="#using-joined-data" id="toc-using-joined-data" class="nav-link" data-scroll-target="#using-joined-data"><span class="header-section-number">2.4</span> Using joined data</a></li>
+  <li><a href="#joins-with-missing-matches" id="toc-joins-with-missing-matches" class="nav-link" data-scroll-target="#joins-with-missing-matches"><span class="header-section-number">2.5</span> Joins with missing matches</a></li>
   </ul></li>
-  <li><a href="#inner-and-outer-joins" id="toc-inner-and-outer-joins" class="nav-link" data-scroll-target="#inner-and-outer-joins">Inner and outer joins</a>
-  <ul class="collapse">
-  <li><a href="#homework-questions" id="toc-homework-questions" class="nav-link" data-scroll-target="#homework-questions">Homework questions</a></li>
-  </ul></li>
+  <li><a href="#inner-and-outer-joins" id="toc-inner-and-outer-joins" class="nav-link" data-scroll-target="#inner-and-outer-joins"><span class="header-section-number">3</span> Inner and outer joins</a></li>
+  <li><a href="#homework-questions" id="toc-homework-questions" class="nav-link" data-scroll-target="#homework-questions"><span class="header-section-number">4</span> Homework questions</a></li>
   </ul>
 </nav>
 </div>
@@ -4384,7 +4382,7 @@ window.onload = function() {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">09. Table Joins</h1>
+<div class="quarto-title-block"><div><h1 class="title">09. Table Joins</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 <p class="subtitle lead">DSST289: Introduction to Data Science</p>
 </div>
 
@@ -4414,32 +4412,32 @@ window.onload = function() {
 </header>
 
 
-<section id="overview" class="level1">
-<h1>Overview</h1>
+<section id="overview" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Overview</h1>
 <p>One of the most common tasks in data science is <strong>joining</strong> data from two (or more) datasets together.</p>
 <p>To do this, we need to identify a <strong>key</strong> common between the two datasets. This key is a feature that uniquely identifies an observation.</p>
 <p>If you have never joined data together before, these concepts can be confusing, so it may be helpful to read this section multiple times.</p>
-<section id="primary-key" class="level2">
-<h2 class="anchored" data-anchor-id="primary-key">Primary Key</h2>
+<section id="primary-key" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="primary-key"><span class="header-section-number">1.1</span> Primary Key</h2>
 <p>A <a href="https://en.wikipedia.org/wiki/Primary_key">primary key</a> is a feature or group of features (in other words, a column or group of columns) in a dataset that uniquely identifies a row of data. In our food dataset, the feature <code>item</code> is a primary key. In the <code>us</code> dataset, the <code>city</code> and <code>year</code> columns together form a primary key—we need both to uniquely identify one observation.</p>
 </section>
-<section id="foreign-key" class="level2">
-<h2 class="anchored" data-anchor-id="foreign-key">Foreign Key</h2>
+<section id="foreign-key" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="foreign-key"><span class="header-section-number">1.2</span> Foreign Key</h2>
 <p>Likewise, a <a href="https://en.wikipedia.org/wiki/Foreign_key">foreign key</a> is the appearance of a primary key within a different dataset. The <code>food_group</code> feature in the <code>food</code> dataset, for example, could be a foreign key if we had another table with one row describing information about each food group.</p>
 </section>
-<section id="relation" class="level2">
-<h2 class="anchored" data-anchor-id="relation">Relation</h2>
+<section id="relation" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="relation"><span class="header-section-number">1.3</span> Relation</h2>
 <p>A primary key and the corresponding foreign key in another table form a <a href="https://en.wikipedia.org/wiki/Relation_(database)">relation</a>. Typically, a relation maps a single row in one dataset to many rows in another.</p>
 </section>
-<section id="table-join" class="level2">
-<h2 class="anchored" data-anchor-id="table-join">Table Join</h2>
+<section id="table-join" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="table-join"><span class="header-section-number">1.4</span> Table Join</h2>
 <p>A table join is a way of combining two tables based on relations. The goal is to match up a foreign key in one table with the primary key in another table, to add new columns from one dataset into another dataset.</p>
 </section>
 </section>
-<section id="examples" class="level1">
-<h1>Examples</h1>
-<section id="data" class="level2">
-<h2 class="anchored" data-anchor-id="data">Data</h2>
+<section id="examples" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Examples</h1>
+<section id="data" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="data"><span class="header-section-number">2.1</span> Data</h2>
 <p>We’re going to work with a subset of <code>food</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -4451,14 +4449,14 @@ window.onload = function() {
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["item"],"name":[1],"type":["chr"],"align":["left"]},{"label":["food_group"],"name":[2],"type":["chr"],"align":["left"]},{"label":["calories"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["total_fat"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["sat_fat"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["cholesterol"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["sodium"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["carbs"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["fiber"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["sugar"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["protein"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["iron"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["vitamin_a"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["vitamin_c"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["wiki"],"name":[15],"type":["chr"],"align":["left"]},{"label":["description"],"name":[16],"type":["chr"],"align":["left"]},{"label":["color"],"name":[17],"type":["chr"],"align":["left"]}],"data":[{"1":"Potato","2":"vegetable","3":"104","4":"2.0","5":"0.458","6":"0","7":"254","8":"19.36","9":"1.7","10":"0.82","11":"1.66","12":"2","13":"2","14":"12","15":"potato","16":"A plant tuber, <i>Solanum tuberosum<\/i>, eaten as a starchy vegetable, particularly in the Americas and Europe.","17":"white"},{"1":"Tangerine","2":"fruit","3":"53","4":"0.3","5":"0.039","6":"0","7":"2","8":"13.34","9":"1.8","10":"10.58","11":"0.81","12":"1","13":"14","14":"45","15":"tangerine","16":"Any of several varieties of mandarin oranges.","17":"orange"},{"1":"Swordfish","2":"fish","3":"177","4":"8.2","5":"1.959","6":"47","7":"494","8":"0.49","9":"0.0","10":"0.11","11":"23.80","12":"5","13":"5","14":"5","15":"swordfish","16":"A large marine fish with a long, pointed bill, <i>Xiphias gladius<\/i>.","17":"white"},{"1":"Bell Pepper","2":"vegetable","3":"26","4":"0.0","5":"0.059","6":"0","7":"2","8":"6.03","9":"2.0","10":"4.20","11":"0.99","12":"2","13":"63","14":"317","15":"bell_pepper","16":"<i>Capsicum annuum<\/i>, an edible spicy-sweet fruit, originating in the New World.","17":"green"},{"1":"Sour Cream","2":"dairy","3":"214","4":"20.9","5":"13.047","6":"44","7":"53","8":"4.27","9":"0.0","10":"0.16","11":"3.16","12":"0","13":"13","14":"2","15":"sour_cream","16":"Cream which has been treated with a benign bacterium to turn it slightly sour, often used as a condiment, or a topping for baked potatoes.","17":"white"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["item"],"name":[1],"type":["chr"],"align":["left"]},{"label":["food_group"],"name":[2],"type":["chr"],"align":["left"]},{"label":["calories"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["total_fat"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["sat_fat"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["cholesterol"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["sodium"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["carbs"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["fiber"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["sugar"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["protein"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["iron"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["vitamin_a"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["vitamin_c"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["wiki"],"name":[15],"type":["chr"],"align":["left"]},{"label":["description"],"name":[16],"type":["chr"],"align":["left"]},{"label":["color"],"name":[17],"type":["chr"],"align":["left"]}],"data":[{"1":"Cantaloupe","2":"fruit","3":"34","4":"0.1","5":"0.051","6":"0","7":"16","8":"8.16","9":"0.9","10":"7.86","11":"0.84","12":"1","13":"68","14":"61","15":"cantaloupe","16":"A melon of species <i>Cucumis melo subsp. melo<\/i> with sweet orange flesh, with numerous cultivars in several cultivar groups.","17":"orange"},{"1":"Strawberry","2":"fruit","3":"32","4":"0.0","5":"0.015","6":"0","7":"1","8":"7.68","9":"2.0","10":"4.66","11":"0.67","12":"2","13":"0","14":"98","15":"strawberry","16":"The sweet, usually red, edible fruit of certain plants of the genus <i>Fragaria<\/i>.","17":"red"},{"1":"Mushroom","2":"vegetable","3":"22","4":"0.3","5":"0.050","6":"0","7":"5","8":"3.28","9":"1.0","10":"1.65","11":"3.09","12":"3","13":"0","14":"4","15":"mushroom","16":"Any of the fleshy fruiting bodies of fungi typically produced above ground on soil or on their food sources (such as decaying wood).","17":"brown"},{"1":"Tomato","2":"vegetable","3":"18","4":"0.0","5":"0.046","6":"0","7":"5","8":"3.92","9":"1.2","10":"2.63","11":"0.88","12":"2","13":"17","14":"21","15":"tomato","16":"A widely cultivated plant, <i>Solanum lycopersicum<\/i>, having edible fruit.","17":"red"},{"1":"Turkey","2":"meat","3":"187","4":"7.0","5":"1.999","6":"77","7":"69","8":"0.00","9":"0.0","10":"0.00","11":"28.90","12":"8","13":"0","14":"0","15":"turkey_(bird)","16":"Either of two species of bird in the genus <i>Meleagris<\/i> with fan-shaped tails and wattled necks.","17":"white"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
 </div>
 </section>
-<section id="joining-data-by-key" class="level2">
-<h2 class="anchored" data-anchor-id="joining-data-by-key">Joining data by key</h2>
+<section id="joining-data-by-key" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="joining-data-by-key"><span class="header-section-number">2.2</span> Joining data by key</h2>
 <p>As an example of performing table joins, we will start with a pared-down version of our foods data:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>food_sml <span class="ot">&lt;-</span> food <span class="sc">|&gt;</span></span>
@@ -4469,7 +4467,7 @@ window.onload = function() {
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["item"],"name":[1],"type":["chr"],"align":["left"]},{"label":["food_group"],"name":[2],"type":["chr"],"align":["left"]},{"label":["calories"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Orange","2":"fruit","3":"47"},{"1":"Lobster","2":"fish","3":"97"},{"1":"Pear","2":"fruit","3":"58"},{"1":"Strawberry","2":"fruit","3":"32"},{"1":"Celery","2":"vegetable","3":"14"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["item"],"name":[1],"type":["chr"],"align":["left"]},{"label":["food_group"],"name":[2],"type":["chr"],"align":["left"]},{"label":["calories"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Duck","2":"meat","3":"132"},{"1":"Oyster","2":"fish","3":"160"},{"1":"Avocado","2":"fruit","3":"160"},{"1":"Beef","2":"meat","3":"288"},{"1":"Chicken","2":"meat","3":"237"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -4504,8 +4502,8 @@ window.onload = function() {
 </div>
 <p>We now have the dietary restrictions added into the food dataset. We can now compute models, summaries, and construct visualizations based on the new metadata associated with each food group.</p>
 </section>
-<section id="joining-a-single-column" class="level2">
-<h2 class="anchored" data-anchor-id="joining-a-single-column">Joining a single column</h2>
+<section id="joining-a-single-column" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="joining-a-single-column"><span class="header-section-number">2.3</span> Joining a single column</h2>
 <p>Suppose we <em>only</em> wanted to get the <code>vegan</code> column from <code>diet</code>. We can do this by selecting the columns we want to keep from the <code>diet</code> dataset <em>before</em> joining.</p>
 <p>There are two different ways of handling this. Both involve what the <code>tidyverse</code> style guide refers to as <a href="https://style.tidyverse.org/pipes.html#short-pipes">short pipes</a>.</p>
 <p>The first method uses an inline pipe:</p>
@@ -4536,8 +4534,8 @@ window.onload = function() {
 </div>
 <p>In cases where your pipeline is very short, it is okay to <code>|&gt;</code> on a single line as shown above. However, if you have a longer pipeline, it is better to add vertical space as we have been doing all semester.</p>
 </section>
-<section id="using-joined-data" class="level2">
-<h2 class="anchored" data-anchor-id="using-joined-data">Using joined data</h2>
+<section id="using-joined-data" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="using-joined-data"><span class="header-section-number">2.4</span> Using joined data</h2>
 <p>You can then use the new columns to perform any of the operations we have already studied. For example, let’s figure out which vegan items have the highest number of calories:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>food_sml <span class="sc">|&gt;</span></span>
@@ -4553,8 +4551,8 @@ window.onload = function() {
 </div>
 </div>
 </section>
-<section id="joins-with-missing-matches" class="level2">
-<h2 class="anchored" data-anchor-id="joins-with-missing-matches">Joins with missing matches</h2>
+<section id="joins-with-missing-matches" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="joins-with-missing-matches"><span class="header-section-number">2.5</span> Joins with missing matches</h2>
 <p>In the previous example, all the <code>food_group</code> values from <code>food_sml</code> were present in <code>diet</code>, so all rows were included in the joined table. This is not always the case.</p>
 <p>Let’s consider a third dataset containing information about food recipes, one for a Pot Roast and another for Guacamole:</p>
 <div class="cell">
@@ -4587,8 +4585,8 @@ window.onload = function() {
 <p>Also, notice that rows about <code>food</code> items that are not in any recipe are <em>not</em> included in the output. This is because <code>left_join</code> only includes all rows from the left table (<code>recipes</code>) and the matching rows from the right table (<code>food_sml</code>). Since <code>food_sml</code> may contain items not present in recipes, those items are not included in the joined dataset.</p>
 </section>
 </section>
-<section id="inner-and-outer-joins" class="level1">
-<h1>Inner and outer joins</h1>
+<section id="inner-and-outer-joins" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Inner and outer joins</h1>
 <p>There are four mutating joins available in <code>dplyr</code>, all using the same syntax:</p>
 <ul>
 <li><code>left_join</code>: Returns all rows from the first (left) dataset and the matched rows from the second (right) dataset. Unmatched columns from the right dataset are filled with NA.</li>
@@ -4615,8 +4613,9 @@ window.onload = function() {
 <li><code>anti_join</code> selects rows in the first table that do not have a match in the second.</li>
 </ul>
 <p>These are useful for several tasks and will come up now and then.</p>
-<section id="homework-questions" class="level2">
-<h2 class="anchored" data-anchor-id="homework-questions">Homework questions</h2>
+</section>
+<section id="homework-questions" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Homework questions</h1>
 <ol type="1">
 <li><p>Hand-write a dataset that consists of at least two different tables where one table has a primary key that appears as a foreign key in the other table. The tables do not need to be large (10 rows between both tables is more than enough), and the subject of the tables is up to you. Be creative. Don’t copy the example above.</p></li>
 <li><p>Hand-write a code pipeline that joins the two tables together, then produces some kind of output (a table, a plot, etc.) using the joined data.</p></li>
@@ -4636,7 +4635,8 @@ window.onload = function() {
 </div>
 </div>
 <p>Note that <code>variable1</code> and <code>variable2</code> become the column names.</p>
-</section>
+<!-- -->
+
 </section>
 
 </main>
@@ -4731,6 +4731,57 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
     clipboardModal.on('success', onCopySuccess);
   }
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -4752,6 +4803,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
           if (link.getAttribute("rel") === null) {
             link.setAttribute("rel", "noopener");
           }
+          // default icon
+          link.classList.add("external");
       }
     }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
@@ -5065,7 +5118,259 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
+</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class>
+<div class="sourceCode" id="cb12" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &quot;09. Table Joins&quot;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> &quot;DSST289: Introduction to Data Science&quot;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> &quot;Erik Fredner&quot;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> today</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="an">highlight-style:</span><span class="co"> arrow</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">    anchor-sections: true</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">    df-print: paged</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">    embed-resources: true</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">    link-external-icon: true</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">    link-external-newwindow: true</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: true</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">    smooth-scroll: true</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="an">editor:</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co">  markdown:</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co">    wrap: 72</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="fu"># Overview</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>One of the most common tasks in data science is **joining** data from two</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>(or more) datasets together.</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>To do this, we need to identify a **key** common between the two datasets.</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>This key is a feature that uniquely identifies an observation.</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>If you have never joined data together before, these concepts can be confusing,</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>so it may be helpful to read this section multiple times.</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="fu">## Primary Key</span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>A <span class="co">[</span><span class="ot">primary key</span><span class="co">](https://en.wikipedia.org/wiki/Primary_key)</span> is a feature or group of features (in other words, a column or group of columns) in a dataset that uniquely identifies a row of data.</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>In our food dataset, the feature <span class="in">`item`</span> is a primary key. In the <span class="in">`us`</span></span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>dataset, the <span class="in">`city`</span> and <span class="in">`year`</span> columns together form a primary key—we need</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>both to uniquely identify one observation.</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a><span class="fu">## Foreign Key</span></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>Likewise, a <span class="co">[</span><span class="ot">foreign key</span><span class="co">](https://en.wikipedia.org/wiki/Foreign_key)</span> is the appearance of a primary key within a</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>different dataset. The <span class="in">`food_group`</span> feature in the <span class="in">`food`</span> dataset, for example,</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>could be a foreign key if we had another table with one row describing</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>information about each food group.</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a><span class="fu">## Relation</span></span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>A primary key and the corresponding foreign key in another table form a</span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">relation</span><span class="co">]</span>(https://en.wikipedia.org/wiki/Relation_(database)). Typically, a relation maps a single row in one dataset to many rows</span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>in another.</span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a><span class="fu">## Table Join</span></span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a>A table join is a way of combining two tables based on relations. The goal is</span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>to match up a foreign key in one table with the primary key in another table,</span>
+<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>to add new columns from one dataset into another dataset.</span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a><span class="fu"># Examples</span></span>
+<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data</span></span>
+<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a>We&#39;re going to work with a subset of <span class="in">`food`</span>:</span>
+<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a>food <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">file.path</span>(<span class="st">&quot;..&quot;</span>, <span class="st">&quot;data&quot;</span>, <span class="st">&quot;food.csv&quot;</span>))</span>
+<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>food <span class="sc">|&gt;</span></span>
+<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">5</span>)</span>
+<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a><span class="fu">## Joining data by key</span></span>
+<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a>As an example of performing table joins, we will start with a pared-down</span>
+<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a>version of our foods data:</span>
+<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-87"><a href="#cb12-87" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb12-88"><a href="#cb12-88" aria-hidden="true" tabindex="-1"></a>food_sml <span class="ot">&lt;-</span> food <span class="sc">|&gt;</span></span>
+<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(item, food_group, calories)</span>
+<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a>food_sml <span class="sc">|&gt;</span></span>
+<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">5</span>)</span>
+<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a>Within <span class="in">`food_sml`</span>, <span class="in">`item`</span> is a **primary key**.</span>
+<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a>Now, consider the following new dataset corresponding to dietary restrictions</span>
+<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a>associated with different food groups:</span>
+<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a>diet <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">file.path</span>(<span class="st">&quot;..&quot;</span>, <span class="st">&quot;data&quot;</span>, <span class="st">&quot;food_diet_restrictions.csv&quot;</span>))</span>
+<span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a>diet</span>
+<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a>In the <span class="in">`diet`</span> table, <span class="in">`food_group`</span> is a **primary key**.</span>
+<span id="cb12-109"><a href="#cb12-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a>Within the <span class="in">`food`</span> table, <span class="in">`food_group`</span> is a **foreign key** to <span class="in">`diet`</span>. What we would like to do is to combine these two</span>
+<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a>datasets by matching up rows that have the same values in the corresponding</span>
+<span id="cb12-112"><a href="#cb12-112" aria-hidden="true" tabindex="-1"></a>columns.</span>
+<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-114"><a href="#cb12-114" aria-hidden="true" tabindex="-1"></a>For example, it could be useful to include the columns <span class="in">`vegan`</span>, <span class="in">`vegetarian`</span>,</span>
+<span id="cb12-115"><a href="#cb12-115" aria-hidden="true" tabindex="-1"></a>and <span class="in">`pescatarian`</span> in <span class="in">`food_sml`</span>. To do this, we need to</span>
+<span id="cb12-116"><a href="#cb12-116" aria-hidden="true" tabindex="-1"></a>associate a row in the food dataset with the row in the diet dataset that</span>
+<span id="cb12-117"><a href="#cb12-117" aria-hidden="true" tabindex="-1"></a>contains the same value of the variable <span class="in">`food_group`</span>.</span>
+<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a>We do this using the</span>
+<span id="cb12-120"><a href="#cb12-120" aria-hidden="true" tabindex="-1"></a>function <span class="in">`left_join`</span>. We pipe in the larger dataset that we want to join columns</span>
+<span id="cb12-121"><a href="#cb12-121" aria-hidden="true" tabindex="-1"></a>to, provide the name of the table to grab columns from (<span class="in">`diet`</span>), and indicate <span class="in">`by`</span> what column the two datasets will be joined.</span>
+<span id="cb12-122"><a href="#cb12-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-125"><a href="#cb12-125" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-126"><a href="#cb12-126" aria-hidden="true" tabindex="-1"></a>food_sml <span class="sc">|&gt;</span></span>
+<span id="cb12-127"><a href="#cb12-127" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(diet, <span class="at">by =</span> <span class="st">&quot;food_group&quot;</span>)</span>
+<span id="cb12-128"><a href="#cb12-128" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-129"><a href="#cb12-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-130"><a href="#cb12-130" aria-hidden="true" tabindex="-1"></a>We now have the dietary restrictions added into the food</span>
+<span id="cb12-131"><a href="#cb12-131" aria-hidden="true" tabindex="-1"></a>dataset. We can now compute models, summaries, and construct visualizations</span>
+<span id="cb12-132"><a href="#cb12-132" aria-hidden="true" tabindex="-1"></a>based on the new metadata associated with each food group.</span>
+<span id="cb12-133"><a href="#cb12-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-134"><a href="#cb12-134" aria-hidden="true" tabindex="-1"></a><span class="fu">## Joining a single column</span></span>
+<span id="cb12-135"><a href="#cb12-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-136"><a href="#cb12-136" aria-hidden="true" tabindex="-1"></a>Suppose we *only* wanted to get the <span class="in">`vegan`</span> column from <span class="in">`diet`</span>. We can do this</span>
+<span id="cb12-137"><a href="#cb12-137" aria-hidden="true" tabindex="-1"></a>by selecting the columns we want to keep from the <span class="in">`diet`</span> dataset *before* joining.</span>
+<span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-139"><a href="#cb12-139" aria-hidden="true" tabindex="-1"></a>There are two different ways of handling this. Both involve what the <span class="in">`tidyverse`</span> style guide refers to as <span class="co">[</span><span class="ot">short pipes</span><span class="co">](https://style.tidyverse.org/pipes.html#short-pipes)</span>.</span>
+<span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-141"><a href="#cb12-141" aria-hidden="true" tabindex="-1"></a>The first method uses an inline pipe:</span>
+<span id="cb12-142"><a href="#cb12-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-146"><a href="#cb12-146" aria-hidden="true" tabindex="-1"></a>food_sml <span class="sc">|&gt;</span></span>
+<span id="cb12-147"><a href="#cb12-147" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(diet <span class="sc">|&gt;</span> <span class="fu">select</span>(food_group, vegan), <span class="at">by =</span> <span class="st">&quot;food_group&quot;</span>)</span>
+<span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-150"><a href="#cb12-150" aria-hidden="true" tabindex="-1"></a>The second method creates a separate dataset containing only the desired columns, which is then joined:</span>
+<span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-154"><a href="#cb12-154" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-155"><a href="#cb12-155" aria-hidden="true" tabindex="-1"></a>diet_join <span class="ot">&lt;-</span> diet <span class="sc">|&gt;</span> <span class="fu">select</span>(food_group, vegan)</span>
+<span id="cb12-156"><a href="#cb12-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-157"><a href="#cb12-157" aria-hidden="true" tabindex="-1"></a>food_sml <span class="sc">|&gt;</span></span>
+<span id="cb12-158"><a href="#cb12-158" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(diet_join, <span class="at">by =</span> <span class="st">&quot;food_group&quot;</span>)</span>
+<span id="cb12-159"><a href="#cb12-159" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-160"><a href="#cb12-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-161"><a href="#cb12-161" aria-hidden="true" tabindex="-1"></a>In cases where your pipeline is very short, it is okay to <span class="in">`|&gt;`</span> on a single line</span>
+<span id="cb12-162"><a href="#cb12-162" aria-hidden="true" tabindex="-1"></a>as shown above. However, if you have a longer pipeline, it is better to add</span>
+<span id="cb12-163"><a href="#cb12-163" aria-hidden="true" tabindex="-1"></a>vertical space as we have been doing all semester.</span>
+<span id="cb12-164"><a href="#cb12-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-165"><a href="#cb12-165" aria-hidden="true" tabindex="-1"></a><span class="fu">## Using joined data</span></span>
+<span id="cb12-166"><a href="#cb12-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-167"><a href="#cb12-167" aria-hidden="true" tabindex="-1"></a>You can then use the new columns to perform any of the operations we</span>
+<span id="cb12-168"><a href="#cb12-168" aria-hidden="true" tabindex="-1"></a>have already studied. For example, let&#39;s figure out which vegan items</span>
+<span id="cb12-169"><a href="#cb12-169" aria-hidden="true" tabindex="-1"></a>have the highest number of calories:</span>
+<span id="cb12-170"><a href="#cb12-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-173"><a href="#cb12-173" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-174"><a href="#cb12-174" aria-hidden="true" tabindex="-1"></a>food_sml <span class="sc">|&gt;</span></span>
+<span id="cb12-175"><a href="#cb12-175" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(diet_join, <span class="at">by =</span> <span class="st">&quot;food_group&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-176"><a href="#cb12-176" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(vegan <span class="sc">==</span> <span class="st">&quot;yes&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-177"><a href="#cb12-177" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(calories))</span>
+<span id="cb12-178"><a href="#cb12-178" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-179"><a href="#cb12-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-180"><a href="#cb12-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-181"><a href="#cb12-181" aria-hidden="true" tabindex="-1"></a><span class="fu">## Joins with missing matches</span></span>
+<span id="cb12-182"><a href="#cb12-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-183"><a href="#cb12-183" aria-hidden="true" tabindex="-1"></a>In the previous example, all the <span class="in">`food_group`</span> values from <span class="in">`food_sml`</span> were present in <span class="in">`diet`</span>, so all rows were included in the joined table. This is not always the case.</span>
+<span id="cb12-184"><a href="#cb12-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-185"><a href="#cb12-185" aria-hidden="true" tabindex="-1"></a>Let&#39;s consider a third dataset containing information about food recipes,</span>
+<span id="cb12-186"><a href="#cb12-186" aria-hidden="true" tabindex="-1"></a>one for a Pot Roast and another for Guacamole:</span>
+<span id="cb12-187"><a href="#cb12-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-190"><a href="#cb12-190" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-191"><a href="#cb12-191" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb12-192"><a href="#cb12-192" aria-hidden="true" tabindex="-1"></a>recipes <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">file.path</span>(<span class="st">&quot;..&quot;</span>, <span class="st">&quot;data&quot;</span>, <span class="st">&quot;food_recipes.csv&quot;</span>))</span>
+<span id="cb12-193"><a href="#cb12-193" aria-hidden="true" tabindex="-1"></a>recipes</span>
+<span id="cb12-194"><a href="#cb12-194" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-195"><a href="#cb12-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-196"><a href="#cb12-196" aria-hidden="true" tabindex="-1"></a>In this dataset, <span class="in">`ingredient`</span> is a foreign key corresponding to the primary key</span>
+<span id="cb12-197"><a href="#cb12-197" aria-hidden="true" tabindex="-1"></a><span class="in">`item`</span> in the <span class="in">`food_sml`</span> dataset.</span>
+<span id="cb12-198"><a href="#cb12-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-199"><a href="#cb12-199" aria-hidden="true" tabindex="-1"></a>For <span class="in">`recipes`</span>, the primary key requires **two**</span>
+<span id="cb12-200"><a href="#cb12-200" aria-hidden="true" tabindex="-1"></a>columns: both <span class="in">`recipe`</span> and <span class="in">`ingredient`</span> are needed to uniquely describe each row.</span>
+<span id="cb12-201"><a href="#cb12-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-202"><a href="#cb12-202" aria-hidden="true" tabindex="-1"></a>We can now try adding the <span class="in">`calories`</span> from the <span class="in">`food_sml`</span> dataset into <span class="in">`recipes`</span>. The complication here is that the column we want to join on has</span>
+<span id="cb12-203"><a href="#cb12-203" aria-hidden="true" tabindex="-1"></a>a different name in each dataset (&quot;ingredient&quot; versus &quot;item&quot;). To specify this,</span>
+<span id="cb12-204"><a href="#cb12-204" aria-hidden="true" tabindex="-1"></a>we provide the two different names within the <span class="in">`by`</span> argument of the join function:</span>
+<span id="cb12-205"><a href="#cb12-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-208"><a href="#cb12-208" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-209"><a href="#cb12-209" aria-hidden="true" tabindex="-1"></a>recipes <span class="sc">|&gt;</span></span>
+<span id="cb12-210"><a href="#cb12-210" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(food_sml, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;ingredient&quot;</span> <span class="ot">=</span> <span class="st">&quot;item&quot;</span>))</span>
+<span id="cb12-211"><a href="#cb12-211" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-212"><a href="#cb12-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-213"><a href="#cb12-213" aria-hidden="true" tabindex="-1"></a>Now, we have a dataset that has added the food group and calories information</span>
+<span id="cb12-214"><a href="#cb12-214" aria-hidden="true" tabindex="-1"></a>to our recipe dataset.</span>
+<span id="cb12-215"><a href="#cb12-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-216"><a href="#cb12-216" aria-hidden="true" tabindex="-1"></a>Notice that the ingredient &quot;Bay Leaf&quot; is not in <span class="in">`food_sml`</span>. Because of this, the food group and calories information for this ingredient are filled in with missing values.</span>
+<span id="cb12-217"><a href="#cb12-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-218"><a href="#cb12-218" aria-hidden="true" tabindex="-1"></a>Also, notice that rows about <span class="in">`food`</span> items that are not</span>
+<span id="cb12-219"><a href="#cb12-219" aria-hidden="true" tabindex="-1"></a>in any recipe are *not* included in the output. This is because <span class="in">`left_join`</span> only includes all rows from the left table (<span class="in">`recipes`</span>) and the matching rows from the right table (<span class="in">`food_sml`</span>). Since <span class="in">`food_sml`</span> may contain items not present in recipes, those items are not included in the joined dataset.</span>
+<span id="cb12-220"><a href="#cb12-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-221"><a href="#cb12-221" aria-hidden="true" tabindex="-1"></a><span class="fu"># Inner and outer joins</span></span>
+<span id="cb12-222"><a href="#cb12-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-223"><a href="#cb12-223" aria-hidden="true" tabindex="-1"></a>There are four mutating joins available in <span class="in">`dplyr`</span>, all using the same syntax:</span>
+<span id="cb12-224"><a href="#cb12-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-225"><a href="#cb12-225" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`left_join`</span>: Returns all rows from the first (left) dataset and the matched rows from the second (right) dataset. Unmatched columns from the right dataset are filled with NA.</span>
+<span id="cb12-226"><a href="#cb12-226" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`right_join`</span>: Returns all rows from the second (right) dataset and the matched rows from the first (left) dataset. Unmatched columns from the left dataset are filled with NA.</span>
+<span id="cb12-227"><a href="#cb12-227" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`full_join`</span>: Returns all rows when there is a match in either left or right dataset. Unmatched columns are filled with NA.</span>
+<span id="cb12-228"><a href="#cb12-228" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`inner_join`</span>: Returns only the rows with matches in both datasets.</span>
+<span id="cb12-229"><a href="#cb12-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-230"><a href="#cb12-230" aria-hidden="true" tabindex="-1"></a>For example, by replacing <span class="in">`left_join`</span> with the function <span class="in">`inner_join`</span>,</span>
+<span id="cb12-231"><a href="#cb12-231" aria-hidden="true" tabindex="-1"></a>we can modify the join from the last section to drop the missing term</span>
+<span id="cb12-232"><a href="#cb12-232" aria-hidden="true" tabindex="-1"></a>(Bay Leaf) that is not contained in our food dataset:</span>
+<span id="cb12-233"><a href="#cb12-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-236"><a href="#cb12-236" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-237"><a href="#cb12-237" aria-hidden="true" tabindex="-1"></a>recipes <span class="sc">|&gt;</span></span>
+<span id="cb12-238"><a href="#cb12-238" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(food_sml, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;ingredient&quot;</span> <span class="ot">=</span> <span class="st">&quot;item&quot;</span>))</span>
+<span id="cb12-239"><a href="#cb12-239" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-240"><a href="#cb12-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-241"><a href="#cb12-241" aria-hidden="true" tabindex="-1"></a>These four joins are called &quot;mutating&quot; joins because, like <span class="in">`mutate()`</span>,</span>
+<span id="cb12-242"><a href="#cb12-242" aria-hidden="true" tabindex="-1"></a>they *add columns* to a dataset.</span>
+<span id="cb12-243"><a href="#cb12-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-244"><a href="#cb12-244" aria-hidden="true" tabindex="-1"></a>There are also two <span class="in">`filter`</span> joins that serve only</span>
+<span id="cb12-245"><a href="#cb12-245" aria-hidden="true" tabindex="-1"></a>to select rows in the first (left) table:</span>
+<span id="cb12-246"><a href="#cb12-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-247"><a href="#cb12-247" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`semi_join`</span> selects rows in the first table that have a match in the second.</span>
+<span id="cb12-248"><a href="#cb12-248" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`anti_join`</span> selects rows in the first table that do not have a match in the second.</span>
+<span id="cb12-249"><a href="#cb12-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-250"><a href="#cb12-250" aria-hidden="true" tabindex="-1"></a>These are useful for several tasks and will come up now and then.</span>
+<span id="cb12-251"><a href="#cb12-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-252"><a href="#cb12-252" aria-hidden="true" tabindex="-1"></a><span class="fu"># Homework questions</span></span>
+<span id="cb12-253"><a href="#cb12-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-254"><a href="#cb12-254" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Hand-write a dataset that consists of at least two different tables where one table has a primary key that appears as a foreign key in the other table. The tables do not need to be large (10 rows between both tables is more than</span>
+<span id="cb12-255"><a href="#cb12-255" aria-hidden="true" tabindex="-1"></a>enough), and the subject of the tables is up to you. Be creative. Don&#39;t</span>
+<span id="cb12-256"><a href="#cb12-256" aria-hidden="true" tabindex="-1"></a>copy the example above.</span>
+<span id="cb12-257"><a href="#cb12-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-258"><a href="#cb12-258" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Hand-write a code pipeline that joins the two tables together, then</span>
+<span id="cb12-259"><a href="#cb12-259" aria-hidden="true" tabindex="-1"></a>produces some kind of output (a table, a plot, etc.) using the joined data.</span>
+<span id="cb12-260"><a href="#cb12-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-261"><a href="#cb12-261" aria-hidden="true" tabindex="-1"></a>Don&#39;t forget to load your handwritten data into R objects. You could do so like this:</span>
+<span id="cb12-262"><a href="#cb12-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-265"><a href="#cb12-265" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-266"><a href="#cb12-266" aria-hidden="true" tabindex="-1"></a>variable1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>)</span>
+<span id="cb12-267"><a href="#cb12-267" aria-hidden="true" tabindex="-1"></a>variable2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb12-268"><a href="#cb12-268" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(variable1, variable2)</span>
+<span id="cb12-269"><a href="#cb12-269" aria-hidden="true" tabindex="-1"></a>data</span>
+<span id="cb12-270"><a href="#cb12-270" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-271"><a href="#cb12-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-272"><a href="#cb12-272" aria-hidden="true" tabindex="-1"></a>Note that <span class="in">`variable1`</span> and <span class="in">`variable2`</span> become the column names.</span>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
 </div> <!-- /content -->
 
 

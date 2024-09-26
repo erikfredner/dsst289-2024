@@ -150,9 +150,7 @@ each major, one for the 25th percentile of earnings and another for the 75th
 percentile of earnings. Color the 25th percentile in `"olivedrab"` and the 75th
 percentile `"navy"`. Order the majors based on earnings from smallest to largest.
 
-Note: There are at least two different ways to do this task. Either is fine,
-but try to do it without creating a second dataset using `mutate` and `if_else`
-to construct a new color variable.
+There are multiple ways to do this task. This time, use `mutate` and `if_else` to create a new color variable in your dataset. Then, use `scale_color_identity()` to map the colors in your new column to the points.
 
 ```{r, fig.height=10, question-05}
 
