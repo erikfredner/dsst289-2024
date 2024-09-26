@@ -1,0 +1,226 @@
+---
+title: 'Exam 01: Open Notes Portion'
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    highlight: tango
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+editor_options:
+  markdown:
+    wrap: 80
+  chunk_output_type: inline
+---
+
+# Deadline
+
+Wednesday, September 18 *before* the start of class.
+
+# Honor Pledge
+
+"I pledge that I will neither give nor receive unauthorized assistance during the completion of this work."
+
+For exams in this class, "unauthorized assistance" includes but is not limited to: discussing exam questions with anyone else, using generative artificial intelligence (e.g., ChatGPT), and/or copying others' work.
+
+You may use class notes, notebooks, slides, etc.
+
+**Signature (type your full name)**: 
+
+**UR email:**
+
+**Section start time:**
+
+# Setup
+
+0.  Navigate to Blackboard \> Course Documents \> Exams \> Exam 01
+1.  Download this exam from Blackboard: `exam01_open.Rmd`
+2.  Download the data from Blackboard: `domestic_cats.csv`
+3.  Move the exam to the `nb` folder in your `DSST289` folder, just as we do
+    when working on new notebooks in class: (`...DSST289/nb/exam01_open.Rmd`)
+4.  Move the data to the `data` folder in your `DSST289` folder:
+    (`...DSST289/data/domestic_cats.csv`)
+5.  Test that your setup is correct by running the code blocks below:
+
+
+```{r}
+#| warning: false
+#| message: false
+library(tidyverse)
+library(ggrepel)
+
+cats <- read_csv("../data/domestic_cats.csv")
+```
+
+```{r}
+# preview a random sample of the data:
+cats |>
+  slice_sample(n = 10)
+```
+
+# Instructions
+
+1. Although there are multiple ways of producing the results requested in each question, I expect to see you use patterns and techniques that we have discussed.
+
+2. If you are unable to complete a question, explain your attempt to maximize partial credit.
+
+3. If you encounter R errors that you cannot resolve on your own, contact me ASAP. I can help you with configuration issues, but will not help you answer questions.
+
+4. When complete, **knit** your `.Rmd` file to `.pdf`. (If you have forgotten how to do this, check the slides for class 06.)
+
+5. Go to Blackboard > Assignments > Exam 01 (open notes). Upload your **knitted** `.pdf` document.
+
+- Blackboard does not permit you to upload the `.html` files. Knit to `.pdf` instead.
+- If knitting to `.pdf` does not work on your machine, compress a knitted `.html` file into a `.zip` file and upload that.
+- If you cannot either create a `.pdf` or a `.zip` file, email me your `.html` file.
+
+# Exam 01
+
+## Data: Pet Cats in Adelaide, Australia
+
+The data set for this exam consists of a set of recorded locations for twenty
+domestic cats (household pet cats) in Adelaide, Australia. Each cat wore a GPS
+tracking device which periodically recorded that cat's location. We will work
+with a random sample of up to 150 locations for each cat.
+
+Some summary information about the cats is also recorded:
+
+| Column Name  | Description                                                |
+|----------------|--------------------------------------------------------------|
+| `name`         | the cat's name                                                |
+| `event_id`     | an identifier for instance of location recording              |
+| `month`        | the numeric month when the location was recorded              |
+| `long`         | longitude of cat's location                                   |
+| `lat`          | latitude of cat's location                                    |
+| `indoors_min`  | the minimum number of hours the cat spends indoors each day   |
+| `indoors_max`  | the maximum number of hours the cat spends indoors each day   |
+| `prey_month`   | the cat's typical number of prey killed per month             |
+| `age`          | the cat's age in years                                        |
+| `sex`          | the cat's sex                                                 |
+
+
+## 1. Draw a map
+
+In the code block below, create a scatter plot with longitude on the x-axis,
+latitude on the y-axis, and one point for each location recorded in the data.
+
+```{r, question-01}
+
+```
+
+## 2. Draw a map, with color
+
+In the code block below, create a scatter plot with longitude on the x-axis,
+latitude on the y-axis, and one point for each cat location in the data. Color
+the points based on the cat's typical number of prey per month. Use the
+color-blind friendly `viridis` color scale.
+
+```{r, question-02}
+
+```
+
+## 3. Draw a map, with transparency
+
+In the code block below, create another scatter plot, but only include male cats who are 9 or 10 years old.
+Make the points somewhat transparent so that your map shows areas where points overlap.
+
+```{r, question-03}
+
+```
+
+## 4. Draw a map with only one point per each cat
+
+In the code block below, create another scatter plot with each cat's average
+longitude on the x-axis, average latitude on the y-axis, and one point for each
+cat in the data. Label each point with the cat's name. Try to put the names next
+to the points, not directly on top of them.
+
+```{r, question-04}
+
+```
+
+## 5. East to west travel distance
+
+In the code block below, create a bar graph with one bar for each
+cat (put the factor `name` on the y-axis) showing the total east-west distance they traveled (x-axis). Calculate east-west distance by subtracting the minimum longitude from the maximum longitude a cat reaches. Order the bars from smallest distance at the top to largest distance at the bottom.
+
+```{r, question-05}
+
+```
+
+## 6. Draw a scatter plot
+
+Create a data set named `cat_traits` including only the variables `name`, `indoors_min`, `prey_month`, `age`, and `sex`.
+These variables are cat-specific, so they don't change each time location is recorded. Therefore, the resulting table must only have **one** row per cat. Print `cat_traits` to confirm:
+
+```{r, question-06a}
+
+```
+
+Next, use `cat_traits` to create a scatter plot with cat age on the x-axis, prey per month on the y-axis, one point for each cat, and cats labeled by name.
+
+```{r, question-06b}
+
+```
+
+## 7. Highlight points on a scatter plot
+
+Starting with the same scatter plot you created in question 6, highlight the
+points for indoor cats (cats who spend 18 or more hours per day indoors) by coloring them `"navyblue"`. Label their names in non-overlapping `"navyblue"` text. Color the remaining points `"gray"` and do *not* include their names.
+
+```{r, question-07}
+
+```
+
+## 8. Draw a line plot
+
+In the code block below, use `cats` to draw a line plot with month on the x-axis
+and the total number of location recordings in a given month on the y-axis. Modify the scale of the x-axis to display months 1 to 12, with a grid-line for each month. The numbers 1 through 12 should appear as labels on the x-axis. There should also be a points layer on top of the line plot indicating the measurement in each month.
+
+```{r, question-08}
+
+```
+
+## 9. Mean prey per month by age
+
+Using `cats`, calculate the average prey per month based on each cat's age. Plot the result as a bar chart. The y-axis should represent average prey kills. There should be one bar per age in years on the x-axis. Make the bars white with a black border.
+
+```{r, question-09}
+
+```
+
+## 10. Describe prey per month by cat sex
+
+Using `cats`, create a table that summarizes the minimum, mean, and maximum number of prey killed per month grouped by sex. Return a 2x4 table with columns: `sex`, `min_prey`, `mean_prey`, and `max_prey`.
+
+```{r}
+
+```
+
+## 11. Categorize cats by age group
+
+Using `cats`, create a new variable called `age_group` that classifies cats into the following groups based on their age:
+
+- `"young"` for cats less than 5 years old
+- `"adult"` for cats between 5 and 10 years old (inclusive)
+- `"senior"` for cats older than 10 years
+
+Generate a table that shows each cat's `name`, `age`, and their corresponding `age_group`. This table must only have one row per cat.
+
+```{r}
+
+```
+
+## 12. Calculate average outdoor time per cat
+
+Using `cats` and the indoor time data, create a new column called `outdoors_avg` that calculates the *average* time each cat spends outdoors per day. Assume that the cat's average indoor time is the average of the `indoors_min` and `indoors_max` columns.
+
+Output a table that includes each cat's name and `outdoors_avg`. Sort the table with the lowest average outdoor time first. The table should only have one row per cat.
+
+
+```{r}
+
+```

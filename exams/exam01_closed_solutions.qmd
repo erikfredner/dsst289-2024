@@ -1,0 +1,263 @@
+---
+title: "Exam 01 (in class)"
+subtitle: "DSST 289: Introduction to Data Science"
+echo: true
+format:
+  pdf:
+    number-sections: true
+    header-includes: 
+      - \usepackage{fontspec}
+      - \setmainfont{Atkinson Hyperlegible}
+      - \setsansfont{Atkinson Hyperlegible}
+      - \setmonofont{IBM Plex Mono}
+      - \usepackage{sectsty}
+      - \allsectionsfont{\sffamily}
+  html:
+    anchor-sections: true
+    code-tools: true
+    df-print: paged
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+editor:
+  markdown:
+    wrap: 72
+---
+
+# Honor
+
+You may only use a pen/pencil and scratch paper on this exam.
+
+> "I pledge that I will neither give nor receive unauthorized assistance during the completion of this work."
+
+\medskip
+
+Name\hrulefill \medskip
+
+Signature\hrulefill \medskip
+
+Section start time\hrulefill \medskip
+
+# Exam
+
+*Please write neatly.*
+
+If you cannot solve a problem, write what you *do* know about the question to maximize partial credit. For example, you could write something like, "I need the function that adds a new column to a table here, but I don't remember its name."
+
+Your code will be graded on its *quality*, which includes both accuracy and formatting. In addition to the other formatting rules we have discussed, don't forget to add vertical spaces if a line would otherwise exceed approximately 80 characters in length.
+
+For this exam, we'll be working with the data about Pokémon that we discussed in lecture.
+
+\pagebreak
+
+## Reconstruct tabular data
+
+Based solely on the information available in the following plot, draw a table containing the data that produced this plot. (The labels are Pokémon names.)
+
+```{r}
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(ggrepel)
+library(knitr)
+
+pokemon <- read.csv("/Users/erik/code/dsst289-2024/data/pokemon.csv")
+
+pokemon |> 
+  filter(generation == 1) |> 
+  filter(type_1 == "Electric") |> 
+  ggplot(aes(x = speed, y = attack)) +
+  geom_point() +
+  geom_text_repel(aes(label = name)) +
+  scale_x_continuous(n.breaks = 15) +
+  scale_y_continuous(n.breaks = 15)
+```
+
+```{r}
+#| include: false
+
+pokemon |> 
+  filter(generation == 1) |> 
+  filter(type_1 == "Electric") |> 
+  select(name, speed, attack) |> 
+  arrange(speed, attack) |> 
+  kable()
+```
+
+\pagebreak
+
+## Swap axes
+
+Assume that you have the table you created in the previous question stored in a variable called `pokemon_electric`. Write code that would *swap* the `x` and `y` axes of the previous plot, as shown below. The plot should otherwise remain the same. (Hint: The number of breaks in each scale is 15.)
+
+```{r}
+pokemon |> 
+  filter(generation == 1) |> 
+  filter(type_1 == "Electric") |> 
+  ggplot(aes(x = attack, y = speed)) +
+  geom_point() +
+  geom_text_repel(aes(label = name)) +
+  scale_x_continuous(n.breaks = 15) +
+  scale_y_continuous(n.breaks = 15)
+```
+
+\pagebreak
+
+## More aesthetics
+
+```{r}
+#| label: plt
+#| fig-cap: "Speed and attack of Electric, Psychic, and Rock Pokémon of Generation 1."
+
+pokemon_sample <- pokemon |> 
+  filter(generation == 1) |> 
+  filter(type_1 %in% c("Electric", "Rock", "Psychic"))
+
+pokemon_sample |> 
+  ggplot(aes(x = attack, y = speed)) +
+  geom_point(aes(color = type_1, size = stat_total)) +
+  geom_text_repel(aes(label = name, color = type_1)) +
+  scale_color_viridis_d() +
+  scale_x_continuous(n.breaks = 15) +
+  scale_y_continuous(n.breaks = 15)
+```
+
+Assuming that a variable called `pokemon_sample` contains the data needed for the plot above, fill in the blanks in the following code. Rewrite the code in the blank part of the page if you need more room.
+
+```{r}
+#| eval: false
+pokemon_sample |> 
+  ggplot
+  geom_
+  geom_
+  scale_
+  scale_x_
+  scale_y_
+```
+
+\pagebreak
+
+## Plot variations
+
+```{r}
+pokemon_sample |>
+  filter(speed >= 80 & stat_total >= 400) |> 
+  ggplot(aes(x = stat_total, y = speed)) +
+  geom_point(aes(color = type_1, size = attack)) +
+  geom_label_repel(aes(label = name, color = type_1)) +
+  scale_color_manual(values = c("blue", "red", "green4")) +
+  labs(title = "Generation 1 Pokémon (sample)",
+       x = "Stat Total",
+       y = "Speed",
+       color = "Type 1",
+       size = "Attack")
+```
+
+This plot also uses the data in `pokemon_sample`. List **five** differences between this plot and the previous plot.
+
+When you observe the differences, indicate either *what* was changed or *where*
+the change was made (e.g., in `geom_...`, in `scale_...`, etc.)
+
+Only list five differences. No extra credit for additional answers. You may answer in code, in sentences, or a mix. Do whatever is easiest.
+
+```{md}
+#| include: false
+1. The Pokémon in this plot have `speed >= 80`.
+2. The Pokémon in this plot have `stat_total >= 400`.
+3. The Pokémon names in this plot have labels.
+4. The number of breaks on the scales have decreased.
+5. The labels have all changed.
+6. The colors have been changed to match the type of Pokémon.
+7. This plot does not have a figure label.
+8. This plot has a title.
+9. Points sized by `attack`.
+```
+
+\pagebreak
+
+## Subsetting data
+
+Below are ten random rows from the 1,194 rows in the `pokemon` data set containing the variables that we will use for the remainder of this exam:
+
+```{r}
+pokemon |> 
+  slice_sample(n = 10) |>
+  select(name, generation, type_1, type_2, stat_total, attack, speed) |> 
+  kable()
+```
+
+-   Write code that would filter the complete `pokemon` data set sampled above to include *only* the Pokémon in the plot under the header **"2.3 More Aesthetics."**
+-   Save the results of your filtering steps into a variable called `pokemon_sample`.
+- *Nota bene*:
+  -   Only **one** of the numeric columns has been filtered. The filtered column is identified in plots **2.3** and **2.4**.
+  -   Do **not** use Pokémon names to select the correct Pokémon. There are far more efficient approaches.
+
+```{r}
+pokemon_sample <- pokemon |> 
+  filter(generation == 1) |> 
+  filter(type_1 %in% c("Electric", "Rock", "Psychic")) |>
+  # this is unnecessary as I don't show all columns:
+  select(name, generation, type_1, type_2, stat_total, attack, speed)
+```
+
+\pagebreak
+
+## Highest `stat_total` in ascending order
+
+Sort `pokemon_sample` by `stat_total`, with the lowest values first. Output only the first five rows as shown below:
+
+```{r}
+pokemon_sample |> 
+  arrange(stat_total) |> 
+  slice_head(n = 5) |> 
+  select(name, stat_total) |> 
+  kable()
+```
+
+\vspace*{0.2\textheight}
+
+## Highest `speed` by `type_1`
+
+Using `pokemon_sample`, get the Pokémon with the highest speed *within each* `type_1`. Write code to reproduce the following table:
+
+```{r}
+pokemon_sample |> 
+  group_by(type_1) |> 
+  filter(speed == max(speed)) |> 
+  select(type_1, name, speed) |> 
+  kable()
+```
+
+\vspace*{0.2\textheight}
+
+## Pokémon on average by type
+
+Using `pokemon_sample`, calculate the average `speed`, `attack`, and `stat_total` for each `type_1`. Write code to reproduce the following table:
+
+```{r}
+pokemon_sample |> 
+  group_by(type_1) |> 
+  # students don't have to include round(); just for printing:
+  summarize(
+    avg_speed = round(mean(speed), 1),
+    avg_attack = round(mean(attack), 1),
+    avg_stat_total = round(mean(stat_total), 1)
+  ) |> 
+  kable()
+```
+
+\vspace*{0.2\textheight}
+
+## Tallying Pokémon by types
+
+Using `pokemon_sample`, tally Pokémon by `type_1` *and* `type_2`. Write code to reproduce the following table:
+
+```{r}
+pokemon_sample |>
+  count(type_1, type_2) |> 
+  kable()
+```
