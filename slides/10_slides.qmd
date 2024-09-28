@@ -1,0 +1,28 @@
+---
+title: "Table Pivots"
+subtitle: "DSST 289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+echo: true
+format:
+  revealjs:
+    logo: "images/by-sa.png"
+    footer: "https://fredner.org"
+    embed-resources: true
+    scrollable: true
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+# Table Pivots
+
+# Data
+
+```{r}
+library(tidyverse)
+
+relig_income |> 
+  slice_sample(n = 5)
+```
+

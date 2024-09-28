@@ -1,0 +1,334 @@
+---
+title: "10. Table Pivots"
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+highlight-style: arrow
+format:
+  html:
+    anchor-sections: true
+    code-tools: true
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+editor:
+  markdown:
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+# Why pivot?
+
+In this notebook, we introduce methods for manipulating datasets using [table pivots](https://tidyr.tidyverse.org/articles/pivot.html). Pivoting in the `tidyverse` is related but not identical to [pivot tables](https://support.microsoft.com/en-us/office/create-a-pivottable-to-analyze-worksheet-data-a9a84538-bfe9-40a9-a8e9-f99134456576) in spreadsheet programs like Excel.
+
+Table pivots allow us to rearrange the values in a table without adding or losing any information. Rearrangements typically make the table longer (more rows, fewer columns) or wider (more columns, fewer rows).
+
+We'll introduce two functions for converting between wide and long formats: `pivot_longer` and `pivot_wider`. Understanding these principles is fundamental for working with various applications, especially text and temporal datasets.
+
+# Miniature example: flowers
+
+When might we need to switch between formats with different numbers of rows? Consider an experiment where we measure heights of three flowers common to Richmond every morning for three days.
+
+## Wide format
+
+The "wide" format for storing this data would have 3 rows (one per flower) with columns `height_day1`, `height_day2`, and `height_day3`.
+
+```{r}
+#| message: false
+
+library(tidyverse)
+library(ggrepel)
+
+flower <- c("Black-eyed Susan", "Virginia Bluebell", "Eastern Red Columbine")
+height_day1 <- c(10, 8, 9)
+height_day2 <- c(12, 10, 11)
+height_day3 <- c(14, 12, 13)
+
+flowers_wide <- tibble(
+  flower,
+  height_day1,
+  height_day2,
+  height_day3
+)
+
+flowers_wide
+```
+
+## Long format
+
+The "long" format for storing this data would have 9 rows (3 flowers × 3 days) with three columns: `flower`, `day`, and `height`.
+
+You will notice that **the long format more closely resembles the tidy data principles that we have discussed**.
+
+We are going to take our `flowers_wide` dataset and convert it to the long format using the `pivot_longer` function:
+
+```{r}
+flowers_long <- flowers_wide |>
+  pivot_longer(
+    # pivoting longer every column EXCEPT (!) flower
+    cols = !flower,
+    names_to = "day",
+    names_prefix = "height_day",
+    names_transform = as.integer,
+    values_to = "height"
+  )
+
+flowers_long |>
+  arrange(day)
+```
+
+## Example use of the wide format
+
+  In the **wide format**, it's easy to calculate the total growth of each flower over the three days using a single `mutate()` function:
+
+```{r}
+flowers_wide |>
+  mutate(total_growth = height_day3 - height_day1)
+```
+
+## Example use of the long format
+
+  In the **long format**, it's easy to plot the growth of each flower over time:
+
+```{r}
+flowers_long |>
+  ggplot(aes(x = day, y = height, color = flower)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Growth of Richmond Flowers Over Three Days",
+    x = "Day",
+    y = "Height (cm)"
+  ) +
+  # only plot the days in the data on x-axis:
+  scale_x_continuous(breaks = flowers_long |>
+    distinct(day) |>
+    pull(day)) +
+  scale_color_viridis_d() +
+  theme_classic()
+```
+
+Creating this plot from the wide format would require additional steps to reshape the data or manually specify each flower's data.
+
+## Choosing the Right Format
+
+  - **Wide Format**: Easier for calculations that involve comparing columns, such as computing total growth.
+  - **Long Format**: Ideal for analyses that require grouping or plotting over a variable, such as time.
+
+# Big example: food prices
+
+Now we'll turn from the miniature `flowers` example to a bigger example: the `food_prices` dataset. Pivoting is often useful when analyzing data collected over time, as is the case here. The dataset is organized with years as observations and each food type as a column.
+
+```{r}
+#| message: false
+food_prices <- read_csv("../data/food_prices.csv")
+
+food_prices |>
+  slice_sample(n = 5) |>
+  arrange(year)
+```
+
+This is a relatively wide table, with one column per food, and one row providing prices for those foods by year.
+
+:::{.callout-warning title="Stop!"}
+Before moving ahead, think about this question: What would a longer version of `food_prices` look like?
+:::
+
+## Pivoting longer
+
+To make this table longer, we will use the `pivot_longer` function. This function requires specifying which features should be turned into values in the output dataset. Often, it's easier to specify the features that should remain as columns, which you can do using the `!` notation to indicate "not this column."
+
+Here, we indicate that the `year` column should remain:
+
+```{r}
+food_prices |>
+  pivot_longer(cols = !year)
+```
+
+This looks close to a long-form version of the `food_prices` dataset.
+You will notice that the `year` column persists (as requested above), and the names of the wider columns have been put into a new column called `name`, which is the default value. The values from the wider table have been passed to another column, with the default name `value`.
+
+
+We can improve our longer table by setting better column names using the `names_to` and `values_to` options:
+
+```{r}
+food_prices |>
+  pivot_longer(cols = !year, names_to = "food", values_to = "price")
+```
+
+The longer form of the dataset makes certain analyses easier. For example, we can draw a line chart of all the food prices with a single graphics layer:
+
+```{r}
+food_prices |>
+  pivot_longer(!year, names_to = "food", values_to = "price") |>
+  ggplot(aes(x = year, y = price, color = food)) +
+  geom_line() +
+  scale_color_viridis_d() +
+  theme_classic()
+```
+
+Drawing this plot with the original dataset would require manually adding a layer for each food type, selecting colors, and building a legend. Using the longer table is the preferred approach.
+
+## Pivot Wider
+
+To illustrate making a table wider, let's create a new dataset consisting of the long format of the `food_prices` dataset from just the years 1950 and 1975:
+
+```{r}
+food_prices_long <- food_prices |>
+  filter(year %in% c(1950, 1975)) |>
+  pivot_longer(!year, names_to = "food", values_to = "price")
+
+food_prices_long |>
+  slice_sample(n = 5)
+```
+
+Sometimes, it makes sense to make each time value a column in a wider dataset. To do this, we use the `pivot_wider` function. We need to specify which feature contains the values that will become new columns and from which feature to take the values for these columns. Here, the names will come from the `year` column (we want new columns for 1950 and 1975), and the values will be the prices.
+
+```{r}
+food_prices_long |>
+  pivot_wider(names_from = year, values_from = price)
+```
+
+One issue with the default output is that the column names now start with a number, which is not allowed in R variable names. This makes it awkward to work with the dataset; it's better to add a prefix to the names to make them valid. This can be done by setting the `names_prefix` option in the `pivot_wider` function:
+
+```{r}
+food_prices_long |>
+  pivot_wider(
+    names_from = year, values_from = price,
+    names_prefix = "year_"
+  )
+```
+
+This new form of the dataset makes it straightforward to plot the price of each food type in 1975 as a function of its price in 1950:
+
+```{r}
+food_prices_long |>
+  pivot_wider(
+    names_from = year, values_from = price,
+    names_prefix = "year_"
+  ) |>
+  ggplot(aes(x = year_1950, y = year_1975)) +
+  geom_point() +
+  geom_text_repel(aes(label = food)) +
+  theme_classic()
+```
+
+We can add some polishing touches to make the plot more readable:
+
+```{r}
+food_prices_long |>
+  pivot_wider(names_from = year, values_from = price, names_prefix = "year_") |>
+  # get the price ratio and difference:
+  mutate(
+    price_ratio = year_1975 / year_1950,
+    price_diff = year_1975 - year_1950
+  ) |>
+  ggplot(aes(x = year_1950, y = year_1975, color = price_ratio)) +
+  geom_point(aes(size = price_diff)) +
+  geom_label_repel(aes(label = food)) +
+  labs(
+    x = "Price Index (1950)", y = "Price Index (1975)",
+    color = "Price Ratio", size = "Price Difference"
+  ) +
+  scale_color_viridis_c() +
+  theme_classic()
+```
+
+In this new plot, you can see which products became much more expensive, much less expensive, or stayed about the same from 1950 to 1975.
+
+# Patterns for Table Pivots
+
+The syntax for making tables wider or longer is not much more complex than other table verbs we've covered. The biggest challenges with table pivots involves recognizing when they will simplify an analysis.
+
+**In general, the best strategy is to store your data in the longest format that makes sense.** You would almost always rather have more rows than columns.
+
+Storing data in a longer format has several benefits. Reducing the number of columns makes it easier to document the features with a well-written data dictionary. Also, pivoting wider often requires less code and results in fewer bugs, as illustrated in the practice exercises.
+
+Perhaps the biggest benefit of storing data in a longer format is to avoid complex operations required to make certain plots. The original dataset is stored with years as rows and items as columns. Producing the plot required us to first pivot longer and then pivot wider. Keeping data in a longer format avoids the need for double pivots, while making different kinds of analyses more accessible.
+
+Some social scientists have a habit of storing data in extremely wide and unwieldy formats, perhaps due to the way survey and time-series data are organized. For example, the U.S. Census Bureau produces datasets that often have hundreds of columns. Keep this in mind as you collect your own data or work with external sources. Often, an analysis that looks difficult at first will become straightforward after pivoting your dataset to a longer format.
+
+# Homework
+
+## Questions
+
+Consider the following subset of the `hans` dataset:
+
+```{r}
+#| message: false
+hans <- read_csv("../data/hans_roslin.csv")
+hans <- hans |>
+  filter(year %in% c(1957, 2007)) |>
+  filter(country %in% c(
+    "United States", "France",
+    "China", "Mexico"
+  )) |>
+  select(country, year, gdp)
+hans
+```
+
+Answer the following four questions by hand:
+
+1. Rewrite the table that would result from pivoting the table wider by turning the countries into columns.
+2. Rewrite the table that would result from pivoting the table wider by turning the years into columns.
+3. Perform a calculation that would be easier to make with the data from question one than with the original data.
+4. Sketch a plot that would be easy to make with the data from question two but hard from the original data.
+
+:::{.callout-warning title="Stop!"}
+Complete the questions above before viewing the answers below.
+:::
+
+## Answers
+
+1. Rewrite the table that would result from pivoting the table wider by turning the countries into columns.
+
+```{r}
+hans |>
+  pivot_wider(names_from = country, values_from = gdp)
+```
+
+2. Rewrite the table that would result from pivoting the table wider by turning the years into columns.
+
+```{r}
+hans |>
+  pivot_wider(
+    names_from = year, values_from = gdp,
+    names_prefix = "year_"
+  )
+```
+
+3. Perform a calculation that would be easier to make with the data from question one than with the original data.
+
+```{r}
+hans |>
+  pivot_wider(names_from = country, values_from = gdp) |>
+  mutate(us_gdp_diff = `United States` - (France + Mexico + China))
+```
+
+4. Sketch a plot that would be easy to make with the data from question two but hard from the original data.
+
+```{r}
+hans |>
+  pivot_wider(
+    names_from = year, values_from = gdp,
+    names_prefix = "year_"
+  ) |>
+  ggplot(aes(year_1957, year_2007)) +
+  geom_point() +
+  geom_text_repel(aes(label = country)) +
+  labs(x = "GDP in 1957", y = "GDP in 2007") +
+  theme_classic()
+```
+
+# Recap
+
+- Use `pivot_longer()` to convert wide tables into long format.
+- Use `pivot_wider()` to convert long tables into wide format.
+- Storing data in a longer format is usually preferable.
+- Be mindful of variable names when pivoting; use options like `names_prefix` to ensure valid column names.
+  - Object names cannot begin with numbers.
+- Choosing the appropriate data format can make certain plots and analyses much easier.
