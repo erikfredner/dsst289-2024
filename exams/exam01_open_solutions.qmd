@@ -106,7 +106,7 @@ Some summary information about the cats is also recorded:
 | `sex`          | the cat's sex                                                 |
 
 
-## 1. Draw a map
+## Draw a map
 
 In the code block below, create a scatter plot with longitude on the x-axis,
 latitude on the y-axis, and one point for each location recorded in the data.
@@ -117,7 +117,7 @@ cats |>
   geom_point()
 ```
 
-## 2. Draw a map, with color
+## Draw a map, with color
 
 In the code block below, create a scatter plot with longitude on the x-axis,
 latitude on the y-axis, and one point for each cat location in the data. Color
@@ -131,7 +131,7 @@ cats |>
   scale_color_viridis_c()
 ```
 
-## 3. Draw a map, with transparency
+## Draw a map, with transparency
 
 In the code block below, create another scatter plot, but only include male cats who are 9 or 10 years old.
 Make the points somewhat transparent so that your map shows areas where points overlap.
@@ -143,7 +143,7 @@ cats |>
   geom_point(alpha = 0.5)
 ```
 
-## 4. Draw a map with only one point per each cat
+## Draw a map with only one point per each cat
 
 In the code block below, create another scatter plot with each cat's average
 longitude on the x-axis, average latitude on the y-axis, and one point for each
@@ -162,7 +162,7 @@ cats |>
   geom_text_repel()
 ```
 
-## 5. East to west travel distance
+## East to west travel distance
 
 In the code block below, create a bar graph with one bar for each
 cat (put the factor `name` on the y-axis) showing the total east-west distance they traveled (x-axis). Calculate east-west distance by subtracting the minimum longitude from the maximum longitude a cat reaches. Order the bars from smallest distance at the top to largest distance at the bottom.
@@ -176,14 +176,14 @@ cats |>
   geom_col()
 ```
 
-## 6. Draw a scatter plot
+## Draw a scatter plot
 
 Create a data set named `cat_traits` including only the variables `name`, `indoors_min`, `prey_month`, `age`, and `sex`.
 These variables are cat-specific, so they don't change each time location is recorded. Therefore, the resulting table must only have **one** row per cat. Print `cat_traits` to confirm:
 
 ```{r, question-06a}
 cat_traits <- cats |>
-  select(name, indoors_min, prey_month, age, sex) |> 
+  select(name, indoors_min, prey_month, age, sex) |>
   distinct()
 
 cat_traits
@@ -198,24 +198,26 @@ cat_traits |>
   geom_text_repel(aes(label = name))
 ```
 
-## 7. Highlight points on a scatter plot
+## Highlight points on a scatter plot
 
 Starting with the same scatter plot you created in question 6, highlight the
 points for indoor cats (cats who spend 18 or more hours per day indoors) by coloring them `"navyblue"`. Label their names in non-overlapping `"navyblue"` text. Color the remaining points `"gray"` and do *not* include their names.
 
 ```{r, question-07}
-indoor_cats <- cat_traits |>
-  filter(indoors_min >= 18)
+indoor_cats <- cat_traits |> filter(indoors_min >= 18)
 
 cat_traits |>
   ggplot(aes(x = age, y = prey_month)) +
   geom_point(color = "gray") +
   geom_point(data = indoor_cats, color = "navyblue") +
-  geom_text_repel(data = indoor_cats, aes(label = name),
-                  color = "navyblue")
+  geom_text_repel(
+    data = indoor_cats,
+    aes(label = name),
+    color = "navyblue"
+  )
 ```
 
-## 8. Draw a line plot
+## Draw a line plot
 
 In the code block below, use `cats` to draw a line plot with month on the x-axis
 and the total number of location recordings in a given month on the y-axis. Modify the scale of the x-axis to display months 1 to 12, with a grid-line for each month. The numbers 1 through 12 should appear as labels on the x-axis. There should also be a points layer on top of the line plot indicating the measurement in each month.
@@ -230,7 +232,7 @@ cats |>
   scale_x_continuous(limits = c(1, 12), n.breaks = 12)
 ```
 
-## 9. Mean prey per month by age
+## Mean prey per month by age
 
 Using `cats`, calculate the average prey per month based on each cat's age. Plot the result as a bar chart. The y-axis should represent average prey kills. There should be one bar per age in years on the x-axis. Make the bars white with a black border.
 
@@ -242,7 +244,8 @@ cats |>
   geom_col(fill = "white", color = "black")
 ```
 
-## 10. Describe prey per month by cat sex
+
+## Describe prey per month by cat sex
 
 Using `cats`, create a table that summarizes the minimum, mean, and maximum number of prey killed per month grouped by sex. Return a 2x4 table with columns: `sex`, `min_prey`, `mean_prey`, and `max_prey`.
 
@@ -256,7 +259,7 @@ cats |>
   )
 ```
 
-## 11. Categorize cats by age group
+## Categorize cats by age group
 
 Using `cats`, create a new variable called `age_group` that classifies cats into the following groups based on their age:
 
@@ -274,11 +277,11 @@ cats |>
     age < 5 ~ "young",
     TRUE ~ "default"
   )) |>
-  select(name, age, age_group) |> 
+  select(name, age, age_group) |>
   distinct()
 ```
 
-## 12. Calculate average outdoor time per cat
+## Calculate average outdoor time per cat
 
 Using `cats` and the indoor time data, create a new column called `outdoors_avg` that calculates the *average* time each cat spends outdoors per day. Assume that the cat's average indoor time is the average of the `indoors_min` and `indoors_max` columns.
 
@@ -288,7 +291,7 @@ Output a table that includes each cat's name and `outdoors_avg`. Sort the table 
 ```{r}
 cats |>
   mutate(outdoors_avg = 24 - ((indoors_min + indoors_max) / 2)) |>
-  select(name, outdoors_avg) |> 
-  distinct() |> 
+  select(name, outdoors_avg) |>
+  distinct() |>
   arrange(outdoors_avg)
 ```

@@ -16,18 +16,30 @@ editor_options:
     wrap: 72
 ---
 
+# Exam 01
 
-# From "knitting" to "rendering"
+## Update
 
-- You may have noticed that the latest RStudio update changed **Knit** to **Render**
+- Grades for take-home exam released
+- I plan to return in-class exams Wednesday
+- Answers for *both exams* have been released:
+  - Blackboard > Course Documents > Exams > Exam 01
+
+# "Knit" to "Render"
+
+## RStudio update
+
+- New RStudio update changed **Knit** to **Render**
 - This is part of [the shift](https://quarto.org/docs/faq/rmarkdown.html#quarto-sounds-similar-to-r-markdown.-what-is-the-difference-and-why-create-a-new-project) from `.Rmd` to `.qmd` notebooks
-- `.qmd` refers to the [Quarto](https://quarto.org) format, the successor to `.Rmd`
-- `.qmd` notebooks are *essentially the same* as `.Rmd`
-- We're going to try `.qmd` for today's notebook
+  - `.qmd` refers to the [Quarto](https://quarto.org) format, the successor to `.Rmd`
+- For our purposes, `.qmd` and `.Rmd` are almost exactly the same
+  - We're going to try `.qmd` for today's notebook
 - If you have not yet updated:
   - RStudio > Help > Check for Updates
 
-# Overview
+# Table joins
+
+## Overview
 
 - One of the most common tasks in data science is **joining** data from two or more datasets.
 - To do this, we need to identify a **key** common between the datasets.

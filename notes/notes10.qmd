@@ -198,8 +198,7 @@ One issue with the default output is that the column names now start with a numb
 ```{r}
 food_prices_long |>
   pivot_wider(
-    names_from = year, values_from = price,
-    names_prefix = "year_"
+    names_from = year, values_from = price, names_prefix = "year_"
   )
 ```
 

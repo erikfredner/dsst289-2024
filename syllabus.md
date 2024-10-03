@@ -13,8 +13,7 @@ link-citations: true
 link-bibliography: true
 lang: en-US
 colorlinks: true
-linkcolor: blue
-urlcolor: blue
+linkcolor: Blue
 nocite: |
     @arnoldHumanitiesDataExploring2015
     @brucePracticalStatisticsData2020
@@ -73,7 +72,7 @@ This course has three units, each of which focuses on an aspect of data science:
 Unit        Aspect
 -----       -----
 1           Visualization
-2           Collection
+2           Collection \& Manipulation
 3           Application
 
 ## Materials
@@ -225,7 +224,7 @@ If you get stuck on a homework problem, I ask you to try these things in this or
 4. After trying all of the above, talk to the [Custom GPT](https://chatgpt.com/g/g-eChIzwMNp-ur-intro-to-data-science-gpt) generated for this class.
 5. If you use information from the Custom GPT, you must **cite** your interactions with it.
   - [This page](https://help.openai.com/en/articles/7925741-chatgpt-shared-links-faq) explains how to share a link to a ChatGPT interaction.
-  - An adequate citation would be: "I got [this help](https://chatgpt.com/share/2a4be40e-7b25-418d-b350-966a1915ac52) from ChatGPT to solve this problem."
+  - An adequate citation would be: "I got [this help](https://chatgpt.com/share/2a4be40e-7b25-418d-b350-966a1915ac52) from the Custom GPT to solve this problem."
 
 ## Communication
 

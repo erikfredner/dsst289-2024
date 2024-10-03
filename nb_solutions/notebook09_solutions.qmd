@@ -101,9 +101,9 @@ This line may help: `mutate(carrier = fct_inorder(carrier))`
 :::
 
 ```{r, question-01}
+#| echo: false
 flights |>
-  group_by(carrier) |>
-  summarize(n = n()) |>
+  count(carrier) |>
   arrange(desc(n)) |>
   mutate(carrier = fct_inorder(carrier)) |>
   ggplot(aes(n, carrier)) +
@@ -159,12 +159,7 @@ flights |>
   geom_col()
 ```
 
-The `airports` table has longitude and latitude in addition to the airport
-names. Let's create a plot with longitude on the x-axis, latitude on the y-axis,
-and a point for each airport that had outbound flights from RIC in 2019. Make
-the size of the points scale with the number of flights and add text labels to
-give the airport FAA code for each city.
-Finally, use `labs` to add proper labels to the aesthetics and a title.
+The `airports` table has longitude and latitude in addition to the airport names. Let's create a plot with longitude on the x-axis, latitude on the y-axis, and a point for each airport that was a flight destination from RIC in 2019. Make the size of the points scale with the number of flights and add text labels to give the airport FAA code for each city. Finally, use `labs` to add proper labels to the aesthetics and a title.
 
 ```{r, question-05}
 flights |>

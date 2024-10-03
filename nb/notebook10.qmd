@@ -1,0 +1,219 @@
+---
+title: "Notebook 10"
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+echo: true
+format:
+  html:
+    anchor-sections: true
+    code-tools: false
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+editor:
+  markdown:
+    wrap: 72
+---
+
+# Getting Started
+
+1. Click **Session > Clear Workspace...**
+2. Click **Session > Restart R**
+3. Run the following code chunk.
+
+```{r}
+#| message: false
+library(tidyverse)
+library(ggrepel)
+library(ggthemes)
+```
+
+# Practice
+
+Today we are practicing [pivoting](https://tidyr.tidyverse.org/articles/pivot.html) data.
+
+## Data
+
+For this, we will work with the U.S. city population data set.
+
+```{r}
+#| message: false
+us <- read_csv("../data/us_city_population.csv")
+
+us |>
+  slice_sample(n = 5) |>
+  arrange(year)
+```
+
+## Widening Data: Cities as Observations
+
+The `us` cities data set is a good candidate for pivoting to a wider table. In its default
+form, there is one row for each unique combination of year and city. However,
+some plots and analyses are easier to run if we create a data set with either time or
+the cities.
+
+Let's start by creating a widened data set where each row is a city. Years will then be turned into columns. Create this
+data set using `pivot_wider()`, with names coming from the years
+and values from the population. As we saw previously, use the names prefix
+"year_" to avoid column names staring with a number.
+
+```{r, question-01}
+```
+
+Next, take the data set created in the previous block and filter to include
+only cities with a population above 600 thousand in 2010. In this case, filtering *after* the pivot is easier.
+
+Then, plot the population of each city
+in 1950 on the x-axis and the population in 2010 on the y-axis with points and
+a text repel layer using the city names.
+
+Apply a theme of your choosing to the plot. (I used `theme_bw()`.)
+
+:::{.callout-tip}
+To see `ggplot` themes, check [the documentation](https://ggplot2.tidyverse.org/reference/ggtheme.html). There is also a section on this in [the `ggplot` book](https://ggplot2-book.org/themes#sec-themes).
+:::
+
+```{r, question-02a}
+```
+
+You should see a warning about how clustered the points are. Recreate the same plot as above, but use logarithmic scales for the x- and y-axes.
+
+```{r, question-02b}
+```
+
+## Arrow plots
+
+Another plot that we can create using the wide version of the data set is an
+[arrow plot](https://ggplot2.tidyverse.org/reference/geom_segment.html) showing the trend of each city over time. This will require us to use a new `geom_`.
+
+Below, piping the same
+data in as above, create a plot using the `geom_segment` layer with city of
+the y-axis and population on the x-axis. However, for this layer, you need to
+describe two additional aesthetics: `xend` and `yend`. Set `x` to the
+population in 1950 and `xend` to the population in 2010. The value for `yend`
+should be equal to the city name, the same as `y`.
+
+```{r, question-03}
+```
+
+At this point, you should see a plot with one horizontal line per city. One issue with this plot is that it does not show whether the population is increasing or decreasing between 1950 and 2010.
+
+We can fix
+this by adding an option to the `geom_segment` layer that turns the segment
+into an arrow. Namely:
+
+   `arrow = arrow(length = unit(x = 0.02, units = "npc"))`
+   
+:::{.callout-note title="`npc`?"}
+The `npc` unit is a normalized parent coordinate unit. It measures relative to the size of the plot. In this case, we are sizing the arrow heads to be 0.02 of the plot size. You can try changing the units to `"cm"` or `"inches"` if you want to see the difference.
+:::
+
+Below, modify the previous plot to include an arrow. Note that this line goes
+inside the `geom_segment` function, after the `aes` command. You may need to
+indent into a new line as is sometimes done in the notes to make the code easily
+readable. The `0.02` effects the size of the arrow and can be modified as you
+see fit.
+
+```{r, question-04}
+```
+
+As one last step, let's add some color to the plot. Below, modify the code from the previous chunk to include a mutate verb that sets a variable called `color` to `"#FF0000"` if the population decreased between 1950 and 2010 and to `"#008000"` if the population increased. You should be able to do this with a single call to `if_else`. 
+
+:::{.callout-note title="`#008000`?"}
+If you have never seen strings like `#008000` before, they represent **colors**. They are commonly referred to as [hex colors](https://en.wikipedia.org/wiki/Web_colors#Basic_colors) because they are written in hexadecimal notation.
+:::
+
+Then, color the lines with this
+color using `scale_color_identity`. Also, set the `linewidth` of the segment to `1.5` to make
+the colors stand out more. Order the cities by their size in 1950 using `arrange` and `fct_inorder`. Add labels to the plot.
+
+```{r, question-05}
+```
+
+# Widening Data: Years as Observations
+
+Another possibility for pivoting the `us` data set is to have the observations
+be years and the variables be the cities.
+
+In the code block below, try to
+`pivot_wider` using names from the city variable and values from the
+population. We do not need a variable prefix here.
+
+```{r, question-06}
+```
+
+But there is a problem. There are several
+other variables tied to each specific city (`lon`, `lat`, and `state`) that make
+the output data set have many missing values and far too many rows. Modify
+the code above by first using the `select` function to grab only the three
+variables `city`, `year`, and `population`.
+
+```{r, question-07}
+```
+
+You should now have a data set with 23 rows (one for each year) and 301
+columns (a year column and 300 cities). The shape of this data set is
+fine, but the column names are difficult to work with because they contain
+spaces and commas.
+
+## String Processing
+
+We can fix this by changing the city names using some
+string processing, including what are called [regular expressions](https://en.wikipedia.org/wiki/Regular_expression). We will discuss this more later.
+
+Run the following code to create a new version of the
+us cities data called `us_cities`:
+
+```{r}
+us_cities <- us |>
+  mutate(
+    city = city |>
+      # Converts capital letters to lowercase
+      str_to_lower() |>
+      # Replaces all characters that are NOT lowercase letters (a-z)
+      # or spaces with an empty string (removes them)
+      str_replace_all("[^a-z ]", "") |>
+      # Replaces all spaces with underscores
+      str_replace_all(" ", "_")
+  )
+```
+
+Run the answer to your last question with the new dataset `us_cities` and
+verify that the names are now "proper" R variable names:
+
+```{r, question-08}
+```
+
+You should see that the names have been reformatted like so:
+
+- "Anchorage, AK" -> "anchorage_ak"
+- "Little Rock, AR" -> "little_rock_ar"
+
+## Comparing populations with `geom_path`
+
+Using `us_cities`, create a plot with one city of your choosing on
+the x-axis, another city of your choosing on the y-axis using a text layer
+where the label is given by the year. (If you are not sure what to choose, I chose Seattle, WA and St. Louis, MO.)
+
+We're going to use one more new `geom_` here: Use a `geom_path` layer and an text repel
+layer labeled by year. This should allow you to see how the population of the
+two cities change together over time.
+
+```{r, question-09}
+```
+
+Note that the `geom_path` geometry is different than the `geom_line` geometry we have been using.
+`geom_line` always connects dots from the smallest x-value to the largest
+x-value. By contrast, `geom_path` connects the dots *in the order they appear in the data*.
+
+# Closing Thoughts
+
+The `us` data set is a nice example of how keeping data in a long format makes
+it relatively easy to work with the data as-is or in various wider formats. In
+this example, the cities as observations seems to allow more interesting plots.
+However, the second format will be more useful for building the kinds of time
+series models we introduce in the applications with temporal data sets.

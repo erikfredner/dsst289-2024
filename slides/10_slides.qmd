@@ -15,14 +15,343 @@ editor_options:
     wrap: 72
 ---
 
-# Table Pivots
+# Exam 1 grade distribution
 
-# Data
+## Real-world pivoting!
 
 ```{r}
 library(tidyverse)
+library(ggrepel)
 
-relig_income |> 
+grades <- read_csv("../GITIGNORED/exam1.csv")
+
+grades |> slice_sample(n = 2)
+```
+
+## `pivot_longer`
+
+```{r}
+#| code-line-numbers: "1-2|3|4|5|8"
+#| output-location: fragment
+grades <- grades |>
+  pivot_longer(
+    cols = !id,
+    names_to = "exam",
+    values_to = "score"
+  )
+
+grades |> slice_sample(n = 2)
+```
+
+## Visualizing exam grades with `geom_density`
+
+```{r}
+#| echo: false
+
+# density plot of exam results by type
+grades |>
+  filter(score > quantile(score, 0.01)) |>
+  ggplot(aes(x = score, fill = exam)) +
+  geom_density(alpha = 0.5) +
+  scale_fill_viridis_d() +
+  scale_x_reverse(n.breaks = 15) +
+  labs(
+    x = "Exam score",
+    y = "Density",
+    fill = "Exam",
+    title = "Density plot of Exam 1 results by exam type",
+    caption = "(Plot excludes outliers.)",
+  ) +
+  theme_classic()
+```
+
+# Exam review
+
+## Review topics
+
+- Formatting
+- Inheriting from `ggplot`
+- Fixed aesthetics
+- `select |> distinct`
+- Layering `geom_point`
+- `filter %in%` vs. `filter ==`
+- `group_by |> summarize`
+- `count`
+- `fct_`
+
+## `cats` data
+
+```{r}
+cats <- read_csv("../data/domestic_cats.csv")
+
+cats |> slice_sample(n = 3)
+```
+
+## `pokemon` data
+
+```{r}
+pokemon <- read_csv("../data/pokemon.csv")
+
+pokemon |> slice_sample(n = 3)
+```
+
+## Inheriting from `ggplot`
+
+```{r}
+#| code-line-numbers: "3|4-5"
+#| output-location: fragment
+cats |>
+  filter(sex == "m", between(age, 9, 10)) |>
+  ggplot(aes(x = long, y = lat)) +
+  # `geom_point` inherits `aes` from `ggplot`
+  geom_point(alpha = 0.5)
+```
+
+## Fixed aesthetics
+
+```{r}
+#| code-line-numbers: "4-5"
+cats |>
+  filter(sex == "m", between(age, 9, 10)) |>
+  ggplot(aes(x = long, y = lat)) +
+  # NOT inside `aes()`
+  geom_point(alpha = 0.5)
+```
+
+## `select |> distinct`
+
+```{r}
+cat_traits <- cats |>
+  select(name, indoors_min, prey_month, age, sex) |>
+  distinct()
+
+cat_traits |> slice_sample(n = 3)
+```
+
+
+## Layering `geom_point`
+
+```{r}
+#| code-line-numbers: "1|5|6|7-11"
+#| output-location: slide
+indoor_cats <- cat_traits |> filter(indoors_min >= 18)
+
+cat_traits |>
+  ggplot(aes(x = age, y = prey_month)) +
+  geom_point(color = "gray") +
+  geom_point(data = indoor_cats, color = "navyblue") +
+  geom_text_repel(
+    data = indoor_cats,
+    aes(label = name),
+    color = "navyblue"
+  )
+```
+
+## `filter %in%` vs. `filter ==`
+
+```{r}
+pokemon_sample <- pokemon |>
+  filter(
+    generation == 1,
+    type_1 %in% c("Electric", "Rock", "Psychic")
+  ) |>
+  select(name, generation, type_1, type_2, stat_total, attack, speed)
+
+pokemon_sample |> slice_sample(n = 3)
+```
+
+## `group_by |> summarize`
+
+```{r}
+#| code-line-numbers: "2|3-8"
+pokemon_sample |>
+  group_by(type_1) |>
+  # round() is just for printing; not required for exam
+  summarize(
+    avg_speed = round(mean(speed), 1),
+    avg_attack = round(mean(attack), 1),
+    avg_stat_total = round(mean(stat_total), 1)
+  )
+```
+
+## `count`
+
+```{r}
+#| output-location: fragment
+pokemon_sample |>
+  count(type_1, type_2)
+```
+
+```{r}
+#| output-location: fragment
+# essentially the same:
+pokemon_sample |>
+  group_by(type_1, type_2) |>
+  summarize(n = n())
+```
+
+## `fct_inorder` in east-west travel 1
+
+```{r}
+#| code-line-numbers: "1-3|4|5|6"
+#| output-location: fragment
+cats |>
+  group_by(name) |>
+  summarize(distance = max(long) - min(long)) |>
+  arrange(desc(distance)) |>
+  ggplot(aes(x = distance, y = fct_inorder(name))) +
+  geom_col()
+```
+
+## `fct_inorder` in east-west travel 2
+
+```{r}
+#| code-line-numbers: "5"
+#| output-location: fragment
+cats |>
+  group_by(name) |>
+  summarize(distance = max(long) - min(long)) |>
+  arrange(desc(distance)) |>
+  mutate(name = fct_inorder(name)) |> 
+  ggplot(aes(x = distance, y = name)) +
+  geom_col()
+```
+
+## `fct_reorder` in east-west travel
+
+```{r}
+#| code-line-numbers: "4"
+#| output-location: fragment
+
+cats |>
+  group_by(name) |>
+  summarize(distance = max(long) - min(long)) |>
+  ggplot(aes(x = distance, y = fct_reorder(name, desc(distance)))) +
+  geom_col()
+```
+
+
+
+# Table Pivots
+
+## Data: `billboard`
+
+Song rankings for the Billboard top 100 in the year 2000 from ["The Whitburn Project."](https://waxy.org/2008/05/the_whitburn_project/)
+
+```{r}
+billboard |>
+  slice_sample(n = 5) |> # select random rows
+  select(1:6) # select the first few columns
+```
+
+# `pivot_longer()`
+
+`pivot_longer()` lengthens datasets by increasing the number of rows and decreasing the number of columns.
+
+## Example
+
+```{r}
+#| output-location: fragment
+#| code-line-numbers: "2|3|4|5|6|2-7"
+billboard |>  
+  pivot_longer(
+    cols = starts_with("wk"), 
+    names_to = "week", 
+    values_to = "rank",
+    values_drop_na = TRUE
+  ) |> 
   slice_sample(n = 5)
 ```
 
+## Explanation
+
+- `cols` describes which columns need to be reshaped.
+  - In this case, we only want to pivot the columns that start with `"wk"`, hence `starts_with("wk")`
+- `names_to` gives the name of the column that will be created from the data stored in the column names, i.e. `week`
+- `values_to` gives the name of the column that will be created from the data stored in the cell value, i.e. `rank`
+
+## Cleaning
+
+Let's get the `week` as a numeric value:
+
+```{r}
+#| code-line-numbers: "2|3|4|5|6-7|8"
+#| output-location: fragment
+billboard |> 
+  pivot_longer(
+    cols = starts_with("wk"), 
+    names_to = "week", 
+    # new:
+    names_prefix = "wk",
+    names_transform = as.integer,
+    values_to = "rank",
+    values_drop_na = TRUE,
+  ) |> 
+  slice_sample(n = 5)
+```
+
+## Finding number ones
+
+```{r}
+#| code-line-numbers: "2-9|10|11"
+#| output-location: fragment
+no1s <- billboard |> 
+  pivot_longer(
+    cols = starts_with("wk"), 
+    names_to = "week", 
+    names_prefix = "wk",
+    names_transform = as.integer,
+    values_to = "rank",
+    values_drop_na = TRUE,
+  ) |> 
+  filter(rank == 1) |> 
+  select(artist, track) |> 
+  distinct()
+
+no1s
+```
+
+## Filter join to get number ones
+
+```{r}
+#| code-line-numbers: "|2|14-15"
+#| output-location: fragment
+no1s <- billboard |> 
+  semi_join(no1s, by = c("artist", "track"))
+
+no1s <- no1s |> 
+  pivot_longer(
+    cols = starts_with("wk"), 
+    names_to = "week", 
+    names_prefix = "wk",
+    names_transform = as.integer,
+    values_to = "rank",
+    values_drop_na = TRUE,
+  )
+
+no1s |> 
+  slice_head(n = 5)
+```
+
+## Plot the hits
+
+```{r}
+#| code-line-numbers: "2|3|4|5|6|7|8"
+#| output-location: slide
+no1s |> 
+  ggplot(aes(x = week, y = rank, color = track)) +
+  geom_point() +
+  geom_line() +
+  labs(title = "Performance of number one hits in 2000") +
+  scale_color_viridis_d() +
+  scale_y_reverse() + # because 1 is best
+  theme_classic()
+```
+
+# Summary
+
+- `pivot_longer` lengthens datasets by increasing the number of rows and decreasing the number of columns
+- `pivot_wider` widens datasets by increasing the number of columns and decreasing the number of rows
+  - We will practice `pivot_wider` in the notebook
+- `pivot_longer` more commonly needed
+  - because the `tidyverse` expects long data

@@ -1,0 +1,213 @@
+---
+title: "Notebook 11"
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+echo: true
+format:
+  html:
+    anchor-sections: true
+    code-tools: false
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+editor:
+  markdown:
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+# Getting Started
+
+1. Click **Session > Clear Workspace...**
+2. Click **Session > Restart R**
+3. Run the following code chunk.
+
+```{r}
+#| message: false
+library(tidyverse)
+library(ggrepel)
+library(ggthemes)
+```
+
+# Objective
+
+Today's notebook reviews key concepts that we have covered in a more **open-ended format** than previous notebooks.
+
+## Purpose
+
+1. Good practice
+2. Prepare for final projects
+3. You get to be creative!
+
+## Approach
+
+Previous notebooks have given you specific directions for how to approach writing your code.
+
+This time, I have written *general* questions about the data we will be using. Your goal is to produce output---a plot, a table, something else---that responds to the question.
+
+If you are not sure what to produce, try to reverse engineer what I created. You can see what I chose to do by checking the notebook
+outputs on Blackboard.
+
+# Data
+
+## Shakespeare plays
+
+The data for today comes from the text of Shakespeare's plays. The main table
+consists of one row for each spoken line in every play included in the [first folio](https://en.wikipedia.org/wiki/First_Folio).
+
+- `globalnumber` gives the line number within the entire play
+- `speech_id` identifies contiguous lines said by one speaker
+
+```{r}
+#| message: false
+lines <- read_csv("../data/shakespeare_lines.csv.bz2")
+lines |> slice_sample(n = 5)
+```
+
+We also have metadata about each of the plays. The dates of Shakespeare's plays are not known precisely. (This is a source of scholarly debate.) The variables `year_post_quem` and `year_ante_quem` give the
+earliest and latest years that the play was believed to have been written.
+
+```{r}
+#| message: false
+plays <- read_csv("../data/shakespeare_plays.csv")
+plays |> slice_sample(n = 5)
+```
+
+We also have a table about the individual characters in each of the plays:
+
+```{r}
+#| message: false
+people <- read_csv("../data/shakespeare_people.csv.bz2")
+people |> slice_sample(n = 5)
+```
+
+As well as a collection of stage instructions:
+
+```{r}
+#| message: false
+stage <- read_csv("../data/shakespeare_sd.csv.bz2")
+stage |> slice_sample(n = 5)
+```
+
+While these are "real" datasets, I have filtered the
+data to remove some potential issues. For example, I removed non-ASCII characters such as [the long s](https://en.wikipedia.org/wiki/Long_s).
+
+In each of the sections below, I will ask you to use the techniques we have developed in class to study a particular question about the dataset. I will provide possible solutions to each of the questions, but **you are free to approach them in a different way**.
+
+# Analysis
+
+## Date and genre of the plays
+
+Produce a plot that shows the `year_post_quem` and `year_ante_quem` of each 
+play. Try to show any patterns about the mixture of comedies, histories and
+tragedies and how Shakespeare's interest across these three types of plays
+changed over his lifetime.
+
+:::{.callout-note}
+If you want to recreate the plot I made, you will need to use `geom_segment`.
+:::
+
+```{r, question-01}
+```
+
+## Play length
+
+Produce a visualization that shows the length of each play in number of lines. Try to show the relationship between genre and play length.
+
+:::{.callout-note title="`fill`"}
+You can use the `fill` aesthetic to color the bars. If you want to follow the color scheme I use, you will need the following lines somewhere:
+
+`...aes(...fill = genre)`
+
+`scale_fill_viridis_d()`
+:::
+
+```{r, question-02}
+```
+
+## Who speaks when?
+
+Take a single play, preferably one that you are at least vaguely familiar with. Visualize when each character speaks in the play and show how these lines relate to the Act of the play. My examples use `"King Lear"`.
+
+If you wish to color points by Act, the best option is to convert the `act` variable to a factor. You could do this like so:
+
+`geom_point(aes(color = as.factor(act))`
+
+:::{.callout-note title="Aside: What *are* factors?"}
+Factors are a data type in R used to represent categorical data. Categorical data refers to variables that have a fixed number of possible values, called categories or levels. The `type_1` values in the `pokemon` data set (Electric, Rock, Psychic, etc.) would be a good recent example.
+
+R treats factors differently than strings. You can order them by specific properties. Factors have **levels**, which are usually the same as their **labels** (e.g., "Small" -> "Medium" -> "Large").
+:::
+
+```{r, question-03}
+```
+
+
+## Biggest talkers
+
+Create a plot showing only the characters who have the greatest number of lines in the play. Visualize the number of lines that they speak in each act.
+
+:::{.callout-note title="`as.factor()` again"}
+If you wish to color points by Act, don't forget to convert `act` to a factor for plotting: `as.factor(act)`
+:::
+
+```{r, question-04}
+#| message: false
+```
+
+## Characters
+
+In the previous question, we established prominent characters based on their total number of lines. Alternatively, we could measure the number of long speeches they have.
+
+To start, assume that long speeches are over 20 lines. (You can play with this number.) Produce a visualization that shows the relationship between the total number of lines a character speaks and the total number of long speeches the character has.
+
+```{r, question-05}
+#| fig-height: 7
+#| message: false
+```
+
+## Gender
+
+Visualize the proportion of lines spoken by female characters in each play.
+
+```{r, question-06}
+```
+
+Try using a `geom_density` layer to show how the proportion of female character lines changes across genres.
+
+```{r, question-07}
+```
+
+## Narrative Arc
+
+Using a set of the characters that have the most overall lines across the data,
+visualize the number of lines a character has in the first two acts compared 
+their number of lines in acts 4 and 5.
+
+Note that some plays do not have a full five acts (Hamlet) in the folio version
+and you may want to remove those from the plot.
+
+:::{.callout-note title="Dashed lines"}
+`geom_abline` function can be used to add a line to a plot. You can use the `intercept` and `slope` arguments to control the line's position and angle. This is the function I used to add the dashed line to the plot:
+
+`geom_abline(intercept = 0, slope = 1, linetype = "dashed")`
+:::
+
+```{r, question-08}
+#| message: false
+#| fig-height: 7
+```
+
+## Your idea here!
+
+Try to extend one of the plots above with another idea or modification of the question I asked as a way of understanding the data.
+
+If you're looking for a place to start, we haven't yet used the stage directions, which you should still have stored in the variable `stage`.
+
+```{r}
+```

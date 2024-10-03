@@ -444,7 +444,7 @@
   <meta name="generator" content="quarto-1.5.57">
 
   <meta name="author" content="Erik Fredner">
-  <meta name="dcterms.date" content="2024-09-26">
+  <meta name="dcterms.date" content="2024-10-01">
   <title>Table Joins</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1221,32 +1221,60 @@ Erik Fredner
 </div>
 </div>
 
-  <p class="date">September 26, 2024</p>
+  <p class="date">October 1, 2024</p>
 </section>
-<section id="from-knitting-to-rendering" class="title-slide slide level1 center">
-<h1>From “knitting” to “rendering”</h1>
+<section>
+<section id="exam-01" class="title-slide slide level1 center">
+<h1>Exam 01</h1>
+
+</section>
+<section id="update" class="slide level2">
+<h2>Update</h2>
 <ul>
-<li>You may have noticed that the latest RStudio update changed <strong>Knit</strong> to <strong>Render</strong></li>
-<li>This is part of <a href="https://quarto.org/docs/faq/rmarkdown.html#quarto-sounds-similar-to-r-markdown.-what-is-the-difference-and-why-create-a-new-project">the shift</a> from <code>.Rmd</code> to <code>.qmd</code> notebooks</li>
+<li>Grades for take-home exam released</li>
+<li>I plan to return in-class exams Wednesday</li>
+<li>Answers for <em>both exams</em> have been released:
+<ul>
+<li>Blackboard &gt; Course Documents &gt; Exams &gt; Exam 01</li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="knit-to-render" class="title-slide slide level1 center">
+<h1>“Knit” to “Render”</h1>
+
+</section>
+<section id="rstudio-update" class="slide level2">
+<h2>RStudio update</h2>
+<ul>
+<li>New RStudio update changed <strong>Knit</strong> to <strong>Render</strong></li>
+<li>This is part of <a href="https://quarto.org/docs/faq/rmarkdown.html#quarto-sounds-similar-to-r-markdown.-what-is-the-difference-and-why-create-a-new-project">the shift</a> from <code>.Rmd</code> to <code>.qmd</code> notebooks
+<ul>
 <li><code>.qmd</code> refers to the <a href="https://quarto.org">Quarto</a> format, the successor to <code>.Rmd</code></li>
-<li><code>.qmd</code> notebooks are <em>essentially the same</em> as <code>.Rmd</code></li>
+</ul></li>
+<li>For our purposes, <code>.qmd</code> and <code>.Rmd</code> are almost exactly the same
+<ul>
 <li>We’re going to try <code>.qmd</code> for today’s notebook</li>
+</ul></li>
 <li>If you have not yet updated:
 <ul>
 <li>RStudio &gt; Help &gt; Check for Updates</li>
 </ul></li>
 </ul>
-</section>
+</section></section>
+<section>
+<section id="table-joins" class="title-slide slide level1 center">
+<h1>Table joins</h1>
 
-<section id="overview" class="title-slide slide level1 center">
-<h1>Overview</h1>
+</section>
+<section id="overview" class="slide level2">
+<h2>Overview</h2>
 <ul>
 <li>One of the most common tasks in data science is <strong>joining</strong> data from two or more datasets.</li>
 <li>To do this, we need to identify a <strong>key</strong> common between the datasets.</li>
 <li>A <strong>key</strong> uniquely identifies an observation.</li>
 </ul>
-</section>
-
+</section></section>
 <section>
 <section id="key-terms" class="title-slide slide level1 center">
 <h1>“Key” terms</h1>
