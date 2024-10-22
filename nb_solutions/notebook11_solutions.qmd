@@ -168,7 +168,7 @@ Take a single play, preferably one that you are at least vaguely familiar with. 
 
 If you wish to color points by Act, the best option is to convert the `act` variable to a factor. You could do this like so:
 
-`geom_point(aes(color = as.factor(act))`
+`geom_point(aes(color = as_factor(act))`
 
 :::{.callout-note title="Aside: What *are* factors?"}
 Factors are a data type in R used to represent categorical data. Categorical data refers to variables that have a fixed number of possible values, called categories or levels. The `type_1` values in the `pokemon` data set (Electric, Rock, Psychic, etc.) would be a good recent example.
@@ -181,7 +181,7 @@ lines |>
   filter(play == "King Lear") |>
   mutate(full_name = fct_inorder(full_name)) |>
   ggplot(aes(globalnumber, full_name)) +
-  geom_point(aes(color = as.factor(act))) +
+  geom_point(aes(color = as_factor(act))) +
   scale_color_viridis_d() +
   labs(
     title = "When do the characters in King Lear speak?",
@@ -197,8 +197,8 @@ lines |>
 
 Create a plot showing only the characters who have the greatest number of lines in the play. Visualize the number of lines that they speak in each act.
 
-:::{.callout-note title="`as.factor()` again"}
-If you wish to color points by Act, don't forget to convert `act` to a factor for plotting: `as.factor(act)`
+:::{.callout-note title="`as_factor()` again"}
+If you wish to color points by Act, don't forget to convert `act` to a factor for plotting: `as_factor(act)`
 :::
 
 ```{r, question-04}
@@ -219,7 +219,7 @@ lines |>
   semi_join(characters_to_include, by = c("play", "full_name")) |>
   left_join(total_lines, by = "full_name") |>
   count(full_name, total_lines, act) |>
-  mutate(act = fct_reorder(as.factor(act), desc(act))) |>
+  mutate(act = fct_reorder(as_factor(act), desc(act))) |>
   mutate(full_name = fct_reorder(full_name, total_lines)) |>
   ggplot(aes(n, full_name, fill = act)) +
   geom_col() +

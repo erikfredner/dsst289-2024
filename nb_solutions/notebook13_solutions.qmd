@@ -1,0 +1,309 @@
+---
+title: "Notebook 13"
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+echo: true
+format:
+  html:
+    anchor-sections: true
+    code-tools: false
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+editor:
+  markdown:
+    wrap: 72
+---
+
+## Getting Started
+
+1. Click **Session > Clear Workspace...**
+2. Click **Session > Restart R**
+3. Run the following code chunk:
+
+```{r}
+#| message: false
+library(broom)
+library(tidyverse)
+library(ggrepel)
+theme_set(theme_minimal())
+```
+
+## *What We Eat in America*
+
+Today we will continue to look at the *What We Eat in America* dataset. Let's load the tables:
+
+```{r}
+#| message: false
+food <- read_csv("../data/wweia_food.csv.bz2")
+demo <- read_csv("../data/wweia_demo.csv.bz2")
+meta <- read_csv("../data/wweia_meta.csv.bz2")
+```
+
+Now we will model some of the relationships in these data sets.
+
+### Modeling Alcohol and Age
+
+- `food` contains data about how much alcohol was in a particular meal.
+- `demo` contains data about the people who ate the meals in `food`.
+
+Create a plot that shows the average amount of alcohol that people of each age consume. 
+
+
+```{r, question-01}
+food |>
+  group_by(id) |>
+  summarize(alcohol = sum(alcohol)) |>
+  left_join(demo, by = "id") |>
+  group_by(age) |>
+  summarize(avg_alcohol = mean(alcohol)) |>
+  ggplot(aes(age, avg_alcohol)) +
+  geom_point() +
+  labs(
+    title = "Average Alcohol Consumption by Age",
+    x = "Age",
+    y = "Average Alcohol Consumption"
+  )
+```
+
+You may observe a relationship between age and alcohol consumption. Let's model this relationship.
+
+Below, create a new dataset
+called `temp` that gives the average daily alcohol consumption per person by age. Filter to only include those ages greater than or equal to 21 years.
+
+```{r, question-02}
+temp <- food |>
+  group_by(id) |>
+  summarize(alcohol = sum(alcohol)) |>
+  left_join(demo, by = "id") |>
+  filter(age >= 21) |>
+  group_by(age) |>
+  summarize(avg_alcohol = mean(alcohol))
+```
+
+Build and save a linear regression model (`lm`) below that predicts alcohol usage
+based on age using the data you just created. Print out the output of the `tidy` function applied to the data and examine what the numbers in the output represent.
+
+```{r, question-03}
+model <- lm(avg_alcohol ~ age, data = temp)
+
+model |>
+  tidy()
+```
+
+Now, reproduce the plot from question one for the ages greater than 21 but add
+a linear regression line using the `augment` function.
+
+```{r, question-04}
+model |>
+  augment(newdata = temp) |>
+  ggplot(aes(age, avg_alcohol)) +
+  geom_point() +
+  geom_line(aes(y = .fitted), color = "red", linetype = "dashed")
+```
+
+How does the fit of the linear regression compare to what you would expect?
+
+### Alcohol consumption by gender and age
+
+Does alcohol consumption differ by gender across ages?
+
+Let's create a dataset
+named `temp` again, but summarize the data by age *and* gender.
+
+We will use `temp` to create a model that accounts for differences in alcohol consumption by age for both males and females. This model will allow for different starting points (intercepts) and rates of change (slopes) for each gender.
+
+Use the formula `avg_alcohol ~ age * gender` for your model, assuming that `avg_alcohol` represents average alcohol consumed per person by gender. Print out the output of the `tidy` function applied to the model.
+
+```{r, question-05}
+temp <- food |>
+  group_by(id) |>
+  summarize(alcohol = sum(alcohol)) |>
+  inner_join(demo, by = "id") |>
+  filter(age >= 21) |>
+  group_by(age, gender) |>
+  summarize(avg_alcohol = mean(alcohol))
+
+model <- lm(avg_alcohol ~ age * gender, data = temp)
+
+model |>
+  tidy()
+```
+
+:::{.callout-note title="Interpreting `tidy()`"}
+| Term            | Estimate | Interpretation                                                  |
+|-----------------|----------|-----------------------------------------------------------------|
+| (Intercept)     | 9.94     | Baseline alcohol consumption for `gender == "Female"` at age 21 (the reference group)               |
+| age             | -0.0875  | For `gender == "Female"`, alcohol consumption decreases by 0.0875 units per year of age     |
+| genderMale      | 15.3     | At age 21, `gender == "Male"` consume 15.3 units more than `gender == "Female"`             |
+| age:genderMale  | -0.129   | Interaction: For `gender == "Male"`, the decrease in alcohol consumption with age is 0.129 units more pronounced compared to `gender == "Female"`. |
+:::
+
+In the code block below, plot the model with `augment`. You'll
+need to use the `color` aesthetic to get this to look right.
+
+```{r, question-06}
+model |>
+  augment(newdata = temp) |>
+  ggplot(aes(age, avg_alcohol)) +
+  geom_point(aes(color = gender)) +
+  geom_line(aes(y = .fitted, color = gender)) +
+  scale_color_viridis_d()
+```
+
+### Shortcut: `geom_smooth`
+
+There's a shortcut to making the plot above. We can add a `geom_smooth` layer onto a plot, which will automatically fit a linear regression for each group (in this case, gender):
+
+```{r}
+#| eval: false
+geom_smooth(
+  aes(color = gender),
+  method = "lm",
+  se = FALSE,
+  formula = y ~ x
+)
+```
+
+:::{.callout-tip}
+`geom_smooth` can do a lot! Check the documentation [here](https://ggplot2.tidyverse.org/reference/geom_smooth.html) for examples.
+:::
+
+Using the `temp` 
+dataset, plot the points and the output of the `geom_smooth` layer given above.
+Verify that this looks the same as the plot you made in the prior question.
+
+```{r, question-07}
+temp |>
+  ggplot(aes(age, avg_alcohol)) +
+  geom_point(aes(color = gender)) +
+  geom_smooth(
+    aes(color = gender),
+    method = "lm", # i.e., use lm()
+    se = FALSE,
+    formula = y ~ x
+  ) +
+  scale_color_viridis_d()
+```
+
+While `geom_smooth` gives us the ability to create this plot quickly, it is not easy
+to get access to the other model metrics that our more involved approach in
+the previous questions gave us.
+
+## Caffeine
+
+Let's move on to caffeine consumption.
+
+For reference, one cup of drip coffee has about 95-165 mg of caffeine. One espresso shot has about 60 mg.
+
+### Caffeine by gender and age
+
+Produce a similar plot to the one in question 7 for
+caffeine consumption by gender and age. This time, use the following 
+`geom_smooth`:
+
+```{r}
+#| eval: false
+geom_smooth(
+  aes(color = gender),
+  method = "loess", # new
+  se = FALSE,
+  formula = y ~ x
+)
+```
+
+This will fit a curve rather than a straight line. You'll see in the plot that caffeine consumption doesn't follow a straight-line relationship, which is why the curve provided by the `"loess"` method is more appropriate.
+
+```{r, question-08}
+food |>
+  group_by(id) |>
+  summarize(caffeine = sum(caffeine)) |>
+  inner_join(demo, by = "id") |>
+  group_by(age, gender) |>
+  summarize(avg_caffeine = mean(caffeine)) |>
+  ggplot(aes(age, avg_caffeine)) +
+  geom_point(aes(color = gender)) +
+  geom_smooth(
+    aes(color = gender),
+    method = "loess",
+    se = FALSE,
+    formula = y ~ x
+  ) +
+  scale_color_viridis_d()
+```
+
+### Caffeine consumption by hour
+
+You can imagine that caffeine usage changes throughout the day. In the following
+code block, summarize the average caffeine consumption by age, gender, and
+whether the time is the morning (`time < 12`) or afternoon (`time >= 12`). Call that new variable `day_time`.
+
+Use the `facet_wrap` to produce one plot for the morning and one for the afternoon measurements. Examine the two plots for morning and afternoon caffeine consumption. What patterns in caffeine consumption by age and gender do you observe?
+
+```{r, question-09}
+food |>
+  mutate(
+    day_time = if_else(time < 12, "morning", "afternoon"),
+    day_time = fct_relevel(day_time, "morning", "afternoon")
+  ) |>
+  group_by(id, day_time) |>
+  summarize(caffeine = sum(caffeine), .groups = "drop") |>
+  inner_join(demo, by = "id") |>
+  group_by(age, gender, day_time) |>
+  summarize(avg_caffeine = mean(caffeine), .groups = "drop") |>
+  ggplot(aes(age, avg_caffeine)) +
+  geom_point(aes(color = gender)) +
+  geom_smooth(
+    aes(color = gender),
+    method = "loess",
+    se = FALSE,
+    formula = y ~ x
+  ) +
+  facet_wrap(~day_time) +
+  scale_color_viridis_d()
+```
+
+### Model Metrics
+
+Let's create a linear model corresponding to the one you just produced in Q9. This time, let's create a temporary data table called `temp` and use the `lm` function to build the linear model. The formula should be `avg_caffeine ~ gender + age + day_time`.
+
+```{r, question-10}
+temp <- food |>
+  mutate(
+    day_time = if_else(time < 12, "morning", "afternoon"),
+    day_time = fct_relevel(day_time, "morning", "afternoon")
+  ) |>
+  group_by(id, day_time) |>
+  summarize(caffeine = sum(caffeine), .groups = "drop") |>
+  inner_join(demo, by = "id") |>
+  group_by(age, gender, day_time) |>
+  summarize(avg_caffeine = mean(caffeine), .groups = "drop")
+
+model <- lm(avg_caffeine ~ gender + age + day_time, data = temp)
+
+model |>
+  tidy()
+```
+
+| Term               | Estimate | Interpretation                                                                 |
+|--------------------|----------|-------------------------------------------------------------------------------|
+| (Intercept)        | 27.2     | The predicted average caffeine intake for females of age 0 in the morning.     |
+| genderMale         | 16.9     | On average, males consume 16.9 units more caffeine than females, holding other variables constant. |
+| age                | 1.10     | For each additional year of age, average caffeine intake increases by 1.10 units, holding other variables constant. |
+| day_timeafternoon  | -41.5    | On average, caffeine intake in the afternoon is 41.5 units lower than in the morning, holding other variables constant. |
+
+Use the function `glance` to see the model statistics:
+
+```{r, question-11}
+model |>
+  glance()
+```
+
+`r.squared` tells us how well the model fits the data, showing the proportion of variation in caffeine consumption explained by the model. The proportion of the variation explained by the model ranges from 0 to 1. For example, if `r.squared` = 0.60, then 60% of the variation in caffeine consumption is explained by the model.
+
+How much of the variation in the
+data is described by model you built? Does that make sense to you based on the plot?

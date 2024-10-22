@@ -1,0 +1,373 @@
+---
+title: "Tidy Models and Normal Forms"
+subtitle: "DSST 289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+echo: true
+format:
+  revealjs:
+    logo: "images/by-sa.png"
+    footer: "https://fredner.org"
+    embed-resources: true
+    scrollable: true
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+# Homework review
+
+```{r}
+#| echo: false
+
+library(broom)
+library(ggrepel)
+library(glue)
+library(tidyverse)
+theme_set(theme_minimal())
+```
+
+## Data
+
+```{r}
+hans <- read_csv("../data/hans_roslin.csv")
+
+hans_subset <- hans |>
+  filter(year == 2007) |>
+  filter(continent == "Americas") |>
+  select(country, year, gdp, life_exp)
+
+hans_subset |>
+  slice_sample(n = 5)
+```
+
+## Linear model
+
+```{r}
+model <- lm(life_exp ~ gdp, data = hans_subset)
+```
+
+- Read tilde (`~`) as "is modeled by."
+- Life expectancy is modeled by GDP.
+- Independent variable: GDP
+- Dependent variable: Life expectancy
+
+## `augment()`
+
+```{r}
+model <- lm(life_exp ~ gdp, data = hans_subset)
+
+model |>
+  augment(newdata = hans_subset)
+```
+
+
+## Plot
+
+```{r}
+#| output-location: slide
+#| code-line-numbers: "|1|4|8|"
+model <- lm(life_exp ~ gdp, data = hans_subset)
+
+model |>
+  augment(newdata = hans_subset) |>
+  ggplot(aes(gdp, life_exp)) +
+  geom_point() +
+  geom_text_repel(aes(label = country)) +
+  geom_line(aes(y = .fitted), color = "red", linetype = "dashed")
+```
+
+## 1. Output of `tidy()`
+
+```{r}
+model |>
+  tidy()
+```
+
+## 2. Output of `augment()`
+
+```{r}
+model |>
+  augment(newdata = hans_subset) |>
+  slice_sample(n = 5)
+```
+
+## 3. Residuals
+
+```{r}
+#| output-location: slide
+#| code-line-numbers: "1|2|3|5|"
+model |>
+  augment(newdata = hans_subset) |>
+  ggplot(aes(gdp, .resid)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  geom_text_repel(aes(label = country))
+```
+
+## 3. Positive residuals
+
+```{r}
+model |>
+  augment(newdata = hans_subset) |>
+  arrange(desc(.resid)) |>
+  slice_head(n = 5)
+```
+
+The largest positive residuals indicate which countries have the highest life expectancy compared to the model's prediction.
+
+## 3. Negative residuals
+
+```{r}
+#| code-line-numbers: "1-4|5-10"
+model |>
+  augment(newdata = hans_subset) |>
+  arrange(.resid) |>
+  slice_head(n = 5) |>
+  # highlight the US with flag emoji:
+  mutate(country = if_else(
+    condition = country == "United States",
+    true = glue("🇺🇸 {country} 🇺🇸"),
+    false = country
+  ))
+```
+
+The largest negative residuals indicate which countries have the lowest life expectancy compared to the model's prediction.
+
+# Data normalization
+
+## Overview
+
+- Data normalization is a best practice: Ideally, every *fact* in a data set should be stored in one and only one place.
+  - Repeating facts in multiple locations wastes space, increases the chance of error, and makes it harder to update information.
+- **Objective**: Organize data to minimize redundancy and dependency
+- Now that we can `join` and `pivot`, we can benefit from normalization
+
+## First Normal Form (1NF)
+
+| Year | Tournament         | Tournament Country | Winner           | Winner Nationality |
+|------|--------------------|--------------------|------------------|--------------------|
+| 2020 | Australian Open    | AUS                | Sofia Kenin      | USA                |
+| 2020 | French Open        | FRA                | Iga Świątek      | POL                |
+| 2020 | Wimbledon          | GBR                | Naomi Osaka      | JPN                |
+| 2020 | US Open            | USA                | Naomi Osaka      | JPN                |
+| 2021 | Australian Open    | AUS                | Naomi Osaka      | JPN                |
+| 2021 | French Open        | FRA                | Barbora Krejčíková | CZE              |
+| 2021 | Wimbledon          | GBR                | Ashleigh Barty   | AUS                |
+| 2021 | US Open            | USA                | Emma Raducanu    | GBR                |
+
+## Primary key
+
+In this case, the primary key is the combination of Tournament and Year. We **must** use both to uniquely identify a row.
+
+## Problems with 1NF?
+
+- *Repeated data*: Tournament Country and Winner Nationality
+- Repeating data wastes space
+- More importantly, if/when data changes, repeated data *must be changed in multiple places*
+
+## Second Normal Form (2NF)
+
+**Table 1: Tournament Information**
+
+*Note the absence of winner nationality.*
+
+| Year | Tournament       | Tournament Country | Winner           |
+|------|------------------|--------------------|------------------|
+| 2020 | Australian Open  | AUS                | Sofia Kenin      |
+| 2020 | French Open      | FRA                | Iga Świątek      |
+| 2020 | Wimbledon        | GBR                | Naomi Osaka      |
+| 2020 | US Open          | USA                | Naomi Osaka      |
+| 2021 | Australian Open  | AUS                | Naomi Osaka      |
+| 2021 | French Open      | FRA                | Barbora Krejčíková |
+| 2021 | Wimbledon        | GBR                | Ashleigh Barty   |
+| 2021 | US Open          | USA                | Emma Raducanu    |
+
+**Table 2: Winner Information**
+
+| Winner             | Nationality |
+|--------------------|-------------|
+| Sofia Kenin        | USA         |
+| Iga Świątek        | POL         |
+| Naomi Osaka        | JPN         |
+| Barbora Krejčíková | CZE         |
+| Ashleigh Barty     | AUS         |
+| Emma Raducanu      | GBR         |
+
+## Third Normal Form (3NF)
+
+**Table 1: Tournament Winner**
+
+| Year | Tournament       | Winner           |
+|------|------------------|------------------|
+| 2020 | Australian Open  | Sofia Kenin      |
+| 2020 | French Open      | Iga Świątek      |
+| 2020 | Wimbledon        | Naomi Osaka      |
+| 2020 | US Open          | Naomi Osaka      |
+| 2021 | Australian Open  | Naomi Osaka      |
+| 2021 | French Open      | Barbora Krejčíková |
+| 2021 | Wimbledon        | Ashleigh Barty   |
+| 2021 | US Open          | Emma Raducanu    |
+
+**Table 2: Player Information**
+
+| Player             | Nationality |
+|--------------------|-------------|
+| Sofia Kenin        | USA         |
+| Iga Świątek        | POL         |
+| Naomi Osaka        | JPN         |
+| Barbora Krejčíková | CZE         |
+| Ashleigh Barty     | AUS         |
+| Emma Raducanu      | GBR         |
+
+**Table 3: Tournament Information**
+
+| Tournament         | Tournament Country |
+|--------------------|--------------------|
+| Australian Open    | AUS                |
+| French Open        | FRA                |
+| Wimbledon          | GBR                |
+| US Open            | USA                |
+
+## 3NF with ID numbers
+
+**Table 1: Tournament Winner**
+
+| Year | Tournament ID | Player ID |
+|------|---------------|-----------|
+| 2020 | 1             | 1         |
+| 2020 | 2             | 2         |
+| 2020 | 3             | 3         |
+| 2020 | 4             | 3         |
+| 2021 | 1             | 3         |
+| 2021 | 2             | 4         |
+| 2021 | 3             | 5         |
+| 2021 | 4             | 6         |
+
+**Table 2: Player Information**
+
+| Player ID | Player             | Country ID |
+|-----------|--------------------|----------------|
+| 1         | Sofia Kenin        | 1              |
+| 2         | Iga Świątek        | 2              |
+| 3         | Naomi Osaka        | 3              |
+| 4         | Barbora Krejčíková | 4              |
+| 5         | Ashleigh Barty     | 5              |
+| 6         | Emma Raducanu      | 6              |
+
+**Table 3: Tournament Information**
+
+| Tournament ID | Tournament        | Country ID |
+|---------------|-------------------|-----------------------|
+| 1             | Australian Open   | 5                     |
+| 2             | French Open       | 2                     |
+| 3             | Wimbledon         | 6                     |
+| 4             | US Open           | 1                     |
+
+**Table 4: Country Information**
+
+| Country ID | Country Abbreviation | Country Name    |
+|------------|----------------------|-----------------|
+| 1          | USA                  | United States   |
+| 2          | FRA                  | France          |
+| 3          | JPN                  | Japan           |
+| 4          | CZE                  | Czech Republic  |
+| 5          | AUS                  | Australia       |
+| 6          | GBR                  | Great Britain   |
+| 7          | POL                  | Poland          |
+
+## Summary of Normal Forms
+
+- **1NF**: Data is organized in a table with each cell holding a single value. Repeated data is allowed.
+- **2NF**: Eliminates partial dependencies by ensuring each non-key attribute is fully dependent on the primary key (Year + Tournament here). Data is split into separate tables for different entities (Winners and Nationalities).
+- **3NF**: Removes transitive dependencies. Attributes depend only on the primary key, and additional tables are created to represent related data independently (Tournament and Tournament Country).
+
+## Practice
+
+| Artist           | Song            | Album                     | Genres                       |
+|------------------|-----------------|---------------------------|------------------------------|
+| Taylor Swift     | Cardigan        | *Folklore*                 | Indie Folk, Pop               |
+| Ariana Grande    | Positions       | *Positions*                | Pop, R&B                      |
+| Dua Lipa         | Levitating      | *Future Nostalgia*         | Pop, Disco                    |
+
+## First Normal Form (1NF)
+
+| Artist           | Song            | Album                     | Genre     |
+|------------------|-----------------|---------------------------|-----------|
+| Taylor Swift     | Cardigan        | *Folklore*                 | Indie Folk|
+| Taylor Swift     | Cardigan        | *Folklore*                 | Pop       |
+| Ariana Grande    | Positions       | *Positions*                | Pop       |
+| Ariana Grande    | Positions       | *Positions*                | R&B       |
+| Dua Lipa         | Levitating      | *Future Nostalgia*         | Pop       |
+| Dua Lipa         | Levitating      | *Future Nostalgia*         | Disco     |
+
+## Second Normal Form (2NF)
+
+**Table 1: Songs**
+
+| Song ID | Artist           | Song            | Album                     |
+|---------|------------------|-----------------|---------------------------|
+| 1       | Taylor Swift     | Cardigan        | *Folklore*                 |
+| 2       | Ariana Grande    | Positions       | *Positions*                |
+| 3       | Dua Lipa         | Levitating      | *Future Nostalgia*         |
+
+**Table 2: Song Genres**
+
+| Song ID | Genre       |
+|---------|-------------|
+| 1       | Indie Folk  |
+| 1       | Pop         |
+| 2       | Pop         |
+| 2       | R&B         |
+| 3       | Pop         |
+| 3       | Disco       |
+
+## Third Normal Form (3NF)
+
+**Table 1: Songs**
+
+| Song ID | Song            | Artist ID | Album ID |
+|---------|-----------------|-----------|----------|
+| 1       | Cardigan        | 1         | 1        |
+| 2       | Positions       | 2         | 2        |
+| 3       | Levitating      | 3         | 3        |
+
+
+**Table 2: Artists**
+
+| Artist ID | Artist           |
+|-----------|------------------|
+| 1         | Taylor Swift     |
+| 2         | Ariana Grande    |
+| 3         | Dua Lipa         |
+
+
+**Table 3: Albums**
+
+| Album ID | Album                     |
+|----------|---------------------------|
+| 1        | *Folklore*                 |
+| 2        | *Positions*                |
+| 3        | *Future Nostalgia*         |
+
+
+**Table 4: Song Genres**
+
+| Song ID | Genre ID  |
+|---------|-----------|
+| 1       | 1         |
+| 1       | 2         |
+| 2       | 2         |
+| 2       | 3         |
+| 3       | 2         |
+| 3       | 4         |
+
+
+**Table 5: Genres**
+
+| Genre ID | Genre       |
+|----------|-------------|
+| 1        | Indie Folk  |
+| 2        | Pop         |
+| 3        | R&B         |
+| 4        | Disco       |

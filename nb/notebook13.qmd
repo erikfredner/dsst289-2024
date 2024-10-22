@@ -1,0 +1,192 @@
+---
+title: "Notebook 13"
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+echo: true
+format:
+  html:
+    anchor-sections: true
+    code-tools: false
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+editor:
+  markdown:
+    wrap: 72
+---
+
+## Getting Started
+
+1. Click **Session > Clear Workspace...**
+2. Click **Session > Restart R**
+3. Run the following code chunk:
+
+```{r}
+#| message: false
+library(broom)
+library(tidyverse)
+library(ggrepel)
+theme_set(theme_minimal())
+```
+
+## *What We Eat in America*
+
+Today we will continue to look at the *What We Eat in America* dataset. Let's load the tables:
+
+```{r}
+#| message: false
+food <- read_csv("../data/wweia_food.csv.bz2")
+demo <- read_csv("../data/wweia_demo.csv.bz2")
+meta <- read_csv("../data/wweia_meta.csv.bz2")
+```
+
+Now we will model some of the relationships in these data sets.
+
+### Modeling Alcohol and Age
+
+- `food` contains data about how much alcohol was in a particular meal.
+- `demo` contains data about the people who ate the meals in `food`.
+
+Create a plot that shows the average amount of alcohol that people of each age consume. 
+
+```{r, question-01}
+```
+
+You may observe a relationship between age and alcohol consumption. Let's model this relationship.
+
+Below, create a new dataset
+called `temp` that gives the average daily alcohol consumption per person by age. Filter to only include those ages greater than or equal to 21 years.
+
+```{r, question-02}
+```
+
+Build and save a linear regression model (`lm`) below that predicts alcohol usage
+based on age using the data you just created. Print out the output of the `tidy` function applied to the data and examine what the numbers in the output represent.
+
+```{r, question-03}
+```
+
+Now, reproduce the plot from question one for the ages greater than 21 but add
+a linear regression line using the `augment` function.
+
+```{r, question-04}
+```
+
+How does the fit of the linear regression compare to what you would expect?
+
+### Alcohol consumption by gender and age
+
+Does alcohol consumption differ by gender across ages?
+
+Let's create a dataset
+named `temp` again, but summarize the data by age *and* gender.
+
+We will use `temp` to create a model that accounts for differences in alcohol consumption by age for both males and females. This model will allow for different starting points (intercepts) and rates of change (slopes) for each gender.
+
+Use the formula `alcohol ~ age * gender` for your model. Print out the output of the `tidy` function applied to the model.
+
+```{r, question-05}
+```
+
+:::{.callout-note title="Interpreting `tidy()`"}
+| Term            | Estimate | Interpretation                                                  |
+|-----------------|----------|-----------------------------------------------------------------|
+| (Intercept)     | 9.94     | Baseline alcohol consumption for `gender == "Female"` at age 21 (the reference group)               |
+| age             | -0.0875  | For `gender == "Female"`, alcohol consumption decreases by 0.0875 units per year of age     |
+| genderMale      | 15.3     | At age 21, `gender == "Male"` consume 15.3 units more than `gender == "Female"`             |
+| age:genderMale  | -0.129   | Interaction: For `gender == "Male"`, the decrease in alcohol consumption with age is 0.129 units more pronounced compared to `gender == "Female"`. |
+:::
+
+In the code block below, plot the model with `augment`. You'll
+need to use the `color` aesthetic to get this to look right.
+
+```{r, question-06}
+```
+
+### Shortcut: `geom_smooth`
+
+There's a shortcut to making the plot above. We can add a `geom_smooth` layer onto a plot, which will automatically fit a linear regression for each group (in this case, gender):
+
+```{r}
+#| eval: false
+geom_smooth(
+  aes(color = gender),
+  method = "lm",
+  se = FALSE,
+  formula = y ~ x
+)
+```
+
+:::{.callout-tip}
+`geom_smooth` can do a lot! Check the documentation [here](https://ggplot2.tidyverse.org/reference/geom_smooth.html) for examples.
+:::
+
+Using the `temp` 
+dataset, plot the points and the output of the `geom_smooth` layer given above.
+Verify that this looks the same as the plot you made in the prior question.
+
+```{r, question-07}
+```
+
+While `geom_smooth` gives us the ability to create this plot quickly, it is not easy
+to get access to the other model metrics that our more involved approach in
+the previous questions gave us.
+
+## Caffeine
+
+Let's move on to caffeine consumption.
+
+### Caffeine by gender and age
+
+Produce a similar plot to the one in question 7 for
+caffeine consumption by gender and age. This time, use the following 
+`geom_smooth`:
+
+```{r}
+#| eval: false
+geom_smooth(
+  aes(color = gender),
+  method = "loess", # new
+  se = FALSE,
+  formula = y ~ x
+)
+```
+
+This will fit a curve rather than a straight line. You'll see in the plot that caffeine consumption doesn't follow a straight-line relationship, which is why the curve provided by the `"loess"` method is more appropriate.
+
+```{r, question-08}
+```
+
+### Caffeine consumption by hour
+
+You can imagine that caffeine usage changes throughout the day. In the following
+code block, summarize the average caffeine consumption by age, gender, and
+whether the time is the morning (`time < 12`) or afternoon (`time >= 12`). Call that new variable `day_time`.
+
+Use
+the `facet_wrap` to produce one plot for the morning and one for the afternoon
+measurements. Examine the two plots for morning and afternoon caffeine consumption. What patterns in caffeine consumption by age and gender do you observe?
+
+```{r, question-09}
+```
+
+### Model Metrics
+
+Let's create a linear model corresponding to the one you just produced in Q9. This time, let's create a temporary data table called `temp` and use the `lm` function to build the linear model. The formula should be `gender + age + day_time`.
+
+```{r, question-10}
+```
+
+Use the function `glance` to see the model statistics:
+
+```{r, question-11}
+```
+
+`r.squared` tells us how well the model fits the data, showing the proportion of variation in caffeine consumption explained by the model. The proportion of the variation explained by the model ranges from 0 to 1. For example, if `r.squared` = 0.60, then 60% of the variation in caffeine consumption is explained by the model.
+
+How much of the variation in the
+data is described by model you built? Does that make sense to you based on the plot?

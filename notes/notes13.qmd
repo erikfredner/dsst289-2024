@@ -1,0 +1,228 @@
+---
+title: "14. Tidy Models"
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+echo: true
+format:
+  html:
+    anchor-sections: true
+    code-tools: false
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    math: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+editor:
+  markdown:
+    wrap: 72
+---
+
+```{r}
+#| include: false
+#| message: false
+library(broom)
+library(ggrepel)
+library(tidyverse)
+theme_set(theme_minimal())
+
+food <- read_csv(file.path("..", "data", "food.csv"))
+```
+
+## Normalized Model Outputs
+
+In this class, we don’t focus much on models, as they are covered extensively in other courses in our data science program. Instead, we'll focus on a specific aspect of modeling: how to create derived data tables that describe model outputs in a way that respects tidy data principles.
+
+There are many reasons why we might want to do this. In this class, we’ll use it to **draw a line of best fit** on a scatterplot.
+
+As an example model, we will use a linear regression. If you’ve never come across linear regression before, don’t worry! These notes will introduce all the details you need for this class.
+
+### **OPTIONAL**: Videos to Learn More
+
+If you’d like to learn more about linear regression, I recommend watching these two videos in this order:
+
+1. [Fitting a Line to Data](https://www.youtube.com/watch?v=PaFPbb66DxQ)
+2. [Linear Regression](https://www.youtube.com/watch?v=7ArmBVF2dCs)
+
+## A Very Brief Visual Introduction to Linear Regression
+
+Let's start by drawing a scatterplot with total fat on the x-axis and the number of calories on the y-axis using our `food` data.
+
+```{r}
+food |>
+  ggplot(aes(total_fat, calories)) +
+  geom_point(alpha = 0.5)
+```
+
+We can see that `total_fat` and `calories` are generally positively related to each other: as total fat increases, calories also increase.
+
+We can formalize this relationship by fitting a model. One of the most popular models for this type of relationship is **linear regression**, which assumes we can relate these two continuous variables as follows (where the subscript `i` indexes each row of the data):
+
+$$
+\text{calories}_{i} = A + B \cdot \text{total\_fat}_{i} + \text{error}_{i}
+$$
+
+In other words, we expect the caloric content of each food to be close to a constant `A` (intercept) plus `B` times the total fat (slope).
+
+This relationship will not fit perfectly, so there is an error term capturing the difference between the model and each data point. The error term captures all the factors that influence the response variable (calories) but are not explicitly included in the model, such as measurement errors or other unobserved variables.
+
+Visually, we want something like this:
+
+```{r}
+#| echo: false
+
+model <- lm(calories ~ total_fat, data = food)
+model |>
+  augment(newdata = food) |>
+  ggplot(aes(total_fat, calories)) +
+  geom_point(alpha = 0.5) +
+  geom_line(aes(y = .fitted), color = "red", linetype = "dashed")
+```
+
+Our goal when building a model is to find the best slope and intercept to describe the data we have.
+
+### Linear Regression with `lm`
+
+In R, we use the `lm` function to perform linear regression. Here’s the syntax:
+
+```{r}
+model <- lm(calories ~ total_fat, data = food)
+```
+
+The tilde `~` can be read as "is modeled by." The code above says "calories are modeled by total fat."
+
+Here’s what the output looks like:
+
+```{r}
+model
+```
+
+This command provides the model's estimates for the slope and intercept.
+
+To get more information about the model, we use the `summary` function:
+
+```{r}
+summary(model)
+```
+
+The output contains a lot of information, and we will not cover all the probabilistic details of linear regression in these notes.
+
+## Structuring the Model Data
+
+Our goal is to organize and structure the model output as data. While we can read `summary`, it does not allow us to work with the model output programmatically, which we might want to do for plotting or other purposes.
+
+How might we structure the model data using the **tidy data** principles we have learned?
+
+Most models, including linear regression, require three different tables to capture all the information we typically want in a normalized format. These tables can be described by their units of measurement:
+
+- **Model:** This table has the model as the unit of measurement, meaning there is just one row representing the entire model. It captures overall information about the model fit. This corresponds to the information at the bottom of the `summary` output above.
+- **Parameter:** This table has one row for each parameter learned by the model. In our example, there will be two rows: one for the intercept (`A`) and one for the slope (`B`). These rows contain the model's best estimates of the parameters and also information about how certain we are about these estimates, based on statistical assumptions.
+- **Observation:** This table has one row for each observation in the original data. It includes information about where the model thinks each value should be (the fitted value) and the residual (the difference between the fitted value and the actual value). We often include all the original variables in this table.
+
+### Using `broom` to Structure Model Data
+
+There is a very helpful R package called `broom` that can generate these three tables when given a model object. We’ll demonstrate it using linear regression, but `broom` works with many types of models.
+
+There are three functions we will use from `broom`:
+
+- `glance()`: Summarizes the overall model fit
+- `tidy()`: Summarizes model coefficients, including estimates for intercept and slopes
+- `augment()`: Adds model information to each observation (e.g., fitted values, residuals)
+
+:::{.callout-note}
+`broom` names new columns using a period (e.g., `.fitted`) whereas our class convention would typically require an underscore.
+
+If you wish, you can `rename()` these columns like so:
+
+```{r}
+model |>
+  augment(newdata = food) |>
+  rename(fitted = .fitted, resid = .resid) |> 
+  select(item, calories, total_fat, fitted, resid) |> 
+  slice_head(n = 5)
+```
+:::
+
+To get a table summarizing the entire model, use the `glance` function:
+
+```{r}
+model |>
+  glance()
+```
+
+To get a table about the model's coefficients, use the `tidy` function:
+
+```{r}
+model |>
+  tidy()
+```
+
+To get a table for the original observations, use the `augment` function. Here we set the `newdata` parameter to the table we want to augment:
+
+```{r}
+model |>
+  augment(newdata = food) |>
+  select(item, total_fat, calories, .fitted, .resid)
+```
+
+:::{.callout-note title="`.fitted`? `.resid`?"}
+The `.fitted` column is the model's best guess (prediction) of each observation of the dependent variable given the independent variable(s). In this case, it is the best guess for the number of calories given the total fat content.
+
+The `.resid` column measures the difference between the actual value (e.g., apples have 52 calories in this dataset) and the model's prediction For instance, `.fitted` might predict that, based on its fat content, an apple has 62.9 calories. The residual is the difference between the actual and predicted values. The model predicted that apples would have 62.9 calories, but they actually have 52 calories, so the residual is 10.9.
+
+Many R objects use a leading period (i.e., `.fitted` rather than `fitted`) to indicate that the column is a derived value.
+:::
+
+## Applying the Model Data
+
+We can use this augmented data in a pipeline to produce the plot shown above:
+
+```{r}
+model |>
+  augment(newdata = food) |>
+  ggplot(aes(total_fat, calories)) +
+  geom_point(alpha = 0.5) +
+  geom_line(aes(y = .fitted), color = "red", linetype = "dashed")
+```
+
+We won't spend much more time discussing model details, but hopefully, this helps connect some ideas in this class with what you may have encountered in other courses. It will also be very helpful going forward.
+
+## Homework Questions
+
+Consider the following plot, which shows a linear model applied to a subset of the `hans` dataset to predict life expectancy as a function of GDP:
+
+```{r}
+#| echo: false
+#| message: false
+
+
+hans <- read_csv("../data/hans_roslin.csv")
+set.seed(1)
+hans_subset <- hans |>
+  filter(year %in% c(2007)) |>
+  filter(continent == "Americas") |>
+  slice_sample(n = 10) |>
+  select(country, year, gdp, life_exp)
+
+hans_subset |> 
+  ggplot(aes(gdp, life_exp)) +
+  geom_point(color = "grey85") +
+  geom_text_repel(aes(label = country)) +
+  geom_smooth(
+    method = "lm",
+    se = FALSE,
+    color = "red",
+    linewidth = 0.7,
+    linetype = "dashed"
+  ) +
+  scale_x_continuous(limits = c(0, NA)) +
+  scale_y_continuous(n.breaks = 50)
+```
+
+Answer the following questions:
+
+1. What would be the output of `tidy(model)` applied to the model shown above? Approximate the first two columns (`term` and `estimate`) for the model represented by the red dashed line.
+2. What would be the output of `augment(model, newdata = hans_subset)` applied to the model and data shown above? Approximate the values in the columns `country`, `.fitted`, and `.residual` for at least three of the countries.
+3. Which country has a residual with the largest magnitude according to the plot above? Which country has a residual with the smallest magnitude?

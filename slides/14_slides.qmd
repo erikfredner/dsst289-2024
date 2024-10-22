@@ -1,0 +1,394 @@
+---
+title: "Exam 02 Review"
+subtitle: "DSST 289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+echo: true
+format:
+  revealjs:
+    logo: "images/by-sa.png"
+    footer: "https://fredner.org"
+    embed-resources: true
+    scrollable: true
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+# DSST 289 Tutors
+
+## The QRC in the WLC
+
+The [Quantitative Resource Center](https://provost.richmond.edu/academic-initiatives/qrc.html) will be offering tutoring for DSST 289 starting ⏰ **today** and continuing throughout the rest of the semester.
+
+## Schedule
+
+- *What*: DSST 289 tutoring
+- *Where*: Adams Auditorium (on the second floor of Boatwright Library)
+- *When*: Every Wednesday until Dec. 4 from 7 to 10pm
+- *Who*: Kritim Rijal and Danna Aguilar, both of whom have previously taken DSST 289
+- *Why*: Prepare for exams, solve notebooks, work on final projects
+
+# Open notes (take-home)
+
+## Functions
+
+- `anti_join()`
+- `arrange()`
+- `as_factor()`
+- `distinct()`
+- `filter()`
+- `geom_col()`
+- `geom_line()`
+- `geom_point()`
+- `geom_smooth()`
+- `ggplot()`
+- `group_by()`
+- `inner_join()`
+- `labs()`
+- `left_join()`
+- `max()`
+- `mean()`
+- `mutate()`
+- `pivot_wider()`
+- `scale_color_viridis_d()`
+- `select()`
+- `slice()`
+- `summarize()`
+
+## Procedures
+
+-	Data manipulation: filtering, grouping, summarizing
+-	Adding columns with joins
+- Filtering with joins
+-	Reshaping data with pivots
+-	Plotting data with *multiple* plot layers
+-	Getting distinct values
+
+## Concepts
+
+-	Grouped vs. ungrouped operations
+- Long vs. wide data
+- Joins vs. filter joins
+- `ggplot2` layers
+- Converting categorical variables to factor levels
+- Representing change over time
+
+# Closed notes (in-class)
+
+## Functions
+
+- `pivot_longer()`
+- `semi_join()`
+- `if_else()`
+- `tidy()`
+- TODO
+
+## Procedures
+
+- Applying tidy data principles
+- Data normalization to higher normal forms
+- Interpreting regression outputs
+- Calculating new variables
+
+## Concepts
+
+- Principles of data feminism
+- Normal forms
+- Data dictionaries
+
+# Exam tips
+
+- Read the questions carefully
+- Review the tables before getting started
+- Don't skip the data dictionaries
+- If you get stuck, move on, then come back
+  - (Later questions may contain pieces that will help with earlier questions)
+
+# Tidy data review
+
+## Principles
+
+- Rows contain observations
+- Columns contain variables
+  - Columns all have the same data type (character, numeric, etc.)
+- Cells contains values
+  - Each cell contains *one* piece of information
+
+## Tables
+
+- Tables contain comparable observations
+- Don't be scared to make another table
+- Manually created tables begin from cell A1, have a header row, and are rectangular
+
+## Explicitness
+
+- Choices made in data collection should be explicit and documented
+  - Data dictionaries document those choices and assumptions
+
+# *Data Feminism* review
+
+## What is data feminism?
+
+:::{.r-fit-text}
+> The starting point for data  feminism is something that goes mostly unacknowledged in data science: power is not  distributed equally in the world. Those who wield power are disproportionately elite,  straight, white, able-bodied, cisgender men from the Global North. The work of data  feminism is first to tune into how standard practices in data science serve to reinforce  these existing inequalities and second to use data science to challenge and change the distribution of power. Underlying data feminism is a belief in and commitment to  *co-liberation*: the idea that oppressive systems of power harm all of us, that they undermine the quality and validity of our work, and that they hinder us from creating true  and lasting social impact with data science.
+
+Catherine D’Ignazio and Lauren F. Klein. *Data Feminism*. Strong Ideas Series. Cambridge, Massachusetts: The MIT Press, 2020, 8-9.
+:::
+
+## Principles of data feminism
+
+1. Use data to create more just, equitable, and livable futures
+2. Recognize that data is never neutral or objective
+3. Make labor visible
+
+# Joins review
+
+## Overview
+
+- One of the most common tasks in data science is **joining** data from two or more datasets.
+- To do this, we need to identify a **key** common between the datasets.
+- A **key** uniquely identifies an observation.
+  - Sometimes you need multiple columns to constitute a key.
+
+## Tables
+
+`works`:
+
+```{r}
+#| echo: false
+library(broom)
+library(knitr)
+library(tidyverse)
+theme_set(theme_minimal())
+
+works <- tibble(
+  work_id = c(1, 2, 3, 4),
+  title = c(
+    "The Starry Night", "The Child's Bath",
+    "Water Lilies", "The Frame"
+  ),
+  artist = c(
+    "Vincent van Gogh", "Mary Cassatt",
+    "Claude Monet", "Frida Kahlo"
+  ),
+  museum_id = c(102, 104, 104, 103)
+)
+
+works
+```
+
+`museums`:
+
+```{r}
+#| echo: false
+museums <- tibble(
+  museum_id = c(101, 102, 103, 104),
+  museum_name = c("The Met", "MoMA", "Musée National d'Art Moderne", "Art Institute of Chicago"),
+  city = c("New York", "New York", "Paris", "Chicago"),
+  country = c("USA", "USA", "France", "USA")
+)
+
+museums
+```
+
+## Predict output: `left_join`
+
+```{r}
+#| output-location: slide
+museums |>
+  left_join(works, by = "museum_id") |>
+  select(museum_name, title)
+```
+
+## Determine input 1
+
+Let's plan which works to see while visiting a city:
+
+```{r}
+#| echo: false
+
+museums |>
+  inner_join(works, by = "museum_id") |>
+  select(city, title, artist)
+```
+
+## Determine input 2
+
+```{r}
+museums |>
+  inner_join(works, by = "museum_id") |>
+  select(city, title, artist)
+```
+
+## Distinguish outputs: `semi_` vs. `anti_join()`
+
+```{r}
+#| eval: false
+museums |>
+  semi_join(works, by = "museum_id")
+
+museums |>
+  anti_join(works, by = "museum_id")
+```
+
+## Outputs
+
+```{r}
+museums |>
+  semi_join(works, by = "museum_id")
+
+museums |>
+  anti_join(works, by = "museum_id")
+```
+
+# Pivoting
+
+## Why pivot?
+
+- "Wild" data often needs to be reshaped.
+- Sometimes tidy data needs to be pivoted for certain kinds of analysis or visualization.
+
+## Predict output: `pivot_longer` of artwork `dimensions`
+
+```{r}
+#| echo: false
+
+dimensions <- tibble(
+  work_id = c(1, 2, 3, 4),
+  height = c(73.7, 100.3, 89.0, 84.0),
+  width = c(92.1, 66.1, 93.1, 64.0),
+  depth = c(NA, NA, NA, 12.0)
+)
+dimensions
+```
+
+```{r}
+#| output-location: slide
+dimensions |>
+  pivot_longer(
+    cols = c(height, width, depth),
+    names_to = "dimension",
+    values_to = "value"
+  )
+```
+
+## Example use for longer data: `facet_wrap`
+
+```{r}
+#| output-location: slide
+#| code-line-numbers: "7|8|9-12|14"
+dimensions |>
+  pivot_longer(
+    cols = c(height, width, depth),
+    names_to = "dimension",
+    values_to = "value"
+  ) |>
+  left_join(works, by = "work_id") |>
+  filter(dimension != "depth") |>
+  ggplot(aes(
+    x = title, y = value,
+    fill = dimension, group = dimension
+  )) +
+  geom_col() +
+  facet_wrap(~dimension) +
+  scale_fill_viridis_d()
+```
+
+## Determine input
+
+`appraisals` data:
+```{r}
+#| echo: false
+appraisals <- tibble(
+  work_id = c(1, 1, 1, 2, 2, 2),
+  title = c(
+    "The Starry Night", "The Starry Night", "The Starry Night",
+    "The Child's Bath", "The Child's Bath", "The Child's Bath"
+  ),
+  year = c(2000, 2010, 2020, 2000, 2010, 2020),
+  value = c(10000000, 15000000, 20000000, 5000000, 7000000, 9000000)
+)
+
+appraisals
+```
+
+Output:
+
+```{r}
+#| echo: false
+
+appraisals |>
+  pivot_wider(
+    names_from = year,
+    names_prefix = "value_",
+    values_from = value
+  )
+```
+
+## Example use for wider data: percentage change
+
+```{r}
+appraisals |>
+  pivot_wider(
+    names_from = year,
+    names_prefix = "value_",
+    values_from = value
+  ) |>
+  mutate(
+    pct_change = ((value_2020 - value_2000) / value_2000) * 100
+  )
+```
+
+## Tidy models
+
+```{r}
+#| echo: false
+# Set seed for reproducibility
+set.seed(1)
+
+# Number of total bids (total of 15 bids for 3 bidders)
+total_bids <- 50
+
+# Initial bid starting point
+starting_bid <- 10000000
+
+# Generate normally distributed bid increments for each bidder
+bid_increments <- abs(rnorm(total_bids, mean = 600000, sd = 150000))
+
+# Calculate the cumulative bids by adding increments
+bids <- starting_bid + cumsum(bid_increments)
+
+# Alternate bidders (cycling through "Bidder1", "Bidder2", "Bidder3")
+bidders <- rep(c("Peggy Guggenheim", "David Geffen", "François Pinault"), length.out = total_bids)
+
+# Create a tibble with bidder names and their respective bids
+auction_bids <- tibble(
+  work_id = 1,
+  bid_number= 1:total_bids,
+  bidder = bidders,
+  bid = bids
+)
+```
+
+```{r}
+auction_bids |> 
+  slice_head(n = 5)
+```
+
+## Interpreting `lm` model outputs
+
+```{r}
+model <- lm(bid ~ bid_number, data = auction_bids)
+
+model |> 
+  tidy() |> 
+  mutate(across(where(is.numeric), ~ round(., 2)) ) |>
+  kable()
+```
+
+- `(Intercept)` predicts the value at which the auction started
+- `bid_number` predicts how much each additional bid adds to the value of the painting
+
+
+## TODO data normalization
