@@ -1,13 +1,22 @@
 ---
 title: "Notebook 02 -- Solutions"
-output:
-  html_document:
-    df_print: paged
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+echo: true
+format:
+  html:
+    anchor-sections: true
+    code-tools: false
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
     toc: true
-    toc_depth: 3
-    toc_float: true
-    number_sections: true
-    highlight: tango
+editor:
+  markdown:
+    wrap: 72
 ---
 
 ## Getting Started

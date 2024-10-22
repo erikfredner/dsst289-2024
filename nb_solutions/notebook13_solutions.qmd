@@ -3,7 +3,11 @@ title: "Notebook 13"
 subtitle: "DSST289: Introduction to Data Science"
 author: "Erik Fredner"
 date: today
-echo: true
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: true
 format:
   html:
     anchor-sections: true
