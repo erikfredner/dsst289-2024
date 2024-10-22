@@ -1,6 +1,7 @@
 # Extra:
 GITIGNORED/*
 *.html
+.DS_Store
 
 # History files
 .Rhistory
