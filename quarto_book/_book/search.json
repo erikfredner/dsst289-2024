@@ -1,0 +1,822 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Introduction to Data Science",
+    "section": "",
+    "text": "Introduction\nClick on a chapter to get started.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "notes01.html",
+    "href": "notes01.html",
+    "title": "1  01. Working with R and RMarkdown",
+    "section": "",
+    "text": "1.1 Running RMarkdown in RStudio\nAll of the code that we will work through this semester will be stored as RMarkdown files, which have a .Rmd extension. These files are great because they allow us mix code and descriptions within the same file. Reading these notes will give you brief overview of how this works; we will practice hands-on in class.\nWhen opening an RMarkdown file in RStudio, you should see a window similar to this (it will be slightly different on Windows and depending on your screen size):\nOn the left is the actual file itself. Some output and other helpful bits of information are shown on the right. There is also a Console window, which we generally will not need. I have minimized it in the graphic.\nNotice that the file has parts that are on a white background and other parts that are on a grey background. The white parts correspond to text and the grey parts to code. In order to run the code, and to see the output, click on the green play button on the right of each block.\nWhen you run code to read or create a new data set, the data will be listed in the Environment tab in the upper right hand side of RStudio:\nClicking on the data will open a spreadsheet version of the data that you can view to understand the structure of your data and to see all of the columns that are available for analysis:\nGoing back to the RMarkdown file by clicking on the tab on the upper row, we can see how graphics work in R. We have written some code to produce a scatter plot. When the code is run, the plot displays inside of the markdown file:\nMake sure to save the notebook frequently. However, notice that only the text and code itself is saved. The results (plots, tables, and other output) are not automatically stored. This is actually helpful because the code is much smaller than the results and it helps to keep the file sizes small. If you would like to save the results in a way that can be shared with others, you need to knit the file by clicking on the Knit button (it has a ball of yarn icon) at the top of the notebook. After running all the code from scratch, it will produce an HTML version of our script that you can open in a web browser:\nIn fact, the notes that you are currently reading were created with RMarkdown files that are knitted to HTML.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>01. Working with R and RMarkdown</span>"
+    ]
+  },
+  {
+    "objectID": "notes01.html#markdown",
+    "href": "notes01.html#markdown",
+    "title": "1  01. Working with R and RMarkdown",
+    "section": "1.2 Markdown",
+    "text": "1.2 Markdown\nMarkdown is a lightweight markup language used to format text for the web. RMarkdown documents combine markdown prose with R code. Here are some of the key things you will need to know how to do with markdown:\n\nCreate headers using the # symbol. The number of # symbols determines the size of the header.\n\n# Big header\n\nThe quick brown fox jumped over the lazy dog.\n\n## Smaller header\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit.\n\nDistinguish named objects using backticks:\n\nThe `seq` function generates a sequence of numbers.\n\nCreate lists using * or - for bullet points and numbers for ordered lists:\n\n* First item\n* Second item\n* Third item\n\nCreate links using square brackets for the text and parentheses for the URL:\n\n[Google](https://www.google.com)\nYou will see all of these elements (and more) in the .Rmd notebooks that you will complete for homework.\nFor more information, see the R Markdown guide.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>01. Working with R and RMarkdown</span>"
+    ]
+  },
+  {
+    "objectID": "notes01.html#running-r-code",
+    "href": "notes01.html#running-r-code",
+    "title": "1  01. Working with R and RMarkdown",
+    "section": "1.3 Running R Code",
+    "text": "1.3 Running R Code\nWe now want to give a very brief overview of how to run R code. We will now only show snippets of R code and the output rather than a screen shot of the entire RStudio session. Though, know that you should think of each of the snippets as occurring inside of one of the grey boxes in an RMarkdown file.\nIn one of its most basic forms, R can be used as a fancy calculator. For example, we can divide 12 by 4:\n\n12 / 4\n\n[1] 3\n\n\nWe can also store values by creating new objects within R. To do this, use the &lt;- (arrow) symbol, which is called the “assignment operator.” For example, we can create a new object called mynum with a value of 8 by:\n\nmynum &lt;- 3 + 5\n\nWe can now use our new object mynum exactly the same way that we we would use the number 8. For example, adding it to 1 to get the number nine:\n\nmynum + 1\n\n[1] 9\n\n\nTwo things to note about object names:\n\nFirst, they’re case sensitive: Mynum != mynum.\nSecond, they can be overwritten by a subsequent &lt;- assignment. For instance:\n\n\n# overwrite values to mynum:\nmynum &lt;- 10\nmynum &lt;- 15\nmynum &lt;- -10\n# call the object:\nmynum\n\n[1] -10\n\n\nObject names must start with a letter, but can also use underscores and periods. This semester, we will use only lowercase letters and underscores for object names. That makes it easier to read and easier to remember what you have called things.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>01. Working with R and RMarkdown</span>"
+    ]
+  },
+  {
+    "objectID": "notes01.html#running-functions",
+    "href": "notes01.html#running-functions",
+    "title": "1  01. Working with R and RMarkdown",
+    "section": "1.4 Running functions",
+    "text": "1.4 Running functions\nA function in R is something that takes a number of input values and returns an output value. Generally, a function will look something like this:\n\nfunction_name(arg1 = input1, arg2 = input2)\n\nWhere arg1 and arg2 are the names of the inputs (“arguments”) to the function (they are fixed) and input1 and input2 are the values that we will assign to them. The number of arguments is not always two, however. There may be any number of arguments, including zero. Also, there may be additional optional arguments that have default values that can be modified.\nLet us look at an example function: seq. This function returns a sequence of numbers. We will can give the function two input arguments: the starting point from and the ending point to.\n\nseq(from = 1, to = 7)\n\n[1] 1 2 3 4 5 6 7\n\n\nThe function returns a sequence of numbers starting from 1 and ending at 7 in increments of 1. The return values are shown (in this document) right below the code block. Note that you can also pass arguments by position, in which case we use the default ordering of the arguments. Here is the same code but without the names:\n\nseq(1, 7)\n\n[1] 1 2 3 4 5 6 7\n\n\nThere is also an optional argument by that controls the spacing between each of the numbers. By default it is equal to 1, but we can change it to spread the point out by half spaces.\n\nseq(from = 1, to = 7, by = 0.5)\n\n [1] 1.0 1.5 2.0 2.5 3.0 3.5 4.0 4.5 5.0 5.5 6.0 6.5 7.0\n\n\nWe will learn how to use numerous functions in the coming notes.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>01. Working with R and RMarkdown</span>"
+    ]
+  },
+  {
+    "objectID": "notes01.html#getting-help",
+    "href": "notes01.html#getting-help",
+    "title": "1  01. Working with R and RMarkdown",
+    "section": "1.5 Getting help",
+    "text": "1.5 Getting help\nWhen you forget how to use a function (we all do!), you can look up the documentation like so:\n?seq\nThis also works:\nhelp(seq)\nThis will pull up the documentation for the seq function in the Help tab in RStudio. You can also search for functions in the Help tab by typing in the search bar.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>01. Working with R and RMarkdown</span>"
+    ]
+  },
+  {
+    "objectID": "notes01.html#tabular-data",
+    "href": "notes01.html#tabular-data",
+    "title": "1  01. Working with R and RMarkdown",
+    "section": "1.6 Tabular data",
+    "text": "1.6 Tabular data\nIn these notes we will be working with data that is stored in a tabular format. Let’s start with the vocabulary of tabular data:\n\nA variable (or feature) is a quantity, quality, or property that you can measure.\nA value is the state of a variable when you measure it. The value of a variable may change from measurement to measurement.\nAn observation is a set of measurements made under similar conditions (you usually make all of the measurements in an observation at the same time and on the same object). An observation will contain several values, each associated with a different variable. We’ll sometimes refer to an observation as a data point.\nTabular data is a set of values, each associated with a variable and an observation.\nTabular data is tidy data if each value is placed in its own “cell”, each variable in its own column, and each observation in its own row.\n\n\n\n\n\n\n\nNote\n\n\n\nThese definitions are from R for Data Science (2023).\n\n\nHere is an example of a tabular data set of food types, which has nine rows and five columns. Each row tells us the nutritional properties contained in 100 grams of a particular type of food.\n\n\n\nTabular data example.\n\n\nEvery row of the data set represents a particular object in our data set, each of which we call an observation. In our food type example, each individual food corresponds to a specific observation:\n\n\n\nObservations stored in rows.\n\n\nThe columns in a tabular data set represent the measurements that we record for each observation. These measurements are called variables or features. In our example data set, we have five features which record the name of the food type, the food group that the food falls into, the number of calories in a 100g serving, the amount of sodium (mg) in a 100g serving, and the amount of vitamin A (as a percentage of daily recommended value) in a 100g serving.\n\n\n\nVariables (features) stored in columns.\n\n\nA larger version of this data set, with more food types and nutritional facts, is included in the course materials. We will make extensive use of this data set in the following notes as a common example for creating visualizations, performing data manipulation, and building models. In order to read in the data set we use a function called read_csv and pass it a description of where the file is located relative to where this script is stored. The data is called foods.csv and is stored in the folder data. The following code will load the foods data set into R, save it as an object called food, and prints out the first several rows:\n\nfood &lt;- read_csv(file = \"../data/food.csv\")\nfood\n\n\n  \n\n\n\nNotice that the display shows that there are a total of 61 rows and 17 features. The first 10 rows and 10 columns are shown. At the bottom, the names of the additional feature names are given. As described above, if you run this RStudio, you can view a full tabular version of the data set by clicking on the data set name in the Environment tab. The abbreviations &lt;chr&gt; and &lt;dbl&gt; tell us which features are characters (item, food_type, wiki, description, and color) and which are numbers (all the others).\nIf you prefer to type, the following command does the same thing:\n# note the capital V in View\nView(food)\nMany of the examples in the following notes will make use of this foods data set to demonstrate new concepts. Another related data set that will be also be useful for illustrating several concepts contains the prices of various food items for over 140 years. We can read it into R using similar block of code, namely:\n\nfood_prices &lt;- read_csv(file = \"../data/food_prices.csv\")\nfood_prices\n\n\n  \n\n\n\nHere, each observation is a year. Features correspond to specific types of food. Notice that this is different than the foods data set, in which the food items were observations.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>01. Working with R and RMarkdown</span>"
+    ]
+  },
+  {
+    "objectID": "notes01.html#formatting",
+    "href": "notes01.html#formatting",
+    "title": "1  01. Working with R and RMarkdown",
+    "section": "1.7 Formatting",
+    "text": "1.7 Formatting\nIt is very important to properly format your code in a consistent way. Even though the code may run without errors and produce the desired results, it is extremely important to make sure that your code is well-formatted to make it easier to read and debug. We will follow the following guidelines:\n\nalways put one space before and after an equals sign or assignment arrow\nalways put one space after a comma, but no space before a comma\nalways put one space around mathematical operations (such as + and *)\n\nIt will make your life a lot easier if you get used to these rules right from the start. We will practice and review this in class.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>01. Working with R and RMarkdown</span>"
+    ]
+  },
+  {
+    "objectID": "notes01.html#keyboard-shortcuts",
+    "href": "notes01.html#keyboard-shortcuts",
+    "title": "1  01. Working with R and RMarkdown",
+    "section": "1.8 Keyboard Shortcuts",
+    "text": "1.8 Keyboard Shortcuts\nFor those of you who prefer to use keyboard shortcuts, there are two essential shortcuts, and many optional ones.\nThe first essential shortcut is the Command Palette. Cmd + shift + p on Mac or Ctrl + shift + p on Windows. This will open the command palette, which allows you to search for any command in RStudio. If you memorize this command, you don’t have to memorize the other commands.\nThe second is the shortcut to run the current line of code. This is Cmd + Enter on Mac or Ctrl + Enter on Windows. This will run the current line of code in the console. If you have multiple lines of code selected, it will run all of them.\nHere is the complete keyboard shortcut list in the RStudio documentation.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>01. Working with R and RMarkdown</span>"
+    ]
+  },
+  {
+    "objectID": "notes01.html#homework-questions",
+    "href": "notes01.html#homework-questions",
+    "title": "1  01. Working with R and RMarkdown",
+    "section": "1.9 Homework Questions",
+    "text": "1.9 Homework Questions\nAt at then end of each set of notes, such as this one, will be a short set of questions or activities to complete before the next class. Bring written solutions with you to class.\n\nMake sure you have R, RStudio, and all of the packages installed. If you are still having trouble with anything, please let me know during class.\nOn a piece of paper, make an example of a tabular data set with five rows and three columns. This can capture any type of information you would like. (If you don’t have any ideas, try your “to do” list.) We will share these together in class.\nGive each of the columns of your data set names. Follow the variable name rules described above.\nOnce you have finished reading and completing the items above, make sure you have responded to the survey.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>01. Working with R and RMarkdown</span>"
+    ]
+  },
+  {
+    "objectID": "notes02.html",
+    "href": "notes02.html",
+    "title": "4  02. Grammar of Graphics",
+    "section": "",
+    "text": "4.1 Why visualize data?\nData visualization is a crucial and complex part of data science.\nYou may have often heard the phrases “numbers don’t lie” or “the data speaks for itself.” These common phrases are at least misleading, and sometimes entirely wrong.\nData visualization is one of the main ways that we can explore, understand, and communicate with data. But it is also a major way that people can be misled (or mislead others) with data.\nFor example, look at these graphs very quickly, the way you might while skimming a news article:\nBoth of these plots show the same data, but the y-axis is different in each. The first plot has a narrow y-axis (3.4-4.1), which makes the changes in interest rates look more dramatic. The second plot has a broader y-axis (0-5), which makes the changes look less dramatic.\nLearning how to do data visualization well is about learning how to make sure that the data is presented in a way that is truthful and informative.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>02. Grammar of Graphics</span>"
+    ]
+  },
+  {
+    "objectID": "notes02.html#why-visualize-data",
+    "href": "notes02.html#why-visualize-data",
+    "title": "4  02. Grammar of Graphics",
+    "section": "",
+    "text": "How would you tell the “story” of the plot on the left?\nHow would you tell the “story” of the plot on the right?\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nFor more about the history of data visualization, check out Data by Design.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>02. Grammar of Graphics</span>"
+    ]
+  },
+  {
+    "objectID": "notes02.html#elements-of-data-visualization",
+    "href": "notes02.html#elements-of-data-visualization",
+    "title": "4  02. Grammar of Graphics",
+    "section": "4.2 Elements of data visualization",
+    "text": "4.2 Elements of data visualization\nData visualization is an important skill that R is particularly well-designed for. We are going to learn and use the ggplot2 package for building beautiful and informative graphics. ggplot2 is part of the tidyverse, which is a popular set of R packages that we will be using throughout this course. The graphics above were made with ggplot.\nThe package makes it easy to build fairly complex graphics in a way that is guided by a general theory of data visualization. The only downside is that, because it is built around a theoretical model rather than many one-off solutions for different tasks, it has a steep initial learning curve. These notes will, hopefully, make this as painless as possible.\nThe core idea of the grammar of graphics is that visualizations are composed of independent layers. To describe a specific layer, we need to specify several elements:\n\ndata: the data set from which data will be taken to construct the plot\ngeom: a description of what kinds of objects to plot (i.e., points, labels, or boxes)\naes: a mapping from elements of the plot to columns in our data set (i.e., the position on the x-axis or the color of our points); it stands for aesthetics. aes enables us to modify features of the plot like color, size, and shape.\n\nYou can describe virtually any type of visualization by putting together these elements.\nTo show how to use the grammar of graphics, we will start by using the food data set introduced in the previous notes, with each row describing a particular item of food along with various nutritional information. The first plot we will make is a scatter plot that investigates the relationship between calories and the total fat (in grams) that are in a 100g portion of each food item. In the language of the grammar of graphics we can describe this with the following elements:\n\ndata: our data set is called food\ngeom: we will build a plot with a points geometry; each row of data is represented by a point\naes: the x-axis will be associated with calories and the y-axis with total_fat\n\n\n4.2.1 Scatter plot example\nThe easiest way to understand how we specify these elements within ggplot is by seeing an example. Here’s the data set:\n\n# reading in a data set about food\nfood &lt;- read_csv(file.path(\"..\", \"data\", \"food.csv\"))\n# let's see selected columns:\nfood |&gt;\n  select(item, calories, total_fat)\n\n\n  \n\n\n\nHere is the code to specify the data, geom, and aes:\n\n# let's plot those cols from food\nfood |&gt;\n  # call ggplot to start a new plot\n  ggplot() +\n  # add a layer with points using geom_point\n  geom_point(aes(x = calories, y = total_fat)) # define our aes()\n\n\n\n\n\n\n\n\nIn the first line we specify the data set (food), which is then piped (|&gt;) into the function ggplot, which instructs R to start a new plot. Next, we add (+) a layer to the plot. This layer uses a points geom (geom_point) and describes two aes values (arguments), x = calories and y = total_fat.\nIn order to make a similar plot with different features, or a different data set, you can copy this code and change the associated feature names (food, calories, and total_fat). In the code below create another scatter plot from the food data set, choosing any two features for the two axes:\n\nfood |&gt;\n  ggplot() +\n  # note the change in x and y values\n  geom_point(aes(x = vitamin_a, y = iron))\n\n\n\n\n\n\n\n\nIn the next few classes we will see how to modify and build on this basic structure to create more complex graphics. As a teaser of what’s to come, see how easy it is to add (+) custom labels to the plot:\n\nfood |&gt;\n  ggplot() +\n  geom_point(aes(x = vitamin_a, y = iron)) +\n  # add labels:\n  labs(\n    x = \"Vitamin A (ATC A11)\",\n    y = \"Iron (Fe)\",\n    title = \"Vitamin A and Iron in Foods\"\n  )\n\n\n\n\n\n\n\n\n\n\n4.2.2 Text Geometries\nLet’s go through several other choices of geometries that we could have in the plot. There are many of these, but in general you can create most plots with only a small number of geometry types. To start, we will use the geometry geom_text, which puts a small label in place of the points in our previous example.\nThe text geometry needs an additional aes called label to describe what feature in the data set should be used as the label. Here, we use the feature called item to label each point with the name of the specific food item in question (the column is called item):\n\nfood |&gt;\n  ggplot() +\n  geom_text(aes(x = calories, y = total_fat, label = item))\n\n\n\n\n\n\n\n\n\n4.2.2.1 Getting help\nRemember, if you want to read more about geom_text or any other function, you can search for help from the R console or from .Rmd files:\n\n??geom_text\n\nYou can also find the documentation online by searching for the function name using a few forms:\n\nR geom_text\nggplot2 geom_text\ngeom_text documentation\n\nr-project.org and tidyverse.org should be the main websites you check.\n\n\n\n4.2.3 Overlapping text\nCan you now identify what food has the highest amount of fat? Or the highest calorie count? Hopefully!\nYou likely cannot, however, figure out what foods have the lowest amount of fat because the labels become too clumped together.\nIn order to try to address this issue, we can use a slightly different geometry called geom_text_repel. It also places labels on the plot, but has logic that avoids intersecting labels. Instead, labels are moved away from the data points and connected (when needed) by a line segment:\n\nfood |&gt;\n  ggplot() +\n  # note the new geometry\n  geom_text_repel(aes(x = calories, y = total_fat, label = item))\n\n\n\n\n\n\n\n\nThis is still a bit busy in the lower left-hand corner, but should be slightly easier to read in the middle of the plot.\nWe can make the plot a bit more readable by adding (+) two layers, one with the text and another with the points. To do this, just add the two geometries together like this:\n\nfood |&gt;\n  ggplot() +\n  geom_text_repel(aes(x = calories, y = total_fat, label = item)) +\n  # new layer:\n  geom_point(aes(x = calories, y = total_fat))\n\n\n\n\n\n\n\n\nNext class we will see how to further improve this plot.\nThe broader point is that the grammar of graphics allows us to add, subtract, and customize multiple elements of a plot, producing data visualizations iteratively.\n\n\n4.2.4 Formatting code\nThe first notebook stress the importance of following a few style guidelines about your code. Here are additional formatting rules that apply specifically to building graphics in R:\n\nindent every line that follows a pipe with two extra spaces\nuse the pipe operator (|&gt;) to connect the data set to the ggplot function\nuse + to add layers to the plot\n\nAs with our original set of style guidelines, you will make your life a lot easier if you get used to these rules right from the start. Note that hitting TAB should give you two spaces in the RStudio editor.\nWhile I do not require all of these rules in this class, you should know that these recommendations are derived from the tidyverse style guide.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>02. Grammar of Graphics</span>"
+    ]
+  },
+  {
+    "objectID": "notes02.html#homework-questions",
+    "href": "notes02.html#homework-questions",
+    "title": "4  02. Grammar of Graphics",
+    "section": "4.3 Homework Questions",
+    "text": "4.3 Homework Questions\nAt at then end of each set of notes, such as this one, will be a short set of questions or activities to complete before the next class. Bring written solutions with you to class.\n\nOn a piece of paper, create a tabular data set describing five animals of your choosing. The table should have three columns: name, height, and weight. Using any unit of measurement you would like, pick five animals, guess their typical height and weight, and fill in the data.\nAssume that the data you created above was read into R as an object called animals. On a piece of paper, write the R code that would create a labelled scatter plot from your data set with height and weight on the x- and y-axes and the labels giving the name of the animal.\nHand-sketch what your scatter plot should look like.\nEnter the data that you created into a new .Rmd file following the example below. (Note that the c() function combines comma-separated values into a vector or list, so the order of the items corresponds to the order of the rows in the tibble or data frame.)\n\n\n# create your columns by replacing these sample values with your own:\nname &lt;- c(\"elephant\", \"giraffe\", \"lion\", \"tiger\", \"penguin\")\nheight &lt;- c(3, 5, 1.5, 1.2, 0.5)\nweight &lt;- c(5000, 1500, 200, 250, 20)\n\n# create a data frame of your columns\nanimals &lt;- tibble(name, height, weight)\nanimals\n\n\n  \n\n\n# write in the code that you hand-wrote above here!\n\n\nWhat did you have to change in your handwritten code to make it work as you expected?\nIn these notes, we described how the grammar of graphics describes elements of a plot. List three things about the images in these notes that were NOT directly described by the aesthetics, data, and geometries. Do your best with this; we will discuss in class.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>02. Grammar of Graphics</span>"
+    ]
+  },
+  {
+    "objectID": "notes03.html",
+    "href": "notes03.html",
+    "title": "5  03. Aesthetics and Scales",
+    "section": "",
+    "text": "5.1 Scales\nEach aesthetic within the grammar of graphics is associated with a scale. Scales detail how a plot should relate aesthetics to the concrete, perceivable features in a plot.\nFor example, a scale for the x aesthetic will describe the smallest and largest values on the x-axis. It will additionally set things such as the tick marks on the axis.\nIn order to change or modify the default scales, we add an additional item to the ggplot code. The order of the scales relative to the geoms does not effect the output; by convention, scales are usually grouped after the geometries. These functions always start with scale_ followed by the name of the aesthetic.\nAs an example, consider a scatter plot with calories on the x-axis and sugar content on the y-axis. Here’s what the default plot looks like if we let R pick the scale of the axes:\nfood |&gt;\n  ggplot() +\n  geom_point(aes(x = calories, y = sugar))\nWe can modify the scale by manually specifying the scale of, say, the x-axis. Here are some options (the first is the default):\nThere are _y_ equivalents of all of these as well. Here is an example where we reverse the x-axis direction:\nfood |&gt;\n  ggplot() +\n  geom_point(aes(x = calories, y = sugar)) +\n  # new:\n  scale_x_reverse()\nAnother way to adjust the scale is to pass optional arguments to the scale function.\nOne common option is limits, which takes two numbers and sets the bounds of the axis:\nfood |&gt;\n  ggplot() +\n  geom_point(aes(x = calories, y = sugar)) +\n  # setting the lower and upper bounds to 0 and 500\n  scale_x_continuous(limits = c(0, 500))\nAnd n.breaks, which sets the number of labels on the axis:\nfood |&gt;\n  ggplot() +\n  geom_point(aes(x = calories, y = sugar)) +\n  # setting the number of breaks to 20\n  scale_x_continuous(n.breaks = 20)\nThere are many other options that can be specified within the x and y scales, all of which are documented in the help pages, but these are the two I find to be the most frequently needed.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>03. Aesthetics and Scales</span>"
+    ]
+  },
+  {
+    "objectID": "notes03.html#scales",
+    "href": "notes03.html#scales",
+    "title": "5  03. Aesthetics and Scales",
+    "section": "",
+    "text": "scale_x_continuous()\nscale_x_reverse()\nscale_x_log10()\nscale_x_sqrt()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nYou can find the documentation for Scales in ggplot2 here.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>03. Aesthetics and Scales</span>"
+    ]
+  },
+  {
+    "objectID": "notes03.html#aesthetics-color-and-size",
+    "href": "notes03.html#aesthetics-color-and-size",
+    "title": "5  03. Aesthetics and Scales",
+    "section": "5.2 Aesthetics: Color and Size",
+    "text": "5.2 Aesthetics: Color and Size\nIn addition to the required aesthetics, each geometry type also has a number of optional aesthetics that we can use to add additional information to the plot. For example, most geoms have a color aesthetic. The syntax for describing this is exactly the same as with the required aesthetics; we place the name of the aesthetic followed by the name of the associated feature name. Let’s see what happens when add a color aesthetic this to our scatter plot by relating the feature food_group to the aes color:\n\nfood |&gt;\n  ggplot() +\n  # see color:\n  geom_point(aes(x = calories, y = total_fat, color = food_group))\n\n\n\n\n\n\n\n\nNotice that R has done a lot of work for us. It determined all of the food groups in the data set, assigned each to a color, built a legend, and modified the points on the plot so that the colors align with the food groups. Can you now tell what types of food have a large number of calories and fat? Which kinds of food have the lowest calories and fat? What is the biggest difference between fruits and vegetables from the plot?\nSimilarly, we can modify the size of the points according to a feature in the data set by setting the size aesthetic. Here, we will make points larger or smaller based on the saturated fat in each food item:\n\nfood |&gt;\n  ggplot() +\n  # see size:\n  geom_point(aes(x = calories, y = total_fat, size = sat_fat))\n\n\n\n\n\n\n\n\nBoth size and color can also be specified for the text, text repel, and line geometries. There are a few other aesthetics that will be useful, and that we will introduce as needed.\nAlso, remember from notes from last time that we can set aesthetics to fixed values. This is particularly useful with color and size. To change an aes to a fixed value, we specify the changed value inside the geom_ function, but after the aes() function. Here, for example, is how we change the size of all the points to 4 (four times larger than the default):\n\nfood |&gt;\n  ggplot() +\n  # see size:\n  geom_point(aes(x = calories, y = total_fat), size = 4)\n\n\n\n\n\n\n\n\nWe can do the same with colors, but notice that we need to put the color name inside of quotes:\n\nfood |&gt;\n  ggplot() +\n  # see color:\n  geom_point(aes(x = calories, y = total_fat), color = \"pink\")\n\n\n\n\n\n\n\n\nYou can interchange the fixed and feature-based aes commands, and the relative order should not effect the output. Just be sure the put fixed terms after closing the aes command.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>03. Aesthetics and Scales</span>"
+    ]
+  },
+  {
+    "objectID": "notes03.html#scales-for-color-and-size",
+    "href": "notes03.html#scales-for-color-and-size",
+    "title": "5  03. Aesthetics and Scales",
+    "section": "5.3 Scales for Color and Size",
+    "text": "5.3 Scales for Color and Size\nJust as with the x- and y-axes, color and size have scales attached to them as well. It is actually quite common to adjust these.\nFor example, a popular alternative to the default color palette shown above is the function scale_color_viridis_d(). It constructs a set of colors that is:\n\ncolor-blind friendly and more accessible than the default\nlooks fine when printed in black and white\ndisplays well on bad projectors\n\n\n\n\n\n\n\nNote\n\n\n\nFor more information about viridis, see the documentation.\n\n\nTo use it, add the function scale_color_viridis_d on as an extra row to the plot:\n\nfood |&gt;\n  ggplot() +\n  geom_point(aes(x = calories, y = sat_fat, color = food_group)) +\n  # new:\n  scale_color_viridis_d()\n\n\n\n\n\n\n\n\nThere is also scale_color_viridis_c that produces a similar set of colors when you want to color points according to a numeric feature.\n\nfood |&gt;\n  ggplot() +\n  geom_point(aes(x = total_fat, y = sat_fat, color = calories)) +\n  scale_color_viridis_c()\n\n\n\n\n\n\n\n\nThere are several special scale types that can be useful for working with colors. In some cases we may already have a column in our data set that explicitly describes the color of an observations. This is, in fact, the case with the food data set. In this case, we may want to use these colors directly. To do that, use the scale scale_color_identity. Here is an example with each food colored according to its assigned color:\n\nfood |&gt;\n  ggplot() +\n  geom_text_repel(\n    aes(\n      x = calories,\n      y = sugar,\n      # the color argument is getting data from the color variable\n      color = color,\n      label = item\n    )\n  ) +\n  scale_color_identity()\n\n\n\n\n\n\n\n\nNotice that by default no legend is created for the scale.\nAnother type of scale that can be useful for colors is scale_color_manual. Here, it is possible to describe exactly which color should be used for each category.\nHere is the syntax, with manually defined colors for each food group:\n\nfood |&gt;\n  ggplot() +\n  geom_point(aes(x = calories, y = sugar, color = food_group)) +\n  scale_color_manual(values = c(\n    dairy = \"lightblue\",\n    fish = \"navy\",\n    fruit = \"peachpuff1\",\n    grains = \"wheat\",\n    meat = \"indianred1\",\n    vegetable = \"green\"\n  ))\n\n\n\n\n\n\n\n\nUsing manual colors is generally advisable in the case where there are well-known colors associated with the groups in the data set. For example, when plotting data about political parties it may make be helpful to use the colors traditionally associated with each party.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>03. Aesthetics and Scales</span>"
+    ]
+  },
+  {
+    "objectID": "notes03.html#inheritance-of-aesthetics",
+    "href": "notes03.html#inheritance-of-aesthetics",
+    "title": "5  03. Aesthetics and Scales",
+    "section": "5.4 Inheritance of aesthetics",
+    "text": "5.4 Inheritance of aesthetics\nAs a final optional point, note that there is a convention for simplifying the plotting command. Often, each layer will use the same x and y features. It is possible to specify these just once in the ggplot function, and they will be used by default in all other layers. Also, you can drop the x = and y = if you put these options first. Here is an example of layering together the geom_point and geom_text_repel with this inheritance structure:\n\nfood |&gt;\n  ggplot(aes(calories, total_fat)) +\n  geom_point() +\n  geom_text_repel(aes(label = item))\n\n\n\n\n\n\n\n\nThese changes are optional however, and you can feel free to write them as we did earlier if you prefer. It is important to be able to recognize them, though, if you are searching through documentation or help pages.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>03. Aesthetics and Scales</span>"
+    ]
+  },
+  {
+    "objectID": "notes03.html#homework-questions",
+    "href": "notes03.html#homework-questions",
+    "title": "5  03. Aesthetics and Scales",
+    "section": "5.5 Homework Questions",
+    "text": "5.5 Homework Questions\nFor this class assignment, find a data visualization somewhere online that is similar to the plots in these notes (in other words, do not pick something too complicated). Some examples of places to look include The Pudding and the Reddit Data is Beautful channel. You could even search through the archives of some of the popular techie web comics, such xkcd, smbc, or Ph.D. Comics\nOnce you have found a data visualization, write down as best as possible how you would need to structure a data set to create the visualization and briefly explain you would use different aesthetics and geometries to create it. Make sure you have a link to the visualization that you can share in class.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>03. Aesthetics and Scales</span>"
+    ]
+  },
+  {
+    "objectID": "notes04.html",
+    "href": "notes04.html",
+    "title": "6  04. Organize Data",
+    "section": "",
+    "text": "6.1 Verbs\nIn these notes, we are going to cover a set of functions that take a data frame as an input and return a new version of the data frame. These functions are called verbs and come from the dplyr package. See the dplyr documentation for more information.\nIf you are familiar with running database queries, note that all of these verbs map onto SQL commands. (If you have no idea what SQL is, don’t worry.) In fact, R can be set up so that dplyr is called over a database rather than a local data frame in memory.\nThere are many verbs in the dplyr package, though most are a minor variant or specific application of another verb. In this notebook we will see only some of them:\nIn all verb functions, the first argument is the original data frame and the output is a new data frame. Here, we will also see the functions between and %in% to assist with the filtering command and desc (“descending”) to assist with arranging the rows of a data set.\nNote that verbs do not modify the original data; they operate on a copy of the original data. We have to make an explicit name for the new data set if we want to save it for use elsewhere.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>04. Organize Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes04.html#verbs",
+    "href": "notes04.html#verbs",
+    "title": "6  04. Organize Data",
+    "section": "",
+    "text": "Verb\nDescription\n\n\n\n\nslice()\npicks observations based on their positions\n\n\nselect()\npicks variables based on their names\n\n\nfilter()\npicks cases based on their values\n\n\narrange()\nchanges the ordering of the rows",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>04. Organize Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes04.html#choosing-rows",
+    "href": "notes04.html#choosing-rows",
+    "title": "6  04. Organize Data",
+    "section": "6.2 Choosing rows",
+    "text": "6.2 Choosing rows\n\n6.2.1 Using slice\nIt is often useful to take a subset of the rows of an existing data set, for example if you want to build a model on a certain subpopulation or highlight a particular part of the data in a plot. Perhaps the most straightforward way to take a subset of rows is to indicate the specific row numbers that we want to extract.\nIn order to select rows by row numbers, we use the verb slice, followed by the numbers of the rows we want separated by commas. Here is an example taking the second, fifth, and seventh rows of the data:\n\nfood |&gt;\n  slice(2, 5, 7)\n\n\n  \n\n\n\nAs mentioned above, the code here does not change the data set food itself. It still has all 61 rows of food contained in it.\nIf we want to create a new data set with just these three food item, we need to explicitly name and assign it. For example, here is how we would create a data set of the first five food items named food_first_five:\n\nfood_first_five &lt;- food |&gt;\n  slice(1, 2, 3, 4, 5)\n\nThere is a convenient a shorthand for selecting a range of row numbers, for example every row from the first to the fifth, by indicating the starting and ending row number by a colon: 1:5.\nHere, for example, is another way to select the first five rows of the data set:\n\nfood |&gt;\n  slice(1:5)\n\n\n  \n\n\n\nYou can of course do this with any range of row numbers:\n\nfood |&gt;\n  slice(10:15)\n\n\n  \n\n\n\n\n\n6.2.2 Using filter\nAnother way to take a subset of our data is to select rows based on conditions about the features in the data set. To do this we use the filter function, which accepts a statement about features in the data set. Only rows where the statements are TRUE will be returned. For example, here is how we use the filter command to select the foods that have more than 150 calories in each serving:\n\nfood |&gt;\n  filter(calories &gt; 150)\n\n\n  \n\n\n\nThe output data set has only 20 rows, compared to the 62 in the original data. Other comparisons can be done with &lt; (“less than”), &gt;= (“greater than or equal to”) and &lt;=.\n\n\n6.2.3 filter(between())\nThe function between is often useful in combination with filter. For example, here are the rows that have between 2 and 3 grams of total fat:\n\nfood |&gt;\n  filter(between(total_fat, left = 2, right = 3))\n\n\n  \n\n\n\n\n\n6.2.4 Using %in%\nIf you want to filter on a categorical feature (e.g., a name), you can use the %in% operator to select specific categories. Here is the code to filter only the fish:\n\nfood |&gt;\n  filter(food_group %in% \"fish\")\n\n\n  \n\n\n\nIf you wanted to select multiple categories, you can pass a vector of strings using the c() function, which concatenates multiple strings together.\n\nfood |&gt;\n  # `filter` for fish AND meat with `c`:\n  filter(food_group %in% c(\"fish\", \"meat\"))",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>04. Organize Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes04.html#chaining-verbs-together",
+    "href": "notes04.html#chaining-verbs-together",
+    "title": "6  04. Organize Data",
+    "section": "6.3 Chaining verbs together",
+    "text": "6.3 Chaining verbs together\nAs with other verbs and other pipe |&gt; examples we have seen, we can chain together multiple calls to produce more complex logic. For example, this code selects fruits that have more than 150 calories per serving:\n\nfood |&gt;\n  filter(calories &gt; 150) |&gt;\n  filter(food_group %in% \"fruit\")\n\n\n  \n\n\n\nWhich results in a reduced data set with only 1 row (avocados).\n\n6.3.1 Exact matches == and !=\nYou can also test whether features are equal using == (e.g., food_group == \"fruit\"). Or you can test for inequality, (e.g., food_group != \"fruit\").\n\n\n\n\n\n\nStop Scrolling\n\n\n\nBefore looking at the output of the code below, can you guess what it will be?\n\n\n\nfood |&gt;\n  filter(food_group != \"fruit\") |&gt;\n  filter(food_group == \"fruit\")\n\n\n  \n\n\n\nIf you don’t understand why this outputs zero rows, re-read this section.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>04. Organize Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes04.html#combining-filter-with-ggplot",
+    "href": "notes04.html#combining-filter-with-ggplot",
+    "title": "6  04. Organize Data",
+    "section": "6.4 Combining filter with ggplot",
+    "text": "6.4 Combining filter with ggplot\nIt is also possible to create a chain of calls that then get piped into a call to the ggplot function. For example, here is a plot of the fruits and vegetables with the Avocado outlier removed (by limiting the maximum available total fat).\n\nfood |&gt;\n  # remember that you pipe |&gt; between verbs\n  filter(food_group %in% c(\"vegetable\", \"fruit\")) |&gt;\n  filter(total_fat &lt; 10) |&gt;\n  # but add + layers to ggplot\n  ggplot() +\n  geom_point(aes(x = calories, y = total_fat, color = food_group)) +\n  geom_text_repel(aes(x = calories, y = total_fat, label = item)) +\n  scale_color_viridis_d()\n\n\n\n\n\n\n\n\nThe pattern of a starting with a data set, applying a number of transformations, and then creating a visualization of the data will become a common pattern in our analyses.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>04. Organize Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes04.html#data-and-layers",
+    "href": "notes04.html#data-and-layers",
+    "title": "6  04. Organize Data",
+    "section": "6.5 Data and Layers",
+    "text": "6.5 Data and Layers\nNow that we know how to create a subset of our data, let’s use this new knowledge to build some interesting data visualizations. To start, create a data set that just consists of the food types that are in the meat food group:\n\nfood_meat &lt;- filter(food, food_group %in% \"meat\")\nfood_meat\n\n\n  \n\n\n\nOne of the core ideas behind the Grammar of Graphics is that complex visualizations can be constructed by layering relatively simply elements on top of one another.\nWhat if we wanted to put together two layers where one layer uses the food data set and the other uses food_meat? To do this, we can override the default data set in a layer with the option data =. This will use a different data set within a particular layer. For example, here is how we can layer the meat data set on top of the rest of the food items.\n\nfood |&gt;\n  ggplot() +\n  geom_point(aes(x = calories, y = total_fat)) +\n  # note `data =` specifies the data for this layer:\n  geom_point(aes(x = calories, y = total_fat), data = food_meat)\n\n\n\n\n\n\n\n\nThis plot, however, does not look any different than it would if we were just to plot all of the food together. The second layer of points just sits unassumingly on top of the rest of the data. To rectify this, we can color each layer a different color in order to distinguish them from one another. Let’s try to highlight the meat food group in a navy blue, while making the rest of the points a light grey:\n\nfood |&gt;\n  ggplot() +\n  geom_point(aes(x = calories, y = total_fat), color = \"grey85\") +\n  geom_point(aes(x = calories, y = total_fat), color = \"navy\", data = food_meat)\n\n\n\n\n\n\n\n\nWe now have a plot that shows exactly where the meats are relative to the other food items. We can further build up the plot by showing the names of just these rows of the data set as well:\n\nfood |&gt;\n  ggplot() +\n  geom_point(aes(x = calories, y = total_fat), color = \"grey85\") +\n  geom_point(aes(x = calories, y = total_fat), color = \"navy\", data = food_meat) +\n  geom_text_repel(\n    aes(x = calories, y = total_fat, label = item),\n    color = \"navy\",\n    data = food_meat\n  )\n\n\n\n\n\n\n\n\n\n6.5.1 Inheriting aesthetics\nNotice that the code is starting to get a bit more complicated and some of the graphic layers are becoming a bit long. This is a good place to use the shorthand notation to inherit aesthetics across layers, like this:\n\nfood |&gt;\n  # note the assignment of our x and y values in the `ggplot` call:\n  ggplot(aes(x = calories, y = total_fat)) +\n  geom_point(color = \"grey85\") +\n  geom_point(color = \"navy\", data = food_meat) +\n  geom_text_repel(aes(label = item), color = \"navy\", data = food_meat)\n\n\n\n\n\n\n\n\nNotice how a relatively small set of commands can be put together in different ways to build a variety of plots. Already, we are making further progress towards building informative and beautiful graphics in R!",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>04. Organize Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes04.html#select-ing-columns",
+    "href": "notes04.html#select-ing-columns",
+    "title": "6  04. Organize Data",
+    "section": "6.6 select-ing columns",
+    "text": "6.6 select-ing columns\nIt is also possible to take a subset of the columns in a data set. To do this, we make use of the verb select. We pass it the names of the features we want to keep in the output data set, in the (possibly new) order that we want the columns to be arranged in. Here, for example, is a new version of the foods data set containing only the food item name followed by the amount of Vitamin A and Vitamin C:\n\nfood |&gt;\n  select(item, vitamin_a, vitamin_c)\n\n\n  \n\n\n\nWe will not need to use the select verb as often as filter because for the most part having extra features around does not affect data visualizations or data models. However, it can be useful for displaying results. As we saw above, the Vitamin A and Vitamin C columns were cut-off in the original output but are not visible in the selected data set version. Removing and reordering unneeded columns will also be useful in some of the advanced applications that are discussed in the following classes.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>04. Organize Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes04.html#arrange-ing-rows",
+    "href": "notes04.html#arrange-ing-rows",
+    "title": "6  04. Organize Data",
+    "section": "6.7 arrange-ing Rows",
+    "text": "6.7 arrange-ing Rows\nThe verbs slice and filter determine a subset of rows to keep from the original data set. The arrange verb, in contrast, keeps all of the original data but re-orders its rows.\nLet’s look at food as it appears by default:\n\nfood\n\n\n  \n\n\n\nNow let’s arrange it by calories:\n\nfood |&gt;\n  arrange(calories)\n\n\n  \n\n\n\nIt sorts the data from the smallest to the largest by default.\nIf we want to sort the data in the opposite direction, we can use the function desc, which stands for “descending order:”\n\nfood |&gt;\n  arrange(desc(calories))\n\n\n  \n\n\n\n\n6.7.1 arrange by multiple features\nIf we give arrange one or more feature names, it sorts the data by the first feature from smallest to largest (or alphabetically for character features). In the case of ties, the second feature is used if given. More features can be given to further break additional ties. Here is an example where we order the data set first by food_group and then by calories:\n\nfood |&gt;\n  arrange(food_group, calories)\n\n\n  \n\n\n\nIn the new data set all of the dairy products come up first followed by the fish products. Within each group, the items are sorted from the lowest to highest number of calories.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>04. Organize Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes04.html#arrange-and-slice",
+    "href": "notes04.html#arrange-and-slice",
+    "title": "6  04. Organize Data",
+    "section": "6.8 arrange and slice",
+    "text": "6.8 arrange and slice\nOne particularly useful application of arrange is to pair it with the verb slice. Here, for example, is the code to select the six foods in our data set that have the highest amount of Vitamin A:\n\nfood |&gt;\n  # get the highest amounts of Vitamin A:\n  arrange(desc(vitamin_a)) |&gt;\n  # and then take the top six:\n  slice(1:6) |&gt;\n  select(item, calories, vitamin_a)\n\n\n  \n\n\n\nBy saving this data set, we could highlight these specific foods on top of a plot comparing them to the remainder of the data.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>04. Organize Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes04.html#homework-questions",
+    "href": "notes04.html#homework-questions",
+    "title": "6  04. Organize Data",
+    "section": "6.9 Homework Questions",
+    "text": "6.9 Homework Questions\nConsider the following subset of the hans data set we worked with in the previous notebook:\n\n\n\n  \n\n\n\nFor each of the following five questions, write R code by hand that would produce the desired data set from the object hans:\n\nFilter to include only those countries that have a life expectancy above 80 years.\nOrder the data set from the highest life expectancy to the lowest life expectancy.\nSelect only those rows that are located in Europe.\nCreate a data set that only has all seven rows of the original data but includes only the features country and gdp.\nCreate a data set that takes only the first two rows of the starting data.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>04. Organize Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes05.html",
+    "href": "notes05.html",
+    "title": "5  05. Summarize Data",
+    "section": "",
+    "text": "5.1 The summarize verb\nIn the previous notebook we introduced the concept of data verbs. Four useful examples were shown: slice and filter for taking a subset of rows, select for taking a subset of columns, and arrange for reordering a data set’s rows. In this notebook we discuss another important verb, summarize that collapses a data frame by using summary functions. Using this verb is slightly more involved because we have to explain exactly how the data should be summarized. We will introduce several helper functions to make this process slightly easier.\nBefore describing the syntax for the summarize function, let’s start with an example. summarize works with summary functions, such as sum or mean:\ndata &lt;- c(1, 2, 3, 4, 5)\nsum(data)\n\n[1] 15\n\nmean(data)\n\n[1] 3\nHere, we summarize our food data set by indicating the mean (average) value of the sugar variable across the entire data set:\nfood |&gt;\n  summarize(sugar_mean = mean(sugar)) |&gt;\n  # `print` makes it clearer what is happening:\n  print()\n\n# A tibble: 1 × 1\n  sugar_mean\n       &lt;dbl&gt;\n1       3.42\nHere we used the function mean inside of the function summarize to produce the output. We specified which variable to compute the mean of by giving its name inside of the mean function. Note that we need to define what the name of the new variable is.\nYou’ll also notice that this produces a 1x1 table, where the row contains the mean value of the sugar variable. It may seem odd that this result is a table but we will see that this is a useful feature when we start to group data.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>05. Summarize Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes05.html#the-summarize-verb",
+    "href": "notes05.html#the-summarize-verb",
+    "title": "5  05. Summarize Data",
+    "section": "",
+    "text": "5.1.1 What about a single mean without a table?\nIf you want to compute a single summary statistic without creating a new table, you can use the pull function to extract a single column from a data set. See the documentation on pull().\n\nfood |&gt;\n  # pull the column named sugar\n  pull(sugar) |&gt;\n  mean()\n\n[1] 3.418852\n\n\nThe results shows us that the average amount of sugar in a 100g portion of all of the foods is 3.419g.\nIn order to compute multiple summaries at once, we can pass multiple functions together are once. For example, here we compute the mean value of three nutritional measurements:\n\nfood |&gt;\n  summarize(\n    sugar_mean = mean(sugar),\n    calories_mean = mean(calories),\n    vitamin_a_mean = mean(vitamin_a)\n  )\n\n\n  \n\n\n\nNotice that R creates a new data set with the variable names we supplied above. There are a number of other useful summary functions that work similarly, such as min, max, sum, and sd (standard deviation). We will see examples of these later.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>05. Summarize Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes05.html#grouped-summaries",
+    "href": "notes05.html#grouped-summaries",
+    "title": "5  05. Summarize Data",
+    "section": "5.2 Grouped summaries",
+    "text": "5.2 Grouped summaries\nSummarizing the data set to a single row can be useful for understanding the general trends in a data set or highlighting outliers. However, the real power of the summary function comes when we pair it with grouped manipulations. This will allow us to produce summaries within one or more grouping variables in our data set.\nWhen we use the group_by function, subsequent uses of the summarize function will produce a summary that describes the properties of variables within the variable used for grouping. The variable name(s) placed inside of the group_by function indicate which variable(s) should be used for the groups. For example, here we compute the mean number of calories of each food group:\n\nfood |&gt;\n  group_by(food_group) |&gt;\n  summarize(calories_mean = mean(calories))\n\n\n  \n\n\n\nNotice that the output data set contains a column for the grouping variable (food_group) and the summarized variable (calories_mean). The summarized variable name is exactly the same as the non-grouped version and the final line of code looks exactly the same as before. However, the output data set now contains six rows, one for each food group.\nAny summarization function that can be used for an ungrouped data set can also be used for a grouped data set. Also, as before, we can put multiple summary functions together to obtain different measurements of each group.\n\nfood |&gt;\n  group_by(food_group) |&gt;\n  summarize(\n    sugar_mean = mean(sugar),\n    calories_mean = mean(calories),\n    total_fat_mean = mean(total_fat)\n  )\n\n\n  \n\n\n\nNotice that the variable names (e.g., sugar_mean) should make it clear which column corresponds to each summary function.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>05. Summarize Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes05.html#more-summary-functions",
+    "href": "notes05.html#more-summary-functions",
+    "title": "5  05. Summarize Data",
+    "section": "5.3 More summary functions",
+    "text": "5.3 More summary functions\n\n5.3.1 n()\nThere are several additional summary functions that will be useful for analyzing data. The function n() takes no arguments and returns a value that counts the total number of rows in the data set.\nThis isn’t useful for data frames by themselves. You can see the number of rows in a regular tibble by using the count function from the dplyr package:\n\nfood |&gt;\n  count() |&gt;\n  # easier to interpret with `print`:\n  print()\n\n# A tibble: 1 × 1\n      n\n  &lt;int&gt;\n1    61\n\n\nHowever, when we group data, the n() function becomes more useful:\n\nfood |&gt;\n  group_by(food_group) |&gt;\n  summarize(n = n())\n\n\n  \n\n\n\nThis tells us how many rows are in each group. This can be useful to figure out how many items are in each group, or to see if there are any groups that are missing data.\n\n\n5.3.2 n_distinct()\nThe n_distinct function counts the number of unique (distinct) values in a column. This is more useful for data sets that contain repeated observations.\nFor example, let’s look at a sample of food pricing data over time:\n\n\n\n  \n\n\n\nThis is a big table, and it’s not obvious how many unique types of food are included in food. We can use n_distinct to find out:\n\nfood_prices_longer |&gt;\n  summarize(distinct_foods = n_distinct(food))\n\n\n  \n\n\n\nAnd we can see what those are with pull and unique:\n\nfood_prices_longer |&gt;\n  pull(food) |&gt;\n  unique()\n\n [1] \"tea\"     \"sugar\"   \"peanuts\" \"coffee\"  \"cocoa\"   \"wheat\"   \"rye\"    \n [8] \"rice\"    \"corn\"    \"barley\"  \"pork\"    \"beef\"    \"lamb\"   \n\n\nn_distinct() is different from n(), which counts the number of observations of each value:\n\nfood_prices_longer |&gt;\n  group_by(food) |&gt;\n  summarize(n = n())\n\n\n  \n\n\n\n\n\n5.3.3 paste()\nThe summary function paste collapses all of the values in a character variable. For example, applying this summary it to the item category after grouping by color, we can see all of the foods in the data set associated with a specific color:\n\nfood |&gt;\n  group_by(color) |&gt;\n  summarize(items = paste(item, collapse = \"|\")) |&gt;\n  # `print`ing the result to make it clear what's happening:\n  print()\n\n# A tibble: 8 × 2\n  color  items                                                              \n  &lt;chr&gt;  &lt;chr&gt;                                                              \n1 brown  Chickpea|Mushroom|Oat|Quinoa|Brown Rice                            \n2 green  Asparagus|Avocado|String Bean|Bell Pepper|Broccoli|Cabbage|Celery|…\n3 orange Cantaloupe|Carrot|Orange|Sweet Potato|Tangerine                    \n4 pink   Grapefruit|Peach|Salmon|Shrimp                                     \n5 purple Grape|Plum                                                         \n6 red    Apple|Beef|Crab|Duck|Lamb|Lobster|Strawberry|Tomato|Tuna           \n7 white  Catfish|Cauliflower|Chicken|Clam|Cod|Flounder|Halibut|Haddock|Milk…\n8 yellow Banana|Cheese|Corn|Lemon|Pineapple",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>05. Summarize Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes05.html#geometries-for-summaries",
+    "href": "notes05.html#geometries-for-summaries",
+    "title": "5  05. Summarize Data",
+    "section": "5.4 Geometries for summaries",
+    "text": "5.4 Geometries for summaries\nWe can use summarized data sets to produce new data visualizations. For example, consider summarizing the average number of calories, average total fat, and number of items in each food groups. We can take this data and construct a scatter plot that shows the average fat and calories of each food group, along with informative labels. Here’s the code to make this visualization:\n\nfood |&gt;\n  group_by(food_group) |&gt;\n  summarize(\n    calories = mean(calories),\n    total_fat = mean(total_fat),\n    n = n()\n  ) |&gt;\n  ggplot(aes(calories, total_fat)) +\n  geom_point(aes(size = n), color = \"grey85\") +\n  geom_text_repel(aes(label = food_group))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhat’s the deal with \"grey85\"?\n\n\n\nThere are many colors available in R, but they all have specific names. To see available colors, try typing colors().\n\n\nIf this seems complex, don’t worry! We are just putting together elements that we have already covered, but it takes some practice before it becomes natural.\nScatter plots are often useful for displaying summarized information. There are two additional geom types that often are useful specifically for the case of summarized data sets.\nIf we want to create a bar plot, where the heights of the bars as given by a column in the data set, we can use the geom_col geometry. For this, assign a categorical variable to the y-aesthetic and the count variable to the x-aesthetic (or vice-versa). For example, here is a bar plot showing the number of items in each food group:\n\nfood |&gt;\n  group_by(food_group) |&gt;\n  summarize(n = n()) |&gt;\n  # `fct_reorder` orders the bars (factors) by the count\n  ggplot(aes(n, fct_reorder(food_group, n))) +\n  geom_col()\n\n\n\n\n\n\n\n\nThere are two specific things to keep in mind with the geom_col layer. First, there are two color-related aes categories: the border of the bars (color) and the color used to shade the inside of the bars (fill). We can change these exactly as we did with the single color value used with scatter plots.\n\nfood |&gt;\n  group_by(food_group) |&gt;\n  summarize(n = n()) |&gt;\n  ggplot(aes(n, fct_reorder(food_group, n))) +\n  geom_col(color = \"black\", fill = \"white\")\n\n\n\n\n\n\n\n\nI find that using a white fill color and a black border is often a good-looking starting point. Also, you will notice that making the bars horizontal will make it easier to read the category names when there are a larger number of categories.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>05. Summarize Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes05.html#multiple-groups",
+    "href": "notes05.html#multiple-groups",
+    "title": "5  05. Summarize Data",
+    "section": "5.5 Multiple groups",
+    "text": "5.5 Multiple groups\nAs mentioned above, it is possible to group a data set by multiple variables. To do this, we can provide additional variables to the group_by function separated by commas. For example, we could group the food data set into food group and color, and summarize each combination of the two:\n\nfood |&gt;\n  group_by(food_group, color) |&gt;\n  summarize(n = n(), calories = mean(calories))\n\n\n  \n\n\n\nNotice that now there is one row for each combination of the two groups. However, there is no row for combinations that do not exist. So, there is no row for pink dairy products nor for white fruit.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>05. Summarize Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes05.html#homework-questions",
+    "href": "notes05.html#homework-questions",
+    "title": "5  05. Summarize Data",
+    "section": "5.6 Homework Questions",
+    "text": "5.6 Homework Questions\nLet’s now take all of the rows from the entire hans data set:\n\n\n\n  \n\n\n\nFor each of the following five questions, write the R code that would produce the desired data set:\n\nCompute the average life expectancy from the year 2007.\nCompute the average GDP from the year 2007.\nCompute the average life expectancy of each continent in the year 2002.\nCompute the total number of people living in each continent in the year 1957. Note that R has the function sum() that might be helpful here.\nCompute the total number of countries in each continent.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>05. Summarize Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes06.html",
+    "href": "notes06.html",
+    "title": "8  06. Creating Features",
+    "section": "",
+    "text": "9 mutate()\nThe final core dplyr verb that we will look at is used to create a new feature in our data set based on other features that are already present. This verb is called mutate, and works by giving it the name of the feature you want to create followed by the code that describes how to construct the feature in terms of the rest of the data.\nAs an example, consider computing the number of calories in a 200g portion of each food. All of the features in the data set are currently given as 100g portions, so to compute this we need to multiply the calories feature by 2. To do this, we use the mutate verb to name and describe a new feature calories_200g.\nfood |&gt;\n  mutate(calories_200g = calories * 2)\nNotice that there is a new feature named calories_200g that has been added as the last column in the data set. Because it is added at the end of the data set, it gets hidden in the output shown above. Making use of select allows us to see the new values:\nfood |&gt;\n  mutate(calories_200g = calories * 2) |&gt;\n  select(item, food_group, calories, calories_200g)\nAnd now we can see that the new column has been created by doubling the number given the calories column.\nNote that mutate can also be used to modify any existing column in the data set by using the name of an extant feature. In this case the position of the feature within the tables does not change.\nmutate has a relatively straightforward syntax. The main challenge is knowing how to apply and chain together the various transformations that are useful within an analysis. In the next section, we highlight several common types of operations that we will be useful in subsequent applications.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>06. Creating Features</span>"
+    ]
+  },
+  {
+    "objectID": "notes06.html#conditional-values-with-if_else",
+    "href": "notes06.html#conditional-values-with-if_else",
+    "title": "8  06. Creating Features",
+    "section": "9.1 Conditional values with if_else",
+    "text": "9.1 Conditional values with if_else\nMany of the uses for mutate involve assigning one value when a set of conditions is true and another if the conditions are false.\nFor example, consider creating a new feature called sugar_level based on the relative amount of sugar in each food item. We might classify a food has having a “high” sugar level if has more than 10g of sugar per 100g serving, and a “normal” amount otherwise. In order to create this feature, we need the function if_else.\nThe if_else function has three parts: a TRUE/FALSE statement, the value to use when the statement is true, and the value to use when it is false. Here is an example to create our new feature:\n\nfood |&gt;\n  mutate(sugar_level = if_else(\n    # I will omit argument names in subsequent steps, but include them here:\n    condition = sugar &gt; 10,\n    true = \"high\",\n    false = \"normal\"\n  )) |&gt;\n  select(item, food_group, sugar, sugar_level)\n\n\n  \n\n\n\nLooking at the first rows of data, we see that apples and bananas are classified as high sugar foods, whereas the other sugar levels are given the sugar level category of “normal”.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>06. Creating Features</span>"
+    ]
+  },
+  {
+    "objectID": "notes06.html#multiple-if_else-statements",
+    "href": "notes06.html#multiple-if_else-statements",
+    "title": "8  06. Creating Features",
+    "section": "9.2 Multiple if_else statements",
+    "text": "9.2 Multiple if_else statements\nThe if_else function can be used to produce any number of categories by using it multiple times. Let’s modify our sugar level feature to now have three categories: “high” (over 10g), “low” (less than 1g), and “normal” (between 1g and 10g). There are several different ways to get to the same result, but I find the easiest is to start by assigning a default value and then changing the value of the new feature in sequence. For example, here some code that produces our new categories:\n\nfood |&gt;\n  mutate(sugar_level = \"default\") |&gt;\n  mutate(sugar_level = if_else(sugar &lt; 1, \"low\", sugar_level)) |&gt;\n  mutate(sugar_level = if_else(sugar &gt; 10, \"high\", sugar_level)) |&gt;\n  mutate(sugar_level = if_else(between(sugar, 1, 10), \"normal\", sugar_level)) |&gt;\n  select(item, food_group, sugar, sugar_level)\n\n\n  \n\n\n\nIn each if_else step we are telling mutate: If the condition is false, set sugar_level equal to itself. In other words, if the condition does not hold, do not change the value of the feature.\nYou may wonder why we created a \"default\" value for the feature sugar_level. It would have been one less line of code to set the default value to “normal” and remove the final mutate function. The reason for the approach above is three-fold:\n\nIt’s easier to understand what the code is doing in it’s current format because each condition (“high”, “normal”, and “low”) is explicitly coded.\nIt creates a nice check on our code and data. If we find a row of the output that still has the value “default” we will know that there is a problem somewhere.\nThe code above will more safely handle the issues with missing values, and issue that we will return to shortly.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>06. Creating Features</span>"
+    ]
+  },
+  {
+    "objectID": "notes06.html#case_when-alternative",
+    "href": "notes06.html#case_when-alternative",
+    "title": "8  06. Creating Features",
+    "section": "9.3 case_when alternative",
+    "text": "9.3 case_when alternative\nThe case_when function is a more concise way to write multiple if_else statements, but the syntax can be a little trickier. Here’s a rewrite of the above code using case_when:`\n\nfood |&gt;\n  mutate(sugar_level = case_when(\n    sugar &lt; 1 ~ \"low\",\n    sugar &gt; 10 ~ \"high\",\n    between(sugar, 1, 10) ~ \"normal\",\n    TRUE ~ \"default\"\n  )) |&gt;\n  select(item, food_group, sugar, sugar_level)\n\n\n  \n\n\n\n\n9.3.1 TRUE ~ \"default\"?\nTRUE ~ \"default\" is a catch-all condition that gives any unmatched cases the value “default.” Since case_when() evaluates conditions in order, the TRUE condition will only be reached if none of the other conditions are met.\n\n\n9.3.2 Why ~ instead of =?\nThe ~ symbol is used to separate the condition from the value that should be returned if the condition is true. It’s part of R’s formula syntax, where it’s used to define relationships between variables.\n= is used in R for assignment or function arguments, while ~ in case_when() is specifically for pairing a condition with the corresponding output value if that condition is met.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>06. Creating Features</span>"
+    ]
+  },
+  {
+    "objectID": "notes06.html#mutate-summaries",
+    "href": "notes06.html#mutate-summaries",
+    "title": "8  06. Creating Features",
+    "section": "9.4 mutate summaries",
+    "text": "9.4 mutate summaries\nAll of the summary functions that were introduced in the previous notebook can also be applied within the mutate version.\nHowever, instead of reducing the data to a single summary row, summarizing within the mutate verb duplicates the summary statistic in each row of the data set. Here is an example including the average number of calories across all rows of the data set:\n\nfood |&gt;\n  mutate(calories_mean = mean(calories)) |&gt; \n  select(item, food_group, calories, calories_mean)\n\n\n  \n\n\n\nAs with any call to mutate, all of the original features are kept in the output and the new feature is added at the end. Using select, we can verify that the average calories has in fact been added to each row of the table.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>06. Creating Features</span>"
+    ]
+  },
+  {
+    "objectID": "notes06.html#mutate-and-group_by",
+    "href": "notes06.html#mutate-and-group_by",
+    "title": "8  06. Creating Features",
+    "section": "9.5 mutate and group_by",
+    "text": "9.5 mutate and group_by\nThe power of mutate summaries becomes particularly clear when grouping the data. If we group_by one or more features and apply a summary function within a mutation, the repeated summaries will be done within each group.\n\n9.5.1 n and count\nFor example, we could count the number of items in each food group using group_by and n():\n\nfood |&gt;\n  group_by(food_group) |&gt;\n  mutate(food_group_count = n()) |&gt;\n  select(food_group, food_group_count)\n\n\n  \n\n\n\nAs we would expect, this produces a new column on the food data set containing counts of the number of items in each food group.\nAlternatively, if we only needed the counts of the number of items in the groups, we could use the count function, which implicitly groups the data for us:\n\nfood |&gt;\n  count(food_group)\n\n\n  \n\n\n\nNote that the default column that count creates is called n. You can change that column name by passing name = \"whatever\" argument in count().\n\n\n9.5.2 max and min\nmax and min can be used in the same way as mean or sum:\n\n# choose 50 random numbers between 0 and 100:\nnumbers &lt;- runif(50, 0, 100)\nmean(numbers)\n\n[1] 47.25918\n\nsum(numbers)\n\n[1] 2362.959\n\n# what was the largest number chosen?\nmax(numbers)\n\n[1] 99.32764\n\n# what was the smallest number chosen?\nmin(numbers)\n\n[1] 0.1084654\n\n\nThis might be useful if we want to add the max calories of each food group to the data set:\n\nfood |&gt;\n  group_by(food_group) |&gt;\n  mutate(food_group_calories_max = max(calories)) |&gt;\n  select(item, food_group, calories, food_group_calories_max)\n\n\n  \n\n\n\nWith group values, you could perform subsequent calculations. For example, if you wanted to calculate the ratio of an individual food’s calories to the average calories within its food group,you could do something like the following:\n\nfood |&gt;\n  group_by(food_group) |&gt;\n  mutate(food_group_calories_mean = mean(calories)) |&gt;\n  mutate(calories_ratio = calories / food_group_calories_mean) |&gt;\n  select(item, food_group, calories, food_group_calories_mean, calories_ratio) |&gt;\n  arrange(desc(calories_ratio))\n\n\n  \n\n\n\nYou will notice, however, that these items have been arranged within groups. This might not be what you want!",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>06. Creating Features</span>"
+    ]
+  },
+  {
+    "objectID": "notes06.html#ungrouping-data",
+    "href": "notes06.html#ungrouping-data",
+    "title": "8  06. Creating Features",
+    "section": "9.6 ungrouping data",
+    "text": "9.6 ungrouping data\nIf you want to sort the entire data set by the calories_ratio, you will first need to ungroup the data, so that the arrange operation is not applied to the groups:\n\nfood |&gt;\n  group_by(food_group) |&gt;\n  mutate(food_group_calories_mean = mean(calories)) |&gt;\n  mutate(calories_ratio = calories / food_group_calories_mean) |&gt;\n  select(item, food_group, calories, calories_ratio) |&gt;\n  # new:\n  ungroup() |&gt;\n  arrange(desc(calories_ratio))\n\n\n  \n\n\n\nYou could follow this kind of pipeline with any number of operations. For example, suppose we only wanted to see those foods that have far fewer calories than average foods in their group. That would be a good use of filter:\n\nfood |&gt;\n  group_by(food_group) |&gt;\n  mutate(food_group_calories_mean = mean(calories)) |&gt;\n  mutate(calories_ratio = calories / food_group_calories_mean) |&gt;\n  ungroup() |&gt;\n  # new:\n  filter(calories_ratio &lt;= 0.5) |&gt;\n  select(item, food_group, calories, calories_ratio) |&gt;\n  arrange(desc(calories_ratio))\n\n\n  \n\n\n\nWe will see many examples of grouped mutate summaries throughout our applications.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>06. Creating Features</span>"
+    ]
+  },
+  {
+    "objectID": "notes06.html#homework-questions",
+    "href": "notes06.html#homework-questions",
+    "title": "8  06. Creating Features",
+    "section": "9.7 Homework Questions",
+    "text": "9.7 Homework Questions\nYour only homework for these notes is to look over the topics on the first exam and come to class with any questions or topics that you would like me to review before the exam.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>06. Creating Features</span>"
+    ]
+  },
+  {
+    "objectID": "notes07.html",
+    "href": "notes07.html",
+    "title": "9  07. Creating Data",
+    "section": "",
+    "text": "9.1 Overview\nIt is a well-known aphorism within data science that the majority of an analysis consists in cleaning and validating our data. If we can collect our data in a clean format from the start, it will allow us to proceed directly to the exploration stage once the data have been collected.\nThere are a number of excellent articles that give an extensive overview of how to collect and organize data. Hadley Wickham’s “Tidy Data”, one of the most cited papers across all of data science, offers an extensive theoretical framework for describing a process for collecting data sets. (Wickham is also a core R developer, particularly of the tidyverse.) Karl Broman and Kara Woo’s “Data Organization in Spreadsheets” offers a balance between practical advice and an extended discussion of general principles for collecting data sets. The Data Carpentry guide “Data Organization in Spreadsheets for Social Scientists” provides a concise list of common pitfalls.\nThese notes provide advice for organizing and storing data within a spreadsheet program. Rather than an extensive discussion of various pros and cons, it primarily focuses on the explicit approaches that I recommend. For readers interested in a broader coverage, I suggest reading the articles cited above. Because we are not using any fancy spreadsheet functions here, any program that you would like to use should be fine. The screenshots come from Microsoft Excel, but the same approach will work in Google Sheets, LibreOffice, or another spreadsheet program of your choosing.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>07. Creating Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes07.html#rectangular-data",
+    "href": "notes07.html#rectangular-data",
+    "title": "9  07. Creating Data",
+    "section": "9.2 Rectangular data",
+    "text": "9.2 Rectangular data\nWe have frequently discussed the concept of a rectangular data set, with observations in rows and features in columns (“tidy data”). This is the same format that we will use to collect our data. The first thing you will need to do, then, is determine what things you are observing and what properties you would like to collect about each thing. If you are observing different kinds of things, each of which has a different set of associated properties, you may need to store each set in a different table.\nTo match the format of rectangular data that we have been working with in R, we need to structure our data set with a single row of column names, followed by a row of data for each observation. Here is an example from Excel of a nonsense data set with three features:\n\n\n\nWell-structured nonsense data\n\n\nNotice that we need to always start in the first cell, A1, and fill in a consistent number of rows and columns. We do not have multiple tables scattered around the spreadsheet. We do not have multiple header columns. It is just the data itself, stored in a rectangle in the upper-left-hand corner of our spreadsheet, working right and down from cell A1. It is okay to include a small amount of formatting of the cells to help with the data-entry process (I like to make the first row bold), but do not try to record measurable properties of your data with formatting.\n\n9.2.1 Example of bad practice: color for meaning\n\n\n\n\n\n\nDo not record measurable properties with formatting\n\n\n\nDo not use row highlights or color to indicate meaning in a spreadsheet. If you need to indicate a property of a row, create a new column and record the information there.\n\n\nUsing highlight colors to indicate meaning is probably the most infamous data collection error. Here is an example of what not to do:\n\n\n\nExample of what not to do\n\n\nIn this bad example, colors indicate the type of food (fruit, vegetable, etc.) This is bad data for several reasons. First, it is impossible for a third party to know what each color means. Second, R cannot read the colors. Third, as a result, it is impossible to sort, filter, or otherwise process the data in R. (Fourth, it’s ugly.)\nIf you would like to use color, create a new column and record the information there. Then, color the cells containing the property you made with conditional formatting.\nHere are the conditional formatting instructions in Excel and in Google Sheets.\nFor example, using the original data set, you could set conditional formatting rules based on the food_group column:\n\n\n\nSetting up conditional formatting in the food_group column\n\n\nWhen applied, those rules would automatically color additional cells matching the condition(s) you set.\n\n\n\nDefault conditional formatting values in Excel\n\n\nIn summary, you may use color to understand the data. But color is not data.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>07. Creating Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes07.html#naming-things",
+    "href": "notes07.html#naming-things",
+    "title": "9  07. Creating Data",
+    "section": "9.3 Naming things",
+    "text": "9.3 Naming things\nIt is important to choose good feature names. As we have seen, the feature names in a data set are used to describe the graphics in the grammar of graphics and for manipulating data with verbs. If our names are too complex or difficult to remember, it will be more difficult to create data visualizations. When feature names contain spaces or other special characters, it can become nearly impossible to work within R without first cleaning up the feature names after loading the data.\nI find the best approach to feature names is to only use lower-case letters, numbers, and underscores. The underscores can be used in place of spaces, but do not make feature names more complex than needed. Also, make sure to start the name of a feature with a lower-case letter (starting with a number is invalid in R and many other programming languages). Note that I recommend using lowercase even for feature names that should be capitalized, such as acronyms and proper nouns. If you selectively capitalize, you will always need to remember where this was done. In my scheme, it is one less thing to remember.\nThroughout the rest of these notes, continuing with the food theme, we will show examples of a small data set collecting information about a set of cookbooks. Here is the table before filling in any information, with just the row names.\n\n\n\nBlank sheet with column names\n\n\nFor the specific features within a data set, spaces, capital letters, and other special characters are fine. Just be consistent. Do not use “female” in one observation, “Female” in another, and “F” in a third. Just pick the format and stick to it. Where applicable, try to use standards-based labels (ISO country codes or U.S. Postal service state abbreviations). This will help if you later want to merge your data set with other sources.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>07. Creating Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes07.html#one-thing-in-each-cell",
+    "href": "notes07.html#one-thing-in-each-cell",
+    "title": "9  07. Creating Data",
+    "section": "9.4 One thing in each cell",
+    "text": "9.4 One thing in each cell\nWithin each cell, there should only be one piece of information. In particular, this means that cells should not contain units or currency symbols. If you have data collected in different units, create a new column and put the units there. Though, it is best to store everything on the same scale. If there is something to note about a particular value, do not put a star or other mark with it. Create a new column. This also means that, as mentioned above, you should not try to store two things in one cell by using formatting to indicate a secondary piece of information. Again, if you have two things to indicate, create a new column. Here is an example of our cookbook data set with these principles applied:\n\n\n\nCookbook data set with values filled\n\n\nIf you need to include explanatory notes for some of the data, which is often a great idea, do not abandon the rectangular data format. Instead, include an extra column of notes with its own name. For example, here we explain that one of our books is out of print:\n\n\n\nExample use for notes column\n\n\nIn our example table, the number of pages and weight of one book is missing because it is out of print. In order to indicate this, the corresponding cell is blank. Blank values are the only cross-software way to indicate missing values in a consistent way.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>07. Creating Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes07.html#data-validation-tools",
+    "href": "notes07.html#data-validation-tools",
+    "title": "9  07. Creating Data",
+    "section": "9.5 Data validation tools",
+    "text": "9.5 Data validation tools\nBoth Excel and Google Sheets have built-in data validation tools that can be used to ensure that the data you are collecting is consistent. For example, you can set up a list of valid values for a categorical feature, and then Excel will only allow you to enter values from that list. This can be a great way to ensure that you are not introducing errors into your data set.\nHere are instructions for Excel and for Google Sheets.\nLet’s suppose you are labeling food groups for foods in our familiar foods data set. Each item has a unique name, but they are all members of only a few food_groups. If you were to type all of the food_groups by hand, there would likely be typos or differences in the way items are entered (e.g., \"Meat\" vs. \"meat\") that would cause trouble during the analysis.\nData validation largely prevents these problems. For some data validation tools, you pick from one of a list of valid values:\n\n\n\nData validation user interface in Excel\n\n\nTo set this up, I created a separate sheet with values for validation:\n\n\n\nData validation values\n\n\nThen, I applied the validation to a column, with a window that looks like this:\n\n\n\nData validation modal in Excel\n\n\nNow, when I try to enter a value that is not in the list, Excel will not allow it:\n\n\n\nData validation error in Excel\n\n\n\n\n\n\n\n\nAn ounce of prevention &gt;= a pound of cure\n\n\n\nBenjamin Franklin famously argued that, “An ounce of prevention is worth a pound of cure.” By this, he meant that it is ultimately easier to prevent a problem from occurring than it is to fix it later. Data validation is an ounce of prevention that will save you from needing more than a pound of cure!",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>07. Creating Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes07.html#dates-and-times",
+    "href": "notes07.html#dates-and-times",
+    "title": "9  07. Creating Data",
+    "section": "9.6 Dates and times",
+    "text": "9.6 Dates and times\nDate features are a well-known source of error in the collecting and recording of data. My recommendation for the most flexible and least error-prone method is to simply record each component of a date as its own column: year, month, day, hours, minutes, seconds, etc. as needed for your purposes. For month in particular, will be much easier to work with if you keep months as numbers (e.g., 3) rather than names (\"March\"). For example, consider trying to arrange by month: With month names, they would sort alphabetically, not chronologically.\nOne benefit of this method is that it will be easy to record historical data in cases where you may not be sure of the month or day for every row of the data set. For example, here is a data set showing properties of the cookbook authors from our data set:\n\n\n\nMissing data examples\n\n\nThere is an ISO standard (ISO 8601) for representing dates and times in a consistent way: YYYY-MM-DD. This is often a great format for storing data, and one that is used in several example data sets this semester, but (1) can lead to errors when opening and re-saving in a spreadsheet program and (2) cannot easily store dates with unknown information. I suggest using the separate column approach while collecting your initial data set. Later, if you re-save a modified data set from within R, the ISO 8601 format is a good option.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>07. Creating Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes07.html#output-format",
+    "href": "notes07.html#output-format",
+    "title": "9  07. Creating Data",
+    "section": "9.7 Output format",
+    "text": "9.7 Output format\nMost sources on collecting data suggest storing your results in a plain text format. This is a stripped down representation of the data that contains no formatting information and is application agnostic. Excel, Google Sheets, LibreOffice, and any other spreadsheet program you come across, should be able to save your data set in a plain text format. The most commonly used type is called a comma separated value (or .csv) file. Here, columns are split by commas and each row is on its own line. Here is what the .csv file of our cookbook authors data dictionary looks like:\nfeature,long_name,units,description\nbook_title,Book Title,,\"Book name, given in English\"\nauthor,Author's name,,Authors given and family name\npages,Number of pages,,Pages in currently available edition\nweight,Book weight,grams,Weight of currently available edition\nnationality,Author's Nationality,,\"Using ISO two letter country codes (i.e., CA)\"\nbirth_year,Author's birth year,,As numeric feature\nbirth_month,Author's birth month,,As numeric feature\nbirth_day,Author's birth day,,As numeric feature\nNearly all of the data sets we work with in this class are stored as CSV files. One thing to be careful of, particularly when using Excel, is that if your computer is configured for a language that uses a comma as a decimal separator, the default csv output may actually use a semicolon (;) in place of a comma. To read these files in R, just replace the read_csv with the function read_csv2.\n\n9.7.1 The value of Excel and/or Google Sheets filetypes\nUnlike some other sources, I am less strict about the need to only export data as a plain text file. This is the best way for sharing and storing a data set once an analysis is finished, but if you are going to continue adding and changing your data set, it may actually be preferable to store your data in an Excel (.xlsx) or Google Sheets file. This can avoid errors that are introduced when converting back and forth between excel and plain text formats.\nIn R, data can be loaded directly from an Excel file with the readxl package. Here is the syntax for using the package to read in a data set, with either the first sheet or a named sheet:\n\nlibrary(readxl)\n# load the first sheet:\ndata &lt;- read_excel(\"authors.xlsx\")\n# load sheet by name:\ndata &lt;- read_excel(\"authors.xlsx\", sheet = \"sheetname\") \n\nThe easiest way to load data from a Google Sheet is to download the sheet as a .csv file and then read it in with read_csv. If you are interested in repeatedly reading the same Google Sheet, you can use the googlesheets4 library, which is part of the tidyverse.\n\n\n9.7.2 When to store data in .csv\nOnce you are finished with data collection, cleaning, and processing, then it is a good idea to store your data in a plain text format for sharing and long-term preservation. .csv is the plain-text format we will use in this class, and probably the most widely used format in data science.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>07. Creating Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes07.html#data-dictionary",
+    "href": "notes07.html#data-dictionary",
+    "title": "9  07. Creating Data",
+    "section": "9.8 Data dictionary",
+    "text": "9.8 Data dictionary\nSo far, our discussion has focused on the specifics of storing the data itself. It is also important to document exactly what information is being stored in your features. To do this, we can construct a data dictionary. This should explain, for each feature, basic information such as the feature’s name, measurement units, and expected categorical values. Any decisions that needed to be made should also be documented. A data dictionary can be a simple text file, or can be stored itself as a structured data set. Here is an example of a data dictionary for our authors data set:\n\n\n\nData dictionary sample\n\n\nWe included a long name for each feature, which will be useful when creating improved graphics labels when preparing data visualizations for publication.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>07. Creating Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes07.html#summary",
+    "href": "notes07.html#summary",
+    "title": "9  07. Creating Data",
+    "section": "9.9 Summary",
+    "text": "9.9 Summary\nWe’ve covered a lot of information here. For future reference, here are the key formatting guidelines for storing data sets in spreadsheets:\n\nrecord a single row of column names, starting in cell A1, followed by rows of observations\nonly use lowercase letters, numbers, and underscores in column names; always start the name with a letter, and keep the feature names relatively short\nwhen recording categorical features, keep the codes consistent\n\ndata validation is the recommended way of handling this\n\nonly one thing in each cell\nno units, currency symbols, or notes in cells\nkeep a separate notes column if needed to explain observations\nblank cells within the rectangle are used if and only if the data is missing\nsave dates by storing year, month, day, hour, etc. as their own columns\n\nyou only need to store time data if it is relevant to your analysis\n\nsave results as either an .xlsx file if working in Excel or in a Google Sheet while in the middle of the data collection process\nsave as a .csv file for long-term storage and sharing\ncreate a data dictionary to record important information about your data set\n\nAs mentioned in the introduction, this is an opinionated list and some other options are equally valid. The most important thing, however, is consistency, so I will expect that you follow the formatting advice here when collecting data.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>07. Creating Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes07.html#no-homework-questions",
+    "href": "notes07.html#no-homework-questions",
+    "title": "9  07. Creating Data",
+    "section": "9.10 No homework questions!",
+    "text": "9.10 No homework questions!\nSince you had an exam last class, no homework questions! We will practice creating data in class.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>07. Creating Data</span>"
+    ]
+  },
+  {
+    "objectID": "notes08.html",
+    "href": "notes08.html",
+    "title": "10  08. Data Feminism",
+    "section": "",
+    "text": "10.0.1 Introduction\nMy goal for this course is to provide an overview of the diverse range of fields and subfields that fall within data science. While much of our time is focused on technical details underlying exploratory analysis, in this second unit of the course we will also integrate other aspects that are important to consider when working with data. If you are interested in exploring these further, there are many other UR courses that further expand on these questions, such as DSST189, which covers inferential modeling, and DSST389, which focuses on predictive modeling.1 The latter course also spends much more time focused on the presentation and distribution of data.\nAnother important part of data science is understanding the bigger picture of how to determine a research question in the first place and what to do with the result of an analysis once it has taken place. Many of these details are domain specific and you’ll probably learn more about them in the methods classes offered such as digital humanities, econometrics, and quantitative psychology. In addition to these domain-specific elements, there are also larger questions about data ethics, data justice, and the role of data in our larger society that should be a part of any data science work we partake in. These issues are studied at length in the course RHCS345 “Data and Society,” which is part of the Data Science minor. Here, I want to spend some time discussing how these larger questions should influence the kinds of work we perform in DSST289.\nMy notes for today are a synthesis of two important pieces of scholarship which establish, respectively, the concepts of “Data Feminism” and “Data Sheets.” Both are freely available online:\nYou do not need to read the original book and article for this class (though both are well worth a read when you can find the time). For the purpose of this semester, we can rely on the notes I have prepared below.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>08. Data Feminism</span>"
+    ]
+  },
+  {
+    "objectID": "notes08.html#feminist-datasheets",
+    "href": "notes08.html#feminist-datasheets",
+    "title": "10  08. Data Feminism",
+    "section": "12.1 Feminist datasheets",
+    "text": "12.1 Feminist datasheets\nI have adapted and simplified the framework from “Datasheets for Datasets” to better align with the Data Feminism principles above. Here are the eight sections that I propose should be a part of our concept of a Feminist Datasheet:\n\nMetadata: A short section providing a clear title for the dataset, a publication date, a version number (if applicable), a standard format for citing the dataset, and (if possible) contact information for more information.\nMotivation: Clearly articulate their reasons for creating the dataset and explain how the creation of the dataset was funded. Implicit in this section should be a reflection of how these motivations align with the value systems of the people and organizations involved with its creation.\nComposition: This is essentially the data dictionary that we discussed in the previous set of notes. Should include a short summary describing each table, its unit of observation, and the meaning behind every feature included in each table.\nNarrative: This section should include a description of how the data were collected and a reflection on all of the design choices that went into the data creation process. This would include what features to include, how to code/measure them, and how to select the specific observations included in the dataset.\nDistribution: A section describing how the data are distributed, which should include the format of the data, the license it is being distributed under, and where (if possible) the data can be accessed. The section should also include information about any ways that the data have been changed before being published, such as removing personal identifying information.\nAttributions: An as complete as possible description of all the people involved in the creation and conceptualization of the dataset.\nReferences: A representative list of references to other resources and datasets with similar research motivations. This helps avoid the problems of putting too much focus on a single source or single way of knowing.\nNotes: An optional section describing any additional notes not covered above. Particularly useful to describe how a dynamic dataset changes over time.\n\nWe will talk more in class about these concepts and how they might be put into action with a specific dataset. This will become the basis for the class final projects.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>08. Data Feminism</span>"
+    ]
+  },
+  {
+    "objectID": "notes08.html#homework-read-carefully",
+    "href": "notes08.html#homework-read-carefully",
+    "title": "10  08. Data Feminism",
+    "section": "12.2 Homework: Read carefully",
+    "text": "12.2 Homework: Read carefully\nRather than a specific piece of homework, ensure that you read these notes thoroughly and attentively. These concepts will permeate our work throughout the rest of the semester.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>08. Data Feminism</span>"
+    ]
+  },
+  {
+    "objectID": "notes08.html#footnotes",
+    "href": "notes08.html#footnotes",
+    "title": "10  08. Data Feminism",
+    "section": "",
+    "text": "Inferential modeling aims to understand relationships between variables by making inferences about a population based on a sample of data. It focuses on hypothesis testing, parameter estimation, and determining causality. Predictive modeling, on the other hand, uses statistical or machine learning techniques to create models that can forecast future outcomes or predict unknown values based on patterns learned from historical data. Inferential modeling seeks to explain why relationships exist by focusing on underlying mechanisms and causality, emphasizing interpretability of results. Predictive modeling prioritizes the accuracy of predictions about future or unseen data, without necessarily needing to understand the underlying reasons for those predictions (e.g., the “black box” nature of large language models).↩︎",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>08. Data Feminism</span>"
+    ]
+  },
+  {
+    "objectID": "notes09.html",
+    "href": "notes09.html",
+    "title": "9  09. Table Joins",
+    "section": "",
+    "text": "10 Overview\nOne of the most common tasks in data science is joining data from two (or more) datasets together.\nTo do this, we need to identify a key common between the two datasets. This key is a feature that uniquely identifies an observation.\nIf you have never joined data together before, these concepts can be confusing, so it may be helpful to read this section multiple times.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>09. Table Joins</span>"
+    ]
+  },
+  {
+    "objectID": "notes09.html#primary-key",
+    "href": "notes09.html#primary-key",
+    "title": "9  09. Table Joins",
+    "section": "10.1 Primary Key",
+    "text": "10.1 Primary Key\nA primary key is a feature or group of features (in other words, a column or group of columns) in a dataset that uniquely identifies a row of data. In our food dataset, the feature item is a primary key. In the us dataset, the city and year columns together form a primary key—we need both to uniquely identify one observation.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>09. Table Joins</span>"
+    ]
+  },
+  {
+    "objectID": "notes09.html#foreign-key",
+    "href": "notes09.html#foreign-key",
+    "title": "9  09. Table Joins",
+    "section": "10.2 Foreign Key",
+    "text": "10.2 Foreign Key\nLikewise, a foreign key is the appearance of a primary key within a different dataset. The food_group feature in the food dataset, for example, could be a foreign key if we had another table with one row describing information about each food group.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>09. Table Joins</span>"
+    ]
+  },
+  {
+    "objectID": "notes09.html#relation",
+    "href": "notes09.html#relation",
+    "title": "9  09. Table Joins",
+    "section": "10.3 Relation",
+    "text": "10.3 Relation\nA primary key and the corresponding foreign key in another table form a relation. Typically, a relation maps a single row in one dataset to many rows in another.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>09. Table Joins</span>"
+    ]
+  },
+  {
+    "objectID": "notes09.html#table-join",
+    "href": "notes09.html#table-join",
+    "title": "9  09. Table Joins",
+    "section": "10.4 Table Join",
+    "text": "10.4 Table Join\nA table join is a way of combining two tables based on relations. The goal is to match up a foreign key in one table with the primary key in another table, to add new columns from one dataset into another dataset.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>09. Table Joins</span>"
+    ]
+  },
+  {
+    "objectID": "notes09.html#data",
+    "href": "notes09.html#data",
+    "title": "9  09. Table Joins",
+    "section": "11.1 Data",
+    "text": "11.1 Data\nWe’re going to work with a subset of food:\n\nlibrary(tidyverse)\n\nfood &lt;- read_csv(file.path(\"..\", \"data\", \"food.csv\"))\n\nfood |&gt;\n  slice_sample(n = 5)",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>09. Table Joins</span>"
+    ]
+  },
+  {
+    "objectID": "notes09.html#joining-data-by-key",
+    "href": "notes09.html#joining-data-by-key",
+    "title": "9  09. Table Joins",
+    "section": "11.2 Joining data by key",
+    "text": "11.2 Joining data by key\nAs an example of performing table joins, we will start with a pared-down version of our foods data:\n\nfood_sml &lt;- food |&gt;\n  select(item, food_group, calories)\n\nfood_sml |&gt;\n  slice_sample(n = 5)\n\n\n  \n\n\n\nWithin food_sml, item is a primary key.\nNow, consider the following new dataset corresponding to dietary restrictions associated with different food groups:\n\ndiet &lt;- read_csv(file.path(\"..\", \"data\", \"food_diet_restrictions.csv\"))\ndiet\n\n\n  \n\n\n\nIn the diet table, food_group is a primary key.\nWithin the food table, food_group is a foreign key to diet. What we would like to do is to combine these two datasets by matching up rows that have the same values in the corresponding columns.\nFor example, it could be useful to include the columns vegan, vegetarian, and pescatarian in food_sml. To do this, we need to associate a row in the food dataset with the row in the diet dataset that contains the same value of the variable food_group.\nWe do this using the function left_join. We pipe in the larger dataset that we want to join columns to, provide the name of the table to grab columns from (diet), and indicate by what column the two datasets will be joined.\n\nfood_sml |&gt;\n  left_join(diet, by = \"food_group\")\n\n\n  \n\n\n\nWe now have the dietary restrictions added into the food dataset. We can now compute models, summaries, and construct visualizations based on the new metadata associated with each food group.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>09. Table Joins</span>"
+    ]
+  },
+  {
+    "objectID": "notes09.html#joining-a-single-column",
+    "href": "notes09.html#joining-a-single-column",
+    "title": "9  09. Table Joins",
+    "section": "11.3 Joining a single column",
+    "text": "11.3 Joining a single column\nSuppose we only wanted to get the vegan column from diet. We can do this by selecting the columns we want to keep from the diet dataset before joining.\nThere are two different ways of handling this. Both involve what the tidyverse style guide refers to as short pipes.\nThe first method uses an inline pipe:\n\nfood_sml |&gt;\n  left_join(diet |&gt; select(food_group, vegan), by = \"food_group\")\n\n\n  \n\n\n\nThe second method creates a separate dataset containing only the desired columns, which is then joined:\n\ndiet_join &lt;- diet |&gt; select(food_group, vegan)\n\nfood_sml |&gt;\n  left_join(diet_join, by = \"food_group\")\n\n\n  \n\n\n\nIn cases where your pipeline is very short, it is okay to |&gt; on a single line as shown above. However, if you have a longer pipeline, it is better to add vertical space as we have been doing all semester.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>09. Table Joins</span>"
+    ]
+  },
+  {
+    "objectID": "notes09.html#using-joined-data",
+    "href": "notes09.html#using-joined-data",
+    "title": "9  09. Table Joins",
+    "section": "11.4 Using joined data",
+    "text": "11.4 Using joined data\nYou can then use the new columns to perform any of the operations we have already studied. For example, let’s figure out which vegan items have the highest number of calories:\n\nfood_sml |&gt;\n  left_join(diet_join, by = \"food_group\") |&gt;\n  filter(vegan == \"yes\") |&gt;\n  arrange(desc(calories))",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>09. Table Joins</span>"
+    ]
+  },
+  {
+    "objectID": "notes09.html#joins-with-missing-matches",
+    "href": "notes09.html#joins-with-missing-matches",
+    "title": "9  09. Table Joins",
+    "section": "11.5 Joins with missing matches",
+    "text": "11.5 Joins with missing matches\nIn the previous example, all the food_group values from food_sml were present in diet, so all rows were included in the joined table. This is not always the case.\nLet’s consider a third dataset containing information about food recipes, one for a Pot Roast and another for Guacamole:\n\nrecipes &lt;- read_csv(file.path(\"..\", \"data\", \"food_recipes.csv\"))\nrecipes\n\n\n  \n\n\n\nIn this dataset, ingredient is a foreign key corresponding to the primary key item in the food_sml dataset.\nFor recipes, the primary key requires two columns: both recipe and ingredient are needed to uniquely describe each row.\nWe can now try adding the calories from the food_sml dataset into recipes. The complication here is that the column we want to join on has a different name in each dataset (“ingredient” versus “item”). To specify this, we provide the two different names within the by argument of the join function:\n\nrecipes |&gt;\n  left_join(food_sml, by = c(\"ingredient\" = \"item\"))\n\n\n  \n\n\n\nNow, we have a dataset that has added the food group and calories information to our recipe dataset.\nNotice that the ingredient “Bay Leaf” is not in food_sml. Because of this, the food group and calories information for this ingredient are filled in with missing values.\nAlso, notice that rows about food items that are not in any recipe are not included in the output. This is because left_join only includes all rows from the left table (recipes) and the matching rows from the right table (food_sml). Since food_sml may contain items not present in recipes, those items are not included in the joined dataset.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>09. Table Joins</span>"
+    ]
+  },
+  {
+    "objectID": "notes10.html",
+    "href": "notes10.html",
+    "title": "10  10. Table Pivots",
+    "section": "",
+    "text": "11 Why pivot?\nIn this notebook, we introduce methods for manipulating datasets using table pivots. Pivoting in the tidyverse is related but not identical to pivot tables in spreadsheet programs like Excel.\nTable pivots allow us to rearrange the values in a table without adding or losing any information. Rearrangements typically make the table longer (more rows, fewer columns) or wider (more columns, fewer rows).\nWe’ll introduce two functions for converting between wide and long formats: pivot_longer and pivot_wider. Understanding these principles is fundamental for working with various applications, especially text and temporal datasets.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>10. Table Pivots</span>"
+    ]
+  },
+  {
+    "objectID": "notes10.html#wide-format",
+    "href": "notes10.html#wide-format",
+    "title": "10  10. Table Pivots",
+    "section": "12.1 Wide format",
+    "text": "12.1 Wide format\nThe “wide” format for storing this data would have 3 rows (one per flower) with columns height_day1, height_day2, and height_day3.\n\nlibrary(tidyverse)\nlibrary(ggrepel)\n\nflower &lt;- c(\"Black-eyed Susan\", \"Virginia Bluebell\", \"Eastern Red Columbine\")\nheight_day1 &lt;- c(10, 8, 9)\nheight_day2 &lt;- c(12, 10, 11)\nheight_day3 &lt;- c(14, 12, 13)\n\nflowers_wide &lt;- tibble(\n  flower,\n  height_day1,\n  height_day2,\n  height_day3\n)\n\nflowers_wide\n\n# A tibble: 3 × 4\n  flower                height_day1 height_day2 height_day3\n  &lt;chr&gt;                       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;\n1 Black-eyed Susan               10          12          14\n2 Virginia Bluebell               8          10          12\n3 Eastern Red Columbine           9          11          13",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>10. Table Pivots</span>"
+    ]
+  },
+  {
+    "objectID": "notes10.html#long-format",
+    "href": "notes10.html#long-format",
+    "title": "10  10. Table Pivots",
+    "section": "12.2 Long format",
+    "text": "12.2 Long format\nThe “long” format for storing this data would have 9 rows (3 flowers × 3 days) with three columns: flower, day, and height.\nYou will notice that the long format more closely resembles the tidy data principles that we have discussed.\nWe are going to take our flowers_wide dataset and convert it to the long format using the pivot_longer function:\n\nflowers_long &lt;- flowers_wide |&gt;\n  pivot_longer(\n    # pivoting longer every column EXCEPT (!) flower\n    cols = !flower,\n    names_to = \"day\",\n    names_prefix = \"height_day\",\n    names_transform = as.integer,\n    values_to = \"height\"\n  )\n\nflowers_long |&gt;\n  arrange(day)\n\n# A tibble: 9 × 3\n  flower                  day height\n  &lt;chr&gt;                 &lt;int&gt;  &lt;dbl&gt;\n1 Black-eyed Susan          1     10\n2 Virginia Bluebell         1      8\n3 Eastern Red Columbine     1      9\n4 Black-eyed Susan          2     12\n5 Virginia Bluebell         2     10\n6 Eastern Red Columbine     2     11\n7 Black-eyed Susan          3     14\n8 Virginia Bluebell         3     12\n9 Eastern Red Columbine     3     13",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>10. Table Pivots</span>"
+    ]
+  },
+  {
+    "objectID": "notes10.html#example-use-of-the-wide-format",
+    "href": "notes10.html#example-use-of-the-wide-format",
+    "title": "10  10. Table Pivots",
+    "section": "12.3 Example use of the wide format",
+    "text": "12.3 Example use of the wide format\nIn the wide format, it’s easy to calculate the total growth of each flower over the three days using a single mutate() function:\n\nflowers_wide |&gt;\n  mutate(total_growth = height_day3 - height_day1)\n\n# A tibble: 3 × 5\n  flower                height_day1 height_day2 height_day3 total_growth\n  &lt;chr&gt;                       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;\n1 Black-eyed Susan               10          12          14            4\n2 Virginia Bluebell               8          10          12            4\n3 Eastern Red Columbine           9          11          13            4",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>10. Table Pivots</span>"
+    ]
+  },
+  {
+    "objectID": "notes10.html#example-use-of-the-long-format",
+    "href": "notes10.html#example-use-of-the-long-format",
+    "title": "10  10. Table Pivots",
+    "section": "12.4 Example use of the long format",
+    "text": "12.4 Example use of the long format\nIn the long format, it’s easy to plot the growth of each flower over time:\n\nflowers_long |&gt;\n  ggplot(aes(x = day, y = height, color = flower)) +\n  geom_line() +\n  geom_point() +\n  labs(\n    title = \"Growth of Richmond Flowers Over Three Days\",\n    x = \"Day\",\n    y = \"Height (cm)\"\n  ) +\n  # only plot the days in the data on x-axis:\n  scale_x_continuous(breaks = flowers_long |&gt;\n    distinct(day) |&gt;\n    pull(day)) +\n  scale_color_viridis_d() +\n  theme_classic()\n\n\n\n\n\n\n\n\nCreating this plot from the wide format would require additional steps to reshape the data or manually specify each flower’s data.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>10. Table Pivots</span>"
+    ]
+  },
+  {
+    "objectID": "notes10.html#choosing-the-right-format",
+    "href": "notes10.html#choosing-the-right-format",
+    "title": "10  10. Table Pivots",
+    "section": "12.5 Choosing the Right Format",
+    "text": "12.5 Choosing the Right Format\n\nWide Format: Easier for calculations that involve comparing columns, such as computing total growth.\nLong Format: Ideal for analyses that require grouping or plotting over a variable, such as time.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>10. Table Pivots</span>"
+    ]
+  },
+  {
+    "objectID": "notes10.html#pivoting-longer",
+    "href": "notes10.html#pivoting-longer",
+    "title": "10  10. Table Pivots",
+    "section": "13.1 Pivoting longer",
+    "text": "13.1 Pivoting longer\nTo make this table longer, we will use the pivot_longer function. This function requires specifying which features should be turned into values in the output dataset. Often, it’s easier to specify the features that should remain as columns, which you can do using the ! notation to indicate “not this column.”\nHere, we indicate that the year column should remain:\n\nfood_prices |&gt;\n  pivot_longer(cols = !year)\n\n# A tibble: 1,898 × 3\n    year name    value\n   &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;\n 1  1870 tea     129. \n 2  1870 sugar   151. \n 3  1870 peanuts 203. \n 4  1870 coffee   88.1\n 5  1870 cocoa    78.8\n 6  1870 wheat    88.1\n 7  1870 rye     103. \n 8  1870 rice     83.5\n 9  1870 corn    121. \n10  1870 barley  103. \n# ℹ 1,888 more rows\n\n\nThis looks close to a long-form version of the food_prices dataset. You will notice that the year column persists (as requested above), and the names of the wider columns have been put into a new column called name, which is the default value. The values from the wider table have been passed to another column, with the default name value.\nWe can improve our longer table by setting better column names using the names_to and values_to options:\n\nfood_prices |&gt;\n  pivot_longer(cols = !year, names_to = \"food\", values_to = \"price\")\n\n# A tibble: 1,898 × 3\n    year food    price\n   &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;\n 1  1870 tea     129. \n 2  1870 sugar   151. \n 3  1870 peanuts 203. \n 4  1870 coffee   88.1\n 5  1870 cocoa    78.8\n 6  1870 wheat    88.1\n 7  1870 rye     103. \n 8  1870 rice     83.5\n 9  1870 corn    121. \n10  1870 barley  103. \n# ℹ 1,888 more rows\n\n\nThe longer form of the dataset makes certain analyses easier. For example, we can draw a line chart of all the food prices with a single graphics layer:\n\nfood_prices |&gt;\n  pivot_longer(!year, names_to = \"food\", values_to = \"price\") |&gt;\n  ggplot(aes(x = year, y = price, color = food)) +\n  geom_line() +\n  scale_color_viridis_d() +\n  theme_classic()\n\n\n\n\n\n\n\n\nDrawing this plot with the original dataset would require manually adding a layer for each food type, selecting colors, and building a legend. Using the longer table is the preferred approach.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>10. Table Pivots</span>"
+    ]
+  },
+  {
+    "objectID": "notes10.html#pivot-wider",
+    "href": "notes10.html#pivot-wider",
+    "title": "10  10. Table Pivots",
+    "section": "13.2 Pivot Wider",
+    "text": "13.2 Pivot Wider\nTo illustrate making a table wider, let’s create a new dataset consisting of the long format of the food_prices dataset from just the years 1950 and 1975:\n\nfood_prices_long &lt;- food_prices |&gt;\n  filter(year %in% c(1950, 1975)) |&gt;\n  pivot_longer(!year, names_to = \"food\", values_to = \"price\")\n\nfood_prices_long |&gt;\n  slice_sample(n = 5)\n\n# A tibble: 5 × 3\n   year food  price\n  &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;\n1  1950 pork   52.3\n2  1950 rice   62.7\n3  1975 tea    54.1\n4  1950 beef   62.4\n5  1950 corn  135. \n\n\nSometimes, it makes sense to make each time value a column in a wider dataset. To do this, we use the pivot_wider function. We need to specify which feature contains the values that will become new columns and from which feature to take the values for these columns. Here, the names will come from the year column (we want new columns for 1950 and 1975), and the values will be the prices.\n\nfood_prices_long |&gt;\n  pivot_wider(names_from = year, values_from = price)\n\n# A tibble: 13 × 3\n   food    `1950` `1975`\n   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;\n 1 tea       68.9   54.1\n 2 sugar     59.5  114. \n 3 peanuts  119.    95.6\n 4 coffee   210.   105. \n 5 cocoa     64.6   54.1\n 6 wheat    106.    74.8\n 7 rye       88.4   71.2\n 8 rice      62.7   74.2\n 9 corn     135.   113. \n10 barley    98.8   91.3\n11 pork      52.3   88.8\n12 beef      62.4  268. \n13 lamb      33.8  186. \n\n\nOne issue with the default output is that the column names now start with a number, which is not allowed in R variable names. This makes it awkward to work with the dataset; it’s better to add a prefix to the names to make them valid. This can be done by setting the names_prefix option in the pivot_wider function:\n\nfood_prices_long |&gt;\n  pivot_wider(\n    names_from = year, values_from = price, names_prefix = \"year_\"\n  )\n\n# A tibble: 13 × 3\n   food    year_1950 year_1975\n   &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;\n 1 tea          68.9      54.1\n 2 sugar        59.5     114. \n 3 peanuts     119.       95.6\n 4 coffee      210.      105. \n 5 cocoa        64.6      54.1\n 6 wheat       106.       74.8\n 7 rye          88.4      71.2\n 8 rice         62.7      74.2\n 9 corn        135.      113. \n10 barley       98.8      91.3\n11 pork         52.3      88.8\n12 beef         62.4     268. \n13 lamb         33.8     186. \n\n\nThis new form of the dataset makes it straightforward to plot the price of each food type in 1975 as a function of its price in 1950:\n\nfood_prices_long |&gt;\n  pivot_wider(\n    names_from = year, values_from = price,\n    names_prefix = \"year_\"\n  ) |&gt;\n  ggplot(aes(x = year_1950, y = year_1975)) +\n  geom_point() +\n  geom_text_repel(aes(label = food)) +\n  theme_classic()\n\n\n\n\n\n\n\n\nWe can add some polishing touches to make the plot more readable:\n\nfood_prices_long |&gt;\n  pivot_wider(names_from = year, values_from = price, names_prefix = \"year_\") |&gt;\n  # get the price ratio and difference:\n  mutate(\n    price_ratio = year_1975 / year_1950,\n    price_diff = year_1975 - year_1950\n  ) |&gt;\n  ggplot(aes(x = year_1950, y = year_1975, color = price_ratio)) +\n  geom_point(aes(size = price_diff)) +\n  geom_label_repel(aes(label = food)) +\n  labs(\n    x = \"Price Index (1950)\", y = \"Price Index (1975)\",\n    color = \"Price Ratio\", size = \"Price Difference\"\n  ) +\n  scale_color_viridis_c() +\n  theme_classic()\n\n\n\n\n\n\n\n\nIn this new plot, you can see which products became much more expensive, much less expensive, or stayed about the same from 1950 to 1975.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>10. Table Pivots</span>"
+    ]
+  },
+  {
+    "objectID": "notes10.html#questions",
+    "href": "notes10.html#questions",
+    "title": "10  10. Table Pivots",
+    "section": "15.1 Questions",
+    "text": "15.1 Questions\nConsider the following subset of the hans dataset:\n\nhans &lt;- read_csv(\"../data/hans_roslin.csv\")\nhans &lt;- hans |&gt;\n  filter(year %in% c(1957, 2007)) |&gt;\n  filter(country %in% c(\n    \"United States\", \"France\",\n    \"China\", \"Mexico\"\n  )) |&gt;\n  select(country, year, gdp)\nhans\n\n# A tibble: 8 × 3\n  country        year    gdp\n  &lt;chr&gt;         &lt;dbl&gt;  &lt;dbl&gt;\n1 China          1957   576.\n2 China          2007  4959.\n3 France         1957  8663.\n4 France         2007 30470.\n5 Mexico         1957  4132.\n6 Mexico         2007 11978.\n7 United States  1957 14847.\n8 United States  2007 42952.\n\n\nAnswer the following four questions by hand:\n\nRewrite the table that would result from pivoting the table wider by turning the countries into columns.\nRewrite the table that would result from pivoting the table wider by turning the years into columns.\nPerform a calculation that would be easier to make with the data from question one than with the original data.\nSketch a plot that would be easy to make with the data from question two but hard from the original data.\n\n\n\n\n\n\n\nStop!\n\n\n\nComplete the questions above before viewing the answers below.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>10. Table Pivots</span>"
+    ]
+  },
+  {
+    "objectID": "notes10.html#answers",
+    "href": "notes10.html#answers",
+    "title": "10  10. Table Pivots",
+    "section": "15.2 Answers",
+    "text": "15.2 Answers\n\nRewrite the table that would result from pivoting the table wider by turning the countries into columns.\n\n\nhans |&gt;\n  pivot_wider(names_from = country, values_from = gdp)\n\n# A tibble: 2 × 5\n   year China France Mexico `United States`\n  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;           &lt;dbl&gt;\n1  1957  576.  8663.  4132.          14847.\n2  2007 4959. 30470. 11978.          42952.\n\n\n\nRewrite the table that would result from pivoting the table wider by turning the years into columns.\n\n\nhans |&gt;\n  pivot_wider(\n    names_from = year, values_from = gdp,\n    names_prefix = \"year_\"\n  )\n\n# A tibble: 4 × 3\n  country       year_1957 year_2007\n  &lt;chr&gt;             &lt;dbl&gt;     &lt;dbl&gt;\n1 China              576.     4959.\n2 France            8663.    30470.\n3 Mexico            4132.    11978.\n4 United States    14847.    42952.\n\n\n\nPerform a calculation that would be easier to make with the data from question one than with the original data.\n\n\nhans |&gt;\n  pivot_wider(names_from = country, values_from = gdp) |&gt;\n  mutate(us_gdp_diff = `United States` - (France + Mexico + China))\n\n# A tibble: 2 × 6\n   year China France Mexico `United States` us_gdp_diff\n  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;           &lt;dbl&gt;       &lt;dbl&gt;\n1  1957  576.  8663.  4132.          14847.       1477.\n2  2007 4959. 30470. 11978.          42952.      -4455.\n\n\n\nSketch a plot that would be easy to make with the data from question two but hard from the original data.\n\n\nhans |&gt;\n  pivot_wider(\n    names_from = year, values_from = gdp,\n    names_prefix = \"year_\"\n  ) |&gt;\n  ggplot(aes(year_1957, year_2007)) +\n  geom_point() +\n  geom_text_repel(aes(label = country)) +\n  labs(x = \"GDP in 1957\", y = \"GDP in 2007\") +\n  theme_classic()",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>10. Table Pivots</span>"
+    ]
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "References",
+    "section": "",
+    "text": "Knuth, Donald E. 1984. “Literate Programming.” Comput.\nJ. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.",
+    "crumbs": [
+      "References"
+    ]
+  },
+  {
+    "objectID": "intro.html",
+    "href": "intro.html",
+    "title": "1  Introduction",
+    "section": "",
+    "text": "This is a book created from markdown and executable code.\nSee Knuth (1984) for additional discussion of literate programming.\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "summary.html",
+    "href": "summary.html",
+    "title": "2  Summary",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n\n[1] 2",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Summary</span>"
+    ]
+  }
+]

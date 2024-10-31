@@ -1,0 +1,250 @@
+---
+title: "09. Table Joins"
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+highlight-style: arrow
+format:
+  html:
+    anchor-sections: true
+    code-tools: true
+    df-print: paged
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+editor:
+  markdown:
+    wrap: 72
+---
+
+# Overview
+
+One of the most common tasks in data science is **joining** data from two
+(or more) datasets together.
+
+To do this, we need to identify a **key** common between the two datasets.
+This key is a feature that uniquely identifies an observation.
+
+If you have never joined data together before, these concepts can be confusing,
+so it may be helpful to read this section multiple times.
+
+## Primary Key
+
+A [primary key](https://en.wikipedia.org/wiki/Primary_key) is a feature or group of features (in other words, a column or group of columns) in a dataset that uniquely identifies a row of data.
+In our food dataset, the feature `item` is a primary key. In the `us`
+dataset, the `city` and `year` columns together form a primary key—we need
+both to uniquely identify one observation.
+
+## Foreign Key
+
+Likewise, a [foreign key](https://en.wikipedia.org/wiki/Foreign_key) is the appearance of a primary key within a
+different dataset. The `food_group` feature in the `food` dataset, for example,
+could be a foreign key if we had another table with one row describing
+information about each food group.
+
+## Relation
+
+A primary key and the corresponding foreign key in another table form a
+[relation](https://en.wikipedia.org/wiki/Relation_(database)). Typically, a relation maps a single row in one dataset to many rows
+in another.
+
+## Table Join
+
+A table join is a way of combining two tables based on relations. The goal is
+to match up a foreign key in one table with the primary key in another table,
+to add new columns from one dataset into another dataset.
+
+# Examples
+
+## Data
+
+We're going to work with a subset of `food`:
+
+```{r}
+#| warning: false
+
+library(tidyverse)
+
+food <- read_csv(file.path("..", "data", "food.csv"))
+
+food |>
+  slice_sample(n = 5)
+```
+
+## Joining data by key
+
+As an example of performing table joins, we will start with a pared-down
+version of our foods data:
+
+```{r}
+#| message: false
+food_sml <- food |>
+  select(item, food_group, calories)
+
+food_sml |>
+  slice_sample(n = 5)
+```
+
+Within `food_sml`, `item` is a **primary key**.
+
+Now, consider the following new dataset corresponding to dietary restrictions
+associated with different food groups:
+
+```{r}
+#| message: false
+diet <- read_csv(file.path("..", "data", "food_diet_restrictions.csv"))
+diet
+```
+
+In the `diet` table, `food_group` is a **primary key**.
+
+Within the `food` table, `food_group` is a **foreign key** to `diet`. What we would like to do is to combine these two
+datasets by matching up rows that have the same values in the corresponding
+columns.
+
+For example, it could be useful to include the columns `vegan`, `vegetarian`,
+and `pescatarian` in `food_sml`. To do this, we need to
+associate a row in the food dataset with the row in the diet dataset that
+contains the same value of the variable `food_group`.
+
+We do this using the
+function `left_join`. We pipe in the larger dataset that we want to join columns
+to, provide the name of the table to grab columns from (`diet`), and indicate `by` what column the two datasets will be joined.
+
+```{r}
+food_sml |>
+  left_join(diet, by = "food_group")
+```
+
+We now have the dietary restrictions added into the food
+dataset. We can now compute models, summaries, and construct visualizations
+based on the new metadata associated with each food group.
+
+## Joining a single column
+
+Suppose we *only* wanted to get the `vegan` column from `diet`. We can do this
+by selecting the columns we want to keep from the `diet` dataset *before* joining.
+
+There are two different ways of handling this. Both involve what the `tidyverse` style guide refers to as [short pipes](https://style.tidyverse.org/pipes.html#short-pipes).
+
+The first method uses an inline pipe:
+
+```{r}
+food_sml |>
+  left_join(diet |> select(food_group, vegan), by = "food_group")
+```
+
+The second method creates a separate dataset containing only the desired columns, which is then joined:
+
+```{r}
+diet_join <- diet |> select(food_group, vegan)
+
+food_sml |>
+  left_join(diet_join, by = "food_group")
+```
+
+In cases where your pipeline is very short, it is okay to `|>` on a single line
+as shown above. However, if you have a longer pipeline, it is better to add
+vertical space as we have been doing all semester.
+
+## Using joined data
+
+You can then use the new columns to perform any of the operations we
+have already studied. For example, let's figure out which vegan items
+have the highest number of calories:
+
+```{r}
+food_sml |>
+  left_join(diet_join, by = "food_group") |>
+  filter(vegan == "yes") |>
+  arrange(desc(calories))
+```
+
+
+## Joins with missing matches
+
+In the previous example, all the `food_group` values from `food_sml` were present in `diet`, so all rows were included in the joined table. This is not always the case.
+
+Let's consider a third dataset containing information about food recipes,
+one for a Pot Roast and another for Guacamole:
+
+```{r}
+#| message: false
+recipes <- read_csv(file.path("..", "data", "food_recipes.csv"))
+recipes
+```
+
+In this dataset, `ingredient` is a foreign key corresponding to the primary key
+`item` in the `food_sml` dataset.
+
+For `recipes`, the primary key requires **two**
+columns: both `recipe` and `ingredient` are needed to uniquely describe each row.
+
+We can now try adding the `calories` from the `food_sml` dataset into `recipes`. The complication here is that the column we want to join on has
+a different name in each dataset ("ingredient" versus "item"). To specify this,
+we provide the two different names within the `by` argument of the join function:
+
+```{r}
+recipes |>
+  left_join(food_sml, by = c("ingredient" = "item"))
+```
+
+Now, we have a dataset that has added the food group and calories information
+to our recipe dataset.
+
+Notice that the ingredient "Bay Leaf" is not in `food_sml`. Because of this, the food group and calories information for this ingredient are filled in with missing values.
+
+Also, notice that rows about `food` items that are not
+in any recipe are *not* included in the output. This is because `left_join` only includes all rows from the left table (`recipes`) and the matching rows from the right table (`food_sml`). Since `food_sml` may contain items not present in recipes, those items are not included in the joined dataset.
+
+# Inner and outer joins
+
+There are four mutating joins available in `dplyr`, all using the same syntax:
+
+- `left_join`: Returns all rows from the first (left) dataset and the matched rows from the second (right) dataset. Unmatched columns from the right dataset are filled with NA.
+- `right_join`: Returns all rows from the second (right) dataset and the matched rows from the first (left) dataset. Unmatched columns from the left dataset are filled with NA.
+- `full_join`: Returns all rows when there is a match in either left or right dataset. Unmatched columns are filled with NA.
+- `inner_join`: Returns only the rows with matches in both datasets.
+
+For example, by replacing `left_join` with the function `inner_join`,
+we can modify the join from the last section to drop the missing term
+(Bay Leaf) that is not contained in our food dataset:
+
+```{r}
+recipes |>
+  inner_join(food_sml, by = c("ingredient" = "item"))
+```
+
+These four joins are called "mutating" joins because, like `mutate()`,
+they *add columns* to a dataset.
+
+There are also two `filter` joins that serve only
+to select rows in the first (left) table:
+
+- `semi_join` selects rows in the first table that have a match in the second.
+- `anti_join` selects rows in the first table that do not have a match in the second.
+
+These are useful for several tasks and will come up now and then.
+
+# Homework questions
+
+1. Hand-write a dataset that consists of at least two different tables where one table has a primary key that appears as a foreign key in the other table. The tables do not need to be large (10 rows between both tables is more than
+enough), and the subject of the tables is up to you. Be creative. Don't
+copy the example above.
+
+2. Hand-write a code pipeline that joins the two tables together, then
+produces some kind of output (a table, a plot, etc.) using the joined data.
+
+Don't forget to load your handwritten data into R objects. You could do so like this:
+
+```{r}
+variable1 <- c("a", "b", "c")
+variable2 <- c(1, 2, 3)
+data <- tibble(variable1, variable2)
+data
+```
+
+Note that `variable1` and `variable2` become the column names.

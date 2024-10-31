@@ -1,0 +1,299 @@
+---
+title: "06. Creating Features"
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: "`r Sys.Date()`"
+format:
+  html:
+    embed-resources: true
+    link-external-newwindow: true
+    df-print: paged
+    smooth-scroll: true
+    toc: true
+---
+
+```{r, include=FALSE, message=FALSE}
+source("../funs/funs.R")
+
+food <- read_csv(file.path("..", "data", "food.csv"))
+food_prices <- read_csv(file.path("..", "data", "food_prices.csv"))
+```
+
+# `mutate()`
+
+The final core **dplyr** verb that we will look at is used to create a new
+feature in our data set based on other features that are already present. This
+verb is called `mutate`, and works by giving it the name of the feature you want
+to create followed by the code that describes how to construct the feature in
+terms of the rest of the data.
+
+As an example, consider computing the number of calories in a 200g portion of
+each food. All of the features in the data set are currently given as 100g
+portions, so to compute this we need to multiply the `calories` feature by 2. To
+do this, we use the `mutate` verb to name and describe a new feature
+`calories_200g`.
+
+```{r}
+food |>
+  mutate(calories_200g = calories * 2)
+```
+
+Notice that there is a new feature named `calories_200g` that has been added as
+the last column in the data set. Because it is added at the end of the data set,
+it gets hidden in the output shown above. Making use of `select` allows us to
+see the new values:
+
+```{r}
+food |>
+  mutate(calories_200g = calories * 2) |>
+  select(item, food_group, calories, calories_200g)
+```
+
+And now we can see that the new column has been created by doubling the number
+given the `calories` column.
+
+Note that `mutate` can also be used to modify any existing column in the data
+set by using the name of an extant feature. In this case the position of the
+feature within the tables does not change.
+
+`mutate` has a relatively straightforward syntax. The main challenge is knowing
+how to apply and chain together the various transformations that are useful
+within an analysis. In the next section, we highlight several common types of
+operations that we will be useful in subsequent applications.
+
+## Conditional values with `if_else`
+
+Many of the uses for `mutate` involve assigning one value when a set of
+conditions is true and another if the conditions are false.
+
+For example, consider creating a new feature called `sugar_level` based on the
+relative amount of sugar in each food item. We might classify a food has having
+a "high" sugar level if has more than 10g of sugar per 100g serving, and a
+"normal" amount otherwise. In order to create this feature, we need the function
+`if_else`.
+
+The `if_else` function has three parts: a `TRUE`/`FALSE` statement, the value to
+use when the statement is true, and the value to use when it is false. Here is
+an example to create our new feature:
+
+```{r}
+food |>
+  mutate(sugar_level = if_else(
+    # I will omit argument names in subsequent steps, but include them here:
+    condition = sugar > 10,
+    true = "high",
+    false = "normal"
+  )) |>
+  select(item, food_group, sugar, sugar_level)
+```
+
+Looking at the first rows of data, we see that apples and bananas are classified
+as high sugar foods, whereas the other sugar levels are given the sugar level
+category of "normal".
+
+## Multiple `if_else` statements
+
+The `if_else` function can be used to produce any number of categories by using
+it multiple times. Let's modify our sugar level feature to now have three
+categories: "high" (over 10g), "low" (less than 1g), and "normal" (between 1g
+and 10g). There are several different ways to get to the same result, but I find
+the easiest is to start by assigning a default value and then changing the value
+of the new feature in sequence. For example, here some code that produces our
+new categories:
+
+```{r}
+food |>
+  mutate(sugar_level = "default") |>
+  mutate(sugar_level = if_else(sugar < 1, "low", sugar_level)) |>
+  mutate(sugar_level = if_else(sugar > 10, "high", sugar_level)) |>
+  mutate(sugar_level = if_else(between(sugar, 1, 10), "normal", sugar_level)) |>
+  select(item, food_group, sugar, sugar_level)
+```
+
+In each `if_else` step we are telling `mutate`: If the condition is false, set
+`sugar_level` equal to itself. In other words, if the condition does not hold,
+do not change the value of the feature.
+
+You may wonder why we created a `"default"` value for the feature `sugar_level`.
+It would have been one less line of code to set the default value to "normal"
+and remove the final mutate function. The reason for the approach above is
+three-fold:
+
+1.  It's easier to understand what the code is doing in it's current format
+    because each condition ("high", "normal", and "low") is explicitly coded.
+2.  It creates a nice check on our code and data. If we find a row of the output
+    that still has the value "default" we will know that there is a problem
+    somewhere.
+3.  The code above will more safely handle the issues with missing values, and
+    issue that we will return to shortly.
+
+## `case_when` alternative
+
+The `case_when` function is a more concise way to write multiple `if_else`
+statements, but the syntax can be a little trickier. Here's a rewrite of the
+above code using `case_when`:\`
+
+```{r}
+food |>
+  mutate(sugar_level = case_when(
+    sugar < 1 ~ "low",
+    sugar > 10 ~ "high",
+    between(sugar, 1, 10) ~ "normal",
+    TRUE ~ "default"
+  )) |>
+  select(item, food_group, sugar, sugar_level)
+```
+
+### `TRUE ~ "default"`?
+
+`TRUE ~ "default"` is a catch-all condition that gives any unmatched cases the
+value "default." Since `case_when()` evaluates conditions in order, the `TRUE`
+condition will only be reached if none of the other conditions are met.
+
+### Why `~` instead of `=`?
+
+The `~` symbol is used to separate the condition from the value that should be
+returned if the condition is true. It's part of R's formula syntax, where it's
+used to define relationships between variables.
+
+`=` is used in R for assignment or function arguments, while `~` in
+`case_when()` is specifically for pairing a condition with the corresponding
+output value if that condition is met.
+
+## `mutate` summaries
+
+All of the summary functions that were introduced in the previous notebook can
+also be applied within the mutate version.
+
+However, instead of reducing the data to a single summary row, summarizing
+within the mutate verb duplicates the summary statistic **in each row of the
+data set**. Here is an example including the average number of calories across
+all rows of the data set:
+
+```{r}
+food |>
+  mutate(calories_mean = mean(calories)) |> 
+  select(item, food_group, calories, calories_mean)
+```
+
+As with any call to `mutate`, all of the original features are kept in the
+output and the new feature is added at the end. Using `select`, we can verify
+that the average calories has in fact been added to each row of the table.
+
+## `mutate` and `group_by`
+
+The power of `mutate` summaries becomes particularly clear when grouping the
+data. If we `group_by` one or more features and apply a summary function within
+a mutation, the repeated summaries will be done within each group.
+
+### `n` and `count`
+
+For example, we could count the number of items in each food group using
+`group_by` and `n()`:
+
+```{r}
+food |>
+  group_by(food_group) |>
+  mutate(food_group_count = n()) |>
+  select(food_group, food_group_count)
+```
+
+As we would expect, this produces a new column on the `food` data set containing
+counts of the number of items in each food group.
+
+Alternatively, if we only needed the counts of the number of items in the
+groups, we could use the `count` function, which implicitly groups the data for
+us:
+
+```{r}
+food |>
+  count(food_group)
+```
+
+Note that the default column that `count` creates is called `n`. You can change
+that column name by passing `name = "whatever"` argument in `count()`.
+
+### `max` and `min`
+
+`max` and `min` can be used in the same way as `mean` or `sum`:
+
+```{r}
+# choose 50 random numbers between 0 and 100:
+numbers <- runif(50, 0, 100)
+mean(numbers)
+sum(numbers)
+# what was the largest number chosen?
+max(numbers)
+# what was the smallest number chosen?
+min(numbers)
+
+```
+
+This might be useful if we want to add the `max` calories of each food group to
+the data set:
+
+```{r}
+food |>
+  group_by(food_group) |>
+  mutate(food_group_calories_max = max(calories)) |>
+  select(item, food_group, calories, food_group_calories_max)
+```
+
+With group values, you could perform subsequent calculations. For example, if
+you wanted to calculate the ratio of an individual food's calories to the
+average calories within its food group,you could do something like the
+following:
+
+```{r}
+food |>
+  group_by(food_group) |>
+  mutate(food_group_calories_mean = mean(calories)) |>
+  mutate(calories_ratio = calories / food_group_calories_mean) |>
+  select(item, food_group, calories, food_group_calories_mean, calories_ratio) |>
+  arrange(desc(calories_ratio))
+```
+
+You will notice, however, that these items have been `arrange`d **within**
+groups. This might not be what you want!
+
+## `ungroup`ing data
+
+If you want to sort the *entire* data set by the `calories_ratio`, you will
+first need to `ungroup` the data, so that the `arrange` operation is not applied
+to the groups:
+
+```{r}
+food |>
+  group_by(food_group) |>
+  mutate(food_group_calories_mean = mean(calories)) |>
+  mutate(calories_ratio = calories / food_group_calories_mean) |>
+  select(item, food_group, calories, calories_ratio) |>
+  # new:
+  ungroup() |>
+  arrange(desc(calories_ratio))
+```
+
+You could follow this kind of pipeline with any number of operations. For
+example, suppose we only wanted to see those foods that have far fewer calories
+than average foods in their group. That would be a good use of `filter`:
+
+```{r}
+food |>
+  group_by(food_group) |>
+  mutate(food_group_calories_mean = mean(calories)) |>
+  mutate(calories_ratio = calories / food_group_calories_mean) |>
+  ungroup() |>
+  # new:
+  filter(calories_ratio <= 0.5) |>
+  select(item, food_group, calories, calories_ratio) |>
+  arrange(desc(calories_ratio))
+```
+
+We will see many examples of grouped `mutate` summaries throughout our
+applications.
+
+## Homework Questions
+
+Your only homework for these notes is to look over the topics on the first exam
+and come to class with any questions or topics that you would like me to review
+before the exam.
