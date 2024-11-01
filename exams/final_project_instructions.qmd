@@ -1,0 +1,278 @@
+---
+title: "Final Project Instructions"
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: true
+format:
+  html:
+    anchor-sections: true
+    code-tools: false
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    math: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+editor:
+  markdown:
+    wrap: 72
+---
+
+## Deadline
+
+You will present your final project in class on **Wednesday, December 4**. Please upload your project documents to Blackboard before class begins that day. Presentations must be **no more than three minutes long** to ensure everyone gets a chance to present.
+
+We have three full days of class dedicated to in-class workshops to prepare your final projects. You will need to spend time on your project outside of class, too.
+
+## Overview
+
+The final project will demonstrate your ability to read, manipulate, visualize, and write about data by analyzing one or more datasets that we have **not** studied in class. This will prepare you to work with data in the "real world."
+
+You may use any resource to work on the final project, including any documents from class, the internet, and/or the help of your classmates.
+
+That said, **the final project must ultimately be your own work**. If you use code or ideas from other sources, you must cite them (except for class materials). Cite any websites you reference, and any interactions with the course's Custom GPT.
+
+I expect you to write the final project and presentation on your own. While you may use generative AI to help with problems you encounter with your code, you may not use it to write any part of your work. Writing is evidence of thinking, and using AI to write means choosing not to do the thinking yourself.
+
+Follow the citation practices described in "Part III: Source Citations and Indexes" of *The Chicago Manual of Style*, which is [freely available to you via the library](https://richmond.primo.exlibrisgroup.com/permalink/01URICH_INST/191gg5k/alma9928101287806241).
+
+## Workshops
+
+We have **three** full class periods devoted to workshopping your final projects. Check the syllabus.
+
+You can use this time to work on the project, get help from me, and discuss the project with your peers.
+
+Although final projects are individual, **you will be workshopping your project in small groups**. The purpose of these small groups is for you to get feedback and help from peers who get to know what you are working on, to ask you questions about your work, and to see how the project develops over time.
+
+## Data sources
+
+There are two possible sources of data for your final project:
+
+1. A dataset from *Data is Plural*, which will not require prior approval
+2. A dataset of your choosing, which will require prior approval
+
+### *Data is Plural*
+
+[*Data is Plural*](https://www.data-is-plural.com/) is a weekly newsletter that links to “useful/curious datasets” that have been posted online.^[The author of the newsletter has recently been [hired](https://www.nytco.com/press/jeremy-singer-vine-joins-the-times-as-data-editor/) as the data editor at *The New York Times*.] Each newsletter describes multiple datasets.
+
+For the final project, you may select **one** of the datasets from your assigned period of *Data is Plural*. (Assigned periods are indicated in a table at the bottom of this document.)
+
+I have used *Data is Plural* datasets for some of the notebooks and exams this class. If your period happens to include a dataset that we have already used, you may **not** use it for your final project.
+
+If none of the datasets in your period can be used for the project, please let me know ASAP.
+
+### Dataset(s) of your choosing
+
+If you would prefer to use a dataset of your choosing, that dataset requires my prior approval by no later than **Friday, November 15**.
+
+A dataset of your choosing should generally contain *at least* four columns and fifty rows.
+
+To get my approval, you should first discuss the dataset and your general idea with me in class.
+
+Then, send me an email answering the following questions about your dataset:
+
+1. Why would you rather use this dataset than any of the datasets available in your period of *Data is Plural*?
+2. Where did this dataset come from?
+3. How do you plan to analyze it? (This can be a general statement of intent. I am not looking for code.)
+4. If your data set has fewer than four columns and/or fifty rows, explain why it is nevertheless worth analyzing for a final project.
+5. Have you already (or will you eventually) use this dataset for another class? If so, how would your work on this dataset for this class substantially expand on or differ from your previous work?
+6. Attach the dataset to the email as a `.csv`, or include a link to it.
+
+## Final project documents
+
+Once you have selected your dataset(s), you need to create the following **three** documents:
+
+1. Create a datasheet for your dataset(s) that builds on the principles of *Data Feminism*.
+2. Read at least some of your dataset(s) into R and do something **meaningful** with the data in a `.qmd` notebook. Output the code and results of that work as a `.pdf`.
+3. Present your dataset, analysis, and outputs to the class using slides.
+
+Submit all three documents---datasheet, notebook, and slides---to Blackboard before the start of our final class period.
+
+Further information about each of the three required documents follows:
+
+### Datasheet
+
+For the datasheet, create a document that has each of the sections described below.
+
+These datasheet requirements have been abbreviated from those in the notes. I have done this to be respectful of your time while still requiring key elements of the *Data Feminism* datasheet.
+
+It is possible that you will not be able to find all of the information required to complete all of these sections. If you can't find it all, that's okay---just explain *how* you tried to find that information and what you were able to find in your document.
+
+Format your datasheet as follows:
+
+- Approximately two pages in length
+- Single-spaced
+- Standard 12-point font (Times New Roman or Helvetica)
+- One-inch margins
+
+#### Metadata
+
+[Metadata](https://en.wikipedia.org/wiki/Metadata) is data that describes or gives information about other data.
+
+This section should include:
+
+- A clear title for the dataset
+- Publication date
+- Version number (if applicable)
+- A citation for the dataset, including a link if applicable
+- Contact information for the dataset creator(s)
+
+#### Motivation
+
+Explain why the dataset was created.
+
+If possible, indicate what funding was used to collect the data, and which institutions participated in its creation and/or dissemination. Then, briefly examine connections between the motivation and the funding source(s).
+
+This may be important because funders are often eager to support research outputs that serve their business interests. The most obvious examples of this are the tobacco and fossil fuel industries, both of which funded research that downplayed the significant harms (cancer, climate change) caused by their products.^[For more information on this, see [*Merchants of Doubt* (2010)](https://en.wikipedia.org/wiki/Merchants_of_Doubt).]
+
+#### Composition
+
+Include a short summary describing each table or data object. If the data is a single table, describe the features using the data dictionary format that we discussed.
+
+If there are too many tables to reasonably create a data dictionary for each, describe the purpose(s) of each table.
+
+If the data are not in tabular form, describe the composition of the dataset as best as you can.
+
+#### Narrative
+
+This section should include a description of how the data were collected and a reflection on all of the design choices that went into the data creation process.
+
+In theory, this could be quite long. For this project, please keep the narrative to a maximum of three paragraphs.
+
+#### Distribution
+
+Describe how the data are distributed (e.g., over the internet). This should include the format of the data, the licence that is being distributed under, and where (if possible) the data can be accessed.
+
+This section should also include information about any ways that the data has been changed or "cleaned" before being published, such as removing personally identifiable information.
+
+If you have made any changes to the data (e.g., you manually changed column names using Excel), record those changes here, too.
+
+### Analyze the data in a notebook
+
+#### Read your data
+
+Read the data (or some subset of it) into a `.qmd` notebook, and do something **meaningful** with it. Format your notebook similarly to the ones that we have been working on all semester.
+
+If you have trouble reading your data into R, please ask for help as soon as possible. I would also encourage you to ask the class's [Custom GPT](https://chatgpt.com/g/g-eChIzwMNp-ur-intro-to-data-science-gpt) for assistance, as it "knows" how we have generally worked in this course.
+
+In the event that it is not possible to read any of your data into R, write up a description of the challenges you faced and what would need to be fixed. This should only be done after consultation with the instructor, and, ideally, with a dataset that would be especially valuable to analyze if it could be read into R.
+
+#### Do something "meaningful" with the data
+
+"Meaningful" work does not have to be complicated, but it does have to be purposeful. In other words, there should be a good reason why you choose to do the analysis that you do.
+
+That reason may take the form of a question (e.g., "Has the number of hip-hop songs streamed per year risen more quickly than the number of rock songs?") or a hypothesis ("I hypothesize that the number of hip-hop songs streamed per year has risen more quickly than the number of rock songs because...")
+
+What makes your analysis meaningful does not have to be original (i.e., you don't have to "discover" anything). But you do have to do original work with your data on your question, and explain why it matters.
+
+#### Good examples of meaningful analysis
+
+We have seen many times over this class that there is a relationship between gross domestic product (GDP) and life expectancy by country. There are excellent reasons to think about those two variables together, perhaps in combination with others.
+
+Similarly, if you wanted to understand a trend like how popular different genres of music have been over time, it would be reasonable to consider the number of streams (or another metric) in relation to time.
+
+#### Bad example: non-meaningful analysis
+
+It is perfectly possible to measure relationships between variables that don't have a clear causal or theoretical relationship to one another.^[See, e.g., [the eugenics movement](https://en.wikipedia.org/wiki/Eugenics).] This is sometimes referred to as a [spurious relationship](https://en.wikipedia.org/wiki/Spurious_relationship). For example, there is a robust association between [the number of movies that Tom Cruise appeared in and the number of votes for the Democratic presidential candidate in Montana](https://www.tylervigen.com/spurious/correlation/5862_the-number-of-movies-tom-cruise-appeared-in_correlates-with_votes-for-the-democrat-presidential-candidate-in-montana). But there is no good *a priori* reason to think that this is anything more than a coincidence.
+
+In this class, a non-meaningful analysis would likely involve analyzing data *merely because you have it*, not because you have a good reason to think that there exists some relationship between the variables that you choose to study.
+
+#### Outputs of analysis
+
+Your analysis should result in **one to three plots, tables, or values (e.g., a percentage or other statistic)** that you briefly discuss in the notebook and in the presentation. The number of outputs depends on the complexity of analysis required to reach them.
+
+Making three simple outputs is *not* better than making one complex output. If one output is more meaningful than three outputs, only produce one.
+
+#### "So what?"
+
+Perhaps the harshest---and most useful---question you can ask of an idea or a piece of writing is, "So what?"
+
+You should answer the question "So what?" in your analysis. Why does your analysis matter? What difference does it make?
+
+This is not published research, so you do not need to change minds. But you should be able to articulate why this analysis is meaningful, and what you think it means.
+
+#### Citation
+
+As stated above, any code or ideas that you use from other sources (except for course materials) must be cited. Follow the citation practices described in "Part III: Source Citations and Indexes" of *The Chicago Manual of Style*, which is [freely available to you via the library](https://richmond.primo.exlibrisgroup.com/permalink/01URICH_INST/191gg5k/alma9928101287806241). There are also tools that can help you generate citations, like [ZoteroBib](https://zbib.org/).
+
+### Presentation
+
+Finally, for the presentation day on **December 4**, you should prepare **no more than 4 slides** to share with the class. You may use whichever slideshow software you prefer, but whatever you choose, you need to share them with me in advance.
+
+If you want to create slides in the same way that I do for lecture (e.g., with embedded code and figures), you can do so using the `.qmd` files we are already familiar with. Further instructions and documentation can be found [here](https://quarto.org/docs/presentations/).
+
+#### Things to include
+
+- your name
+- a title and brief description of the dataset
+- citation for the dataset
+- a screenshot or description of the dataset's original format
+- one to three outputs of your analysis (i.e., plots, tables, values)
+- an answer to the question, "so what?"
+
+## How you will be evaluated
+
+Grades will be assigned holistically, based primarily on effort. To earn an A, make an honest attempt to complete all elements thoroughly. 
+**Starting early** will help you use the workshops effectively.
+
+## *Data is Plural* assignments
+
+In the table below, `dip_year` and `dip_month` refer to the year and month of *Data is Plural* (*DIP*) newsletters that have been assigned to you. You may only use *Data is Plural* datasets from your assigned year *and* month.
+
+You can browse the [*DIP* archive here](https://www.data-is-plural.com/archive/).
+
+Newsletter titles are formatted `year.month.day`. For example, `2024.11.12` would November 12, 2024.
+
+```{r}
+#| echo: false
+
+library(tidyverse)
+library(knitr)
+
+path <- "/Users/erik/code/dsst289-2024/GITIGNORED/final_project_assignments.xlsx"
+
+assignments <- readxl::read_excel(path)
+
+assignments |> 
+  select(first, last_initial, section, dip_year, dip_month) |> 
+  knitr::kable()
+```
+
+## Workshop groups
+
+Your workshop groups have been **randomly** assigned in the table below. You will be discussing your datasets with each other, and refining your work together.
+
+```{r}
+#| echo: false
+assignments |>
+  group_by(section) |>
+  # Add a column of random values to shuffle rows within each section
+  mutate(random_order = runif(n())) |>
+  arrange(section, random_order) |>
+  mutate(
+    # Calculate group number initially based on groups of 3
+    group = (row_number() - 1) %/% 3 + 1,
+    # Prevent groups of 1
+    group = if_else(
+      n() %% 3 == 1 & group == max(group) - 1,
+      max(group) - 1,
+      group
+    ),
+    group = if_else(
+      n() %% 3 == 1 & group == max(group),
+      max(group) - 1,
+      group
+    )
+  ) |>
+  ungroup() |>
+  select(first, last_initial, section, group) |>
+  arrange(section, last_initial, first) |>
+  knitr::kable()
+```
+

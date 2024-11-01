@@ -1,0 +1,336 @@
+---
+title: "Sample final project"
+subtitle: "DSST 289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+echo: true
+format:
+  revealjs:
+    footer: "https://fredner.org"
+    embed-resources: true
+    scrollable: true
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+## Optimal fishing strategy
+
+- The video game *Animal Crossing: New Horizons* (2020) requires players to earn money to pay back a home loan
+- Fishing is a common strategy to earn money
+
+**Identifying the optimal fishing strategy in *ACNH* will...**
+
+- reduce players' time spent fishing for money *alone*
+- help players earn more money to spend on stuff (not just debt)
+- improve speed-runs of *ACNH*
+
+## Data source: *ACNH* `fish` sheet
+
+![*ACNH* `fish` sheet](images/acnh_fish.png)
+
+:::{.r-fit-text}
+6480 et al. "Data Spreadsheet for Animal Crossing New Horizons." February 13, 2021. [Link](https://docs.google.com/spreadsheets/d/13d_LAJPlxMa_DubPTuirkIV4DERBMXbrWQsmSh8ReK4/edit?gid=400375391#gid=400375391).
+
+Contact: [Discord](https://discord.com/invite/8jNFHxG)
+:::
+
+## Fishing (without bait)
+
+::: {.panel-tabset}
+
+### Simulation
+
+```{r}
+#| echo: false
+library(tidyverse) # For data manipulation and visualization
+library(ggthemes) # For additional ggplot2 themes
+library(clipr) # For reading and writing to the clipboard
+library(patchwork) # For combining multiple ggplots
+library(scales) # For scale functions in ggplot2
+
+# Read in the fish data from CSV file
+fish <- read_csv(file.path("..", "data", "acnh_fish.csv")) |>
+  # Separate the 'spawn_rates' column
+  separate(
+    spawn_rates,
+    into = c("spawn_low", "spawn_high"),
+    sep = "–",
+    fill = "right"
+  ) |>
+  # Replace missing 'spawn_high' values with 'spawn_low'
+  mutate(
+    spawn_high = if_else(is.na(spawn_high), spawn_low, spawn_high)
+  ) |>
+  # Convert 'spawn_low' and 'spawn_high' to numeric
+  mutate(
+    spawn_low = as.numeric(spawn_low),
+    spawn_high = as.numeric(spawn_high)
+  ) |>
+  # Separate 'location' into 'location' and 'location_condition'
+  separate(
+    location,
+    into = c("location", "location_condition"),
+    sep = " \\(",
+    fill = "right"
+  ) |>
+  # Remove the trailing ')' from 'location_condition'
+  mutate(
+    location_condition = str_remove(location_condition, "\\)")
+  ) |>
+  # Calculate average 'spawn_rate' and categorize 'spawn_freq'
+  mutate(
+    spawn_rate = (spawn_low + spawn_high) / 2,
+    spawn_freq = case_when(
+      spawn_rate > 15 ~ "very common",
+      spawn_rate > 10 ~ "common",
+      spawn_rate > 5 ~ "uncommon",
+      spawn_rate > 2 ~ "rare",
+      TRUE ~ "very rare"
+    ),
+    # Convert 'spawn_freq' to an ordered factor
+    spawn_freq = factor(
+      spawn_freq,
+      levels = c(
+        "very rare",
+        "rare",
+        "uncommon",
+        "common",
+        "very common"
+      )
+    )
+  )
+
+# Define a function to simulate fishing and generate plots
+simulate_fishing <- function(sim_number, sample_size) {
+  # Set the seed for reproducibility
+  set.seed(sim_number)
+
+  fish |>
+    # Exclude 'Pier' location from the dataset
+    filter(location != "Pier") |>
+    # Calculate spawn probability for each fish
+    mutate(spawn_prob = spawn_rate / 100) |>
+    # Group data by 'location'
+    group_by(location) |>
+    # Nest the data for each group (location)
+    nest() |>
+    # Simulate fish catches using 'map' over the nested data
+    mutate(
+      catches = map(
+        data,
+        ~ tibble(
+          fish_number = 1:sample_size,
+          caught_fish = sample(
+            x = .x$name,
+            size = sample_size,
+            prob = .x$spawn_prob,
+            replace = TRUE
+          )
+        )
+      )
+    ) |>
+    # Unnest the 'catches' data to combine with the main dataset
+    unnest(catches) |>
+    # Join with 'fish' data to get 'value' for each 'caught_fish'
+    left_join(
+      fish |> select(name, value),
+      by = c("caught_fish" = "name")
+    ) |>
+    # Group by 'location' again to prepare for cumulative sum
+    group_by(location) |>
+    # Calculate cumulative value of caught fish
+    mutate(cumulative_value = cumsum(value)) |>
+    ungroup() |>
+    # Create the plot using ggplot2
+    ggplot(aes(
+      x = fish_number,
+      y = cumulative_value,
+      color = location
+    )) +
+    geom_line(linewidth = 1.2) +
+    scale_color_viridis_d() +
+    labs(
+      x = "Fish caught",
+      y = "Cumulative value",
+      color = "Location"
+    ) +
+    theme_tufte()
+}
+
+# Set the sample size for the simulation
+sample_size <- 1000
+
+# Generate plots for simulations using 'map' from the 'purrr' package
+plots <- map(1:6, ~ simulate_fishing(.x, sample_size))
+
+# Combine the plots into a grid layout using 'wrap_plots' from 'patchwork'
+grid_plot <- wrap_plots(plots, ncol = 2)
+
+# Display the combined plot
+print(grid_plot)
+```
+
+### Data
+
+```{r}
+#| echo: false
+fish |>
+  select(name, value, location, spawn_rate) |>
+  arrange(desc(spawn_rate)) |>
+  knitr::kable()
+```
+
+### Code
+
+```{r}
+#| echo: true
+#| eval: false
+library(tidyverse) # For data manipulation and visualization
+library(ggthemes) # For additional ggplot2 themes
+library(clipr) # For reading and writing to the clipboard
+library(patchwork) # For combining multiple ggplots
+library(scales) # For scale functions in ggplot2
+
+# Read in the fish data from CSV file
+fish <- read_csv(file.path("..", "data", "acnh_fish.csv")) |>
+  # Separate the 'spawn_rates' column
+  separate(
+    spawn_rates,
+    into = c("spawn_low", "spawn_high"),
+    sep = "–",
+    fill = "right"
+  ) |>
+  # Replace missing 'spawn_high' values with 'spawn_low'
+  mutate(
+    spawn_high = if_else(is.na(spawn_high), spawn_low, spawn_high)
+  ) |>
+  # Convert 'spawn_low' and 'spawn_high' to numeric
+  mutate(
+    spawn_low = as.numeric(spawn_low),
+    spawn_high = as.numeric(spawn_high)
+  ) |>
+  # Separate 'location' into 'location' and 'location_condition'
+  separate(
+    location,
+    into = c("location", "location_condition"),
+    sep = " \\(",
+    fill = "right"
+  ) |>
+  # Remove the trailing ')' from 'location_condition'
+  mutate(
+    location_condition = str_remove(location_condition, "\\)")
+  ) |>
+  # Calculate average 'spawn_rate' and categorize 'spawn_freq'
+  mutate(
+    spawn_rate = (spawn_low + spawn_high) / 2,
+    spawn_freq = case_when(
+      spawn_rate > 15 ~ "very common",
+      spawn_rate > 10 ~ "common",
+      spawn_rate > 5 ~ "uncommon",
+      spawn_rate > 2 ~ "rare",
+      TRUE ~ "very rare"
+    ),
+    # Convert 'spawn_freq' to an ordered factor
+    spawn_freq = factor(
+      spawn_freq,
+      levels = c(
+        "very rare",
+        "rare",
+        "uncommon",
+        "common",
+        "very common"
+      )
+    )
+  )
+
+# Define a function to simulate fishing and generate plots
+simulate_fishing <- function(sim_number, sample_size) {
+  # Set the seed for reproducibility
+  set.seed(sim_number)
+
+  fish |>
+    # Exclude 'Pier' location from the dataset
+    filter(location != "Pier") |>
+    # Calculate spawn probability for each fish
+    mutate(spawn_prob = spawn_rate / 100) |>
+    # Group data by 'location'
+    group_by(location) |>
+    # Nest the data for each group (location)
+    nest() |>
+    # Simulate fish catches using 'map' over the nested data
+    mutate(
+      catches = map(
+        data,
+        ~ tibble(
+          fish_number = 1:sample_size,
+          caught_fish = sample(
+            x = .x$name,
+            size = sample_size,
+            prob = .x$spawn_prob,
+            replace = TRUE
+          )
+        )
+      )
+    ) |>
+    # Unnest the 'catches' data to combine with the main dataset
+    unnest(catches) |>
+    # Join with 'fish' data to get 'value' for each 'caught_fish'
+    left_join(
+      fish |> select(name, value),
+      by = c("caught_fish" = "name")
+    ) |>
+    # Group by 'location' again to prepare for cumulative sum
+    group_by(location) |>
+    # Calculate cumulative value of caught fish
+    mutate(cumulative_value = cumsum(value)) |>
+    ungroup() |>
+    # Create the plot using ggplot2
+    ggplot(aes(
+      x = fish_number,
+      y = cumulative_value,
+      color = location
+    )) +
+    geom_line(linewidth = 1.2) +
+    scale_color_viridis_d() +
+    labs(
+      x = "Fish caught",
+      y = "Cumulative value",
+      color = "Location"
+    ) +
+    theme_tufte()
+}
+
+# Set the sample size for the simulation
+sample_size <- 1000
+
+# Generate plots for simulations using 'map' from the 'purrr' package
+plots <- map(1:6, ~ simulate_fishing(.x, sample_size))
+
+# Combine the plots into a grid layout using 'wrap_plots' from 'patchwork'
+grid_plot <- wrap_plots(plots, ncol = 2)
+
+# Display the combined plot
+print(grid_plot)
+```
+:::
+
+
+## Conclusion
+
+Players fishing for money should prefer to fish in the following environments in this order:
+
+1. Sea
+2. River
+3. Pond
+
+That said, players who have bait *might* be better off fishing on the Pier, though they must consider the costs of making bait and the added difficulty of Pier fishing.
+
+## Final project presentation features
+
+- name
+- a title and brief description of the dataset
+- citation for the dataset
+- a screenshot or description of the dataset's original format
+- one to three outputs of your analysis (i.e., plots, tables, values)
+- an answer to the question, "so what?"
