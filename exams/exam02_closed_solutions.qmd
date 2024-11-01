@@ -1,0 +1,412 @@
+---
+title: "Exam 02 Closed Notes"
+subtitle: "DSST 289: Introduction to Data Science"
+echo: false
+format:
+  pdf:
+    number-sections: true
+    header-includes: 
+      - \usepackage{fontspec}
+      - \setmainfont{Atkinson Hyperlegible}
+      - \setsansfont{Atkinson Hyperlegible}
+      - \setmonofont{IBM Plex Mono}
+      - \usepackage{sectsty}
+      - \allsectionsfont{\sffamily}
+      - \usepackage{setspace}
+  html:
+    anchor-sections: true
+    code-tools: true
+    df-print: paged
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+editor:
+  markdown:
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+# Honor
+
+You may only use a pen/pencil and scratch paper on this exam.
+
+> "I pledge that I will neither give nor receive unauthorized assistance during the completion of this work."
+
+\medskip
+
+Name\hrulefill \medskip
+
+Signature\hrulefill \medskip
+
+Section start time\hrulefill \medskip
+
+# Exam
+
+*Please write neatly.*
+
+If you cannot solve a problem, write what you do know about the question to maximize partial credit.
+
+Your code will be graded on its quality, which includes both accuracy and proper formatting.
+
+# Data
+
+We will use tables about music for this exam.
+
+```{r}
+#| message: false
+#| label: tbl-table1
+#| tbl-cap: "R object name: `table1`"
+
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(broom)
+
+table1 <- tibble(
+  artist = c(
+    "Taylor Swift", "Drake", "Adele",
+    "Radiohead", "The Smile"
+  ),
+  song = c(
+    "Blank Space", "Hotline Bling", "Easy On Me",
+    "The National Anthem", "Thin Thing"
+  ),
+  star_rating = c(2, 3, 4, 5, 5)
+)
+
+kable(table1)
+```
+
+```{r}
+#| label: tbl-table2
+#| tbl-cap: "R object name: `table2`"
+
+
+table2 <- tibble(
+  artist = c(
+    "Taylor Swift", "Drake", "Adele",
+    "Radiohead", "The Smile"
+  ),
+  lead_performer = c(
+    "Taylor Swift", "Drake", "Adele",
+    "Thom Yorke", "Thom Yorke"
+  ),
+  genre = c("Pop", "Hip-Hop", "Pop", "Rock", "Rock")
+)
+
+kable(table2)
+```
+
+```{r}
+#| label: tbl-table3
+#| tbl-cap: "R object name: `table3`"
+
+table3 <- tibble(
+  artist = c("Taylor Swift", "Drake", "Adele"),
+  song = c("Blank Space", "Hotline Bling", "Easy On Me"),
+  streams_2015 = c(500, 700, NA),
+  streams_2024 = c(600, 900, 1000)
+)
+
+kable(table3)
+```
+
+```{r}
+#| label: tbl-table4
+#| tbl-cap: "R object name: `table4`"
+
+table4 <- tibble(
+  lead_performer = c(
+    "Taylor Swift", "Drake", "Adele", "Thom Yorke"
+  ),
+  birth_country = c(
+    "United States", "Canada", "England", "England"
+  )
+)
+
+kable(table4)
+```
+
+\pagebreak
+
+```{r}
+#| label: tbl-table5
+#| tbl-cap: "R object name: `table5`"
+
+table5 <- tibble(
+  id = c(13, "Drizzy", 1988, 15),
+  mUSICAL_aRTIST = c("TSwift", "Drake (Aubrey Drake Graham)", "Adele (born 1988)", "Radiohead and also The Smile"),
+  BILLBOARDno1YEARSsince2018 = list(
+    c(2020, 2022, 2023, 2024),
+    c(2018, 2020),
+    c(2021),
+    "No number one hits"
+  ),
+  gEnRe = c("pop", "hip-Hop", "Pop", "Rock'n'roll")
+)
+
+kable(table5) |>
+  kable_styling(bootstrap_options = "striped") |>
+  row_spec(2, background = "#fde725") |>
+  row_spec(3, background = "#a0da39") |>
+  row_spec(4, background = "#4ac16d")
+```
+
+```{r}
+#| label: tbl-table6
+#| tbl-cap: "R object name: `table6`"
+
+
+table6 <- tibble(
+  song = c(
+    "Blank Space", "Hotline Bling", "Easy On Me",
+    "The National Anthem", "Thin Thing"
+  ),
+  minutes = c(3, 4, 3, 5, 4),
+  seconds = c(51, 27, 44, 51, 30)
+)
+
+kable(table6)
+```
+
+
+# Questions
+
+## Write input
+
+Write code to reproduce the table below using the tables defined in the Data section:
+
+```{r}
+table2 |>
+  left_join(table1, by = "artist")
+```
+
+\pagebreak
+
+## Draw output
+
+Draw the output of the following code chunk:
+
+```{r}
+#| echo: true
+#| eval: false
+
+table3 |>
+  pivot_longer(
+    cols = starts_with("streams_"),
+    names_to = "year",
+    names_prefix = "streams_",
+    names_transform = as.integer,
+    values_to = "streams"
+  )
+```
+
+\vspace*{0.2\textheight}
+
+## Songs by English people
+
+Write code to reproduce the table below using the tables defined in the Data section:
+
+```{r}
+table1 |>
+  left_join(table2 |> select(artist, lead_performer), by = "artist") |>
+  left_join(table4, by = "lead_performer") |>
+  filter(birth_country == "England")
+```
+
+\pagebreak
+
+## Tidy up @tbl-table5
+
+Name tidy data principles that @tbl-table5 violates and how to fix them.
+
+\vspace*{0.3\textheight}
+
+## Similar joins
+
+Draw the output of the following code chunks.
+
+```{r}
+#| eval: false
+#| echo: true
+
+table1 |>
+  inner_join(table3, by = c("artist", "song"))
+```
+
+\vspace*{0.2\textheight}
+
+```{r}
+#| eval: false
+#| echo: true
+
+table1 |>
+  semi_join(table3, by = c("artist", "song"))
+```
+
+\pagebreak
+
+## Song length
+
+Fill in the blanks in the code below such that it produces the following table.
+
+Rewrite the code in the blank part of the page if need be.
+
+*Nota bene*: The number of blanks does *not* necessarily correspond to the number of characters in the blanked out field.
+
+- `length` gives the length of the song in seconds.
+- `long_song` indicates whether the song is more than four minutes long.
+
+```r
+________ |> 
+  ______join(________, by = __________) |>
+  ______(
+    length = ________________________________,
+    long_song = if_else(_____________________________)
+  ) |> 
+  ______(______, _____, ___________, long_song)
+```
+
+```{r}
+table1 |>
+  left_join(table6, by = "song") |>
+  mutate(
+    length = minutes * 60 + seconds,
+    long_song = if_else(length > 240, TRUE, FALSE)
+  ) |>
+  select(artist, song, length, long_song)
+```
+
+\pagebreak
+
+## Principles of data feminism
+
+Fill in the blanks in the following statements.
+
+*Nota bene*: If you write statements that are similar to those that have been blanked out, you can still receive substantial credit.
+
+\setstretch{2}
+:::{.callout-note title="Principles of data feminism"}
+> "The starting point for data feminism is something that goes mostly unacknowledged in data science: _____________________________ is not distributed equally in the world."
+
+> **Principles of data feminism**
+
+> 1. Use data to create\hrulefill
+
+> 2. Recognize that data is\hrulefill
+
+> 3. Make \underline{\hspace{2in}} visible
+:::
+\setstretch{1}
+
+\pagebreak
+
+## Normalize @tbl-table2
+
+Draw tables demonstrating how to normalize @tbl-table2 to the highest available normal form.
+
+```{r}
+#| eval: false
+performers <- tibble(
+  performer_id = 1:4,
+  lead_performer = c("Taylor Swift", "Drake", "Adele", "Thom Yorke")
+)
+
+performers
+
+genres <- tibble(
+  genre_id = 1:3,
+  genre = c("Pop", "Hip-Hop", "Rock")
+)
+
+genres
+
+artists <- tibble(
+  artist_id = 1:5,
+  artist = c(
+    "Taylor Swift", "Drake", "Adele",
+    "Radiohead", "The Smile"
+  ),
+  performer_id = c(1, 2, 3, 4, 4),
+  genre_id = c(1, 2, 1, 3, 3)
+)
+
+artists
+```
+
+\pagebreak
+
+## Interpret trends
+
+Interpret the trends in the faceted plot below. How do the trends differ by genre? What do these trends suggest about the past and future of these genres? Why do you think these values differ in the ways that they do?
+
+```{r}
+#| message: false
+
+set.seed(1)
+
+years <- 2010:2023
+
+streaming_data <- tibble(
+  year = rep(years, 2),
+  genre = rep(c("Rock", "Hip-Hop"), each = length(years)),
+  streams = case_when(
+    genre == "Rock" ~ pmax(13, 18 + 0.1 * (year - 2000) +
+      rnorm(length(years), 0, 0.5)),
+    genre == "Hip-Hop" ~ pmax(8, 12 + 0.4 * (year - 2000) +
+      rnorm(length(years), 0, 1))
+  )
+)
+
+streaming_data |>
+  ggplot(aes(year, streams)) +
+  geom_point(aes(shape = genre)) +
+  geom_smooth(
+    method = "lm",
+    se = FALSE,
+    linetype = "dashed",
+    color = "black"
+  ) +
+  facet_wrap(~genre) +
+  labs(
+    x = "Year", y = "Streams (trillions)",
+    title = "Music streams per year by genre",
+    shape = "Genre"
+  ) +
+  # reduce x axis labels
+  scale_x_continuous(breaks = seq(2010, 2023, 10)) +
+  scale_color_viridis_d() +
+  theme_minimal()
+```
+
+\pagebreak
+
+## Interpret `tidy()`
+
+The following tables contain the output of `tidy()` for the linear models shown above.
+
+**Hip-hop:**
+
+```{r}
+streaming_data %>%
+  filter(genre == "Hip-Hop") %>%
+  lm(streams ~ year, data = .) %>%
+  tidy()
+```
+
+**Rock:**
+
+```{r}
+streaming_data %>%
+  filter(genre == "Rock") %>%
+  lm(streams ~ year, data = .) %>%
+  tidy()
+```
+
+1. Explain what the `estimate` for the `term` `year` means in each table. How and why do they differ?
+
+2. Both estimates for the `term` `year` are positive. Which real-world phenomena about music streaming might explain this? Identify at least two possibilities.
