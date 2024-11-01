@@ -1,0 +1,713 @@
+---
+title: "Notebook 15"
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: true
+format:
+  html:
+    anchor-sections: true
+    code-tools: false
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+editor:
+  markdown:
+    wrap: 72
+---
+
+## Getting Started
+
+1. Click **Session > Clear Workspace...**
+2. Click **Session > Restart R**
+3. Run the following code chunk:
+
+```{r}
+#| message: false
+library(ggrepel)
+library(hms)
+library(tidyverse)
+theme_set(theme_classic())
+```
+
+## Structure
+
+This notebook has three parts:
+
+- A quick warm-up with a tiny dataset about *Spider-Man* characters
+- A review with a big dataset about *Peanuts* comics
+- An **optional** review of tidy models with more data from *What We Eat in America*
+
+## *Spider-Man* character sightings
+
+We are going to be working with a bigger dataset later in this notebook, so we're going to start by practicing with a small one that we can see at one view.
+
+### Data
+
+The following dataset imagines sightings of characters from *Spider-Man* at specific times and places in New York City: 
+
+```{r}
+#| echo: false
+
+sightings <- tibble(
+  character = c(
+    "Spider-Man", "Mary Jane Watson", "Green Goblin", "Spider-Man",
+    "Doctor Octopus", "Gwen Stacy", "Venom", "Mysterio",
+    "Sandman", "Spider-Man"
+  ),
+  datetime = as_datetime(paste(
+    c(
+      "2023-10-25", "2023-10-25", "2023-10-25", "2023-10-25",
+      "2023-10-26", "2023-10-26", "2023-10-26", "2023-10-26",
+      "2023-10-27", "2023-10-27"
+    ),
+    c(
+      "08:30:00", "08:30:00", "14:45:00", "14:45:00",
+      "09:00:00", "09:00:00", "14:00:00", "14:00:00",
+      "10:15:00", "10:15:00"
+    )
+  )),
+  location = c(
+    "Queens", "Central Park", "Times Square", "Queens",
+    "Brooklyn Bridge", "Empire State Building", "Harlem",
+    "Staten Island Ferry", "Coney Island", "Queens"
+  )
+)
+
+sightings
+```
+
+### Extracting components from `datetime`
+
+Overwrite the `sightings` dataset with a new version that adds columns for year, month, day, and weekday. Use abbreviated names (*not* numbers) for month and weekday.
+
+```{r, question-01}
+sightings <- sightings |>
+  mutate(
+    year = year(datetime),
+    month = month(datetime, label = TRUE, abbr = TRUE),
+    day = day(datetime),
+    wday = wday(datetime, label = TRUE, abbr = TRUE)
+  )
+
+sightings
+```
+
+### Plotting Sightings by Day of the Week
+
+Create a bar plot showing the number of sightings per day of the week.
+
+```{r, question-02}
+sightings |>
+  count(wday) |>
+  ggplot(aes(wday, n)) +
+  geom_col()
+```
+
+### Character Sightings Over Time
+
+Using the `datetime` column, plot when each character was observed over time. Set your date breaks and your date labels like so:
+
+```r
+...(
+    date_breaks = "12 hours",
+    date_labels = "%b %d %H:%M"
+  )
+```
+
+```{r, question-03}
+sightings |>
+  ggplot(aes(datetime, character)) +
+  geom_point() +
+  scale_x_datetime(
+    date_breaks = "12 hours",
+    date_labels = "%b %d %H:%M"
+  )
+```
+
+### Filter sightings within a window
+
+Filter the table to only show sightings that occurred between 2 and 3pm.
+
+```{r, question-04}
+sightings |>
+  mutate(hour = hour(datetime)) |>
+  filter(between(x = hour, left = 14, right = 15))
+```
+
+### Plot sightings on a day
+
+Plot sightings by character on **October 25, 2023**.
+
+```{r, question-05}
+sightings |>
+  filter(date(datetime) == as_date("2023-10-25")) |>
+  ggplot(aes(datetime, character)) +
+  geom_point()
+```
+
+### Format Date-Time Axes
+
+Plot every character sighting over time. Format the x-axis of your plot to show hours and minutes in 6 hour intervals. Color the points of your plot by the weekday of the sighting.
+
+```{r, question-06}
+sightings |>
+  ggplot(aes(datetime, character, color = wday)) +
+  geom_point(size = 3) +
+  scale_x_datetime(
+    date_breaks = "6 hours",
+    date_labels = "%H:%M"
+  )
+```
+
+### Sightings by Location
+
+Make a bar plot showing the number of sightings at each location.
+
+```{r, question-07}
+sightings |>
+  count(location) |>
+  arrange(n) |>
+  ggplot(aes(n, fct_inorder(location))) +
+  geom_col()
+```
+
+### Plotting Sightings Throughout the Day
+
+Extract the time from the `datetime` column and plot the number of sightings at each time.
+
+If you set the time as your `x` in `aes()`, you can use `geom_histogram` to plot the number of sightings at each time. The following line will reproduce the values you see in the output, but you should play with a few different values for `bins` to see its effect:
+
+```r
+geom_histogram(bins = 8)
+```
+
+```{r, question-08}
+sightings |>
+  mutate(time = as_hms(datetime)) |>
+  ggplot(aes(time)) +
+  geom_histogram(bins = 8)
+```
+
+## *Peanuts*
+
+Now, we are going to look at a dataset describing the long-running comic
+series *Peanuts*, based on research by Taylor Arnold, Lauren Tilton, and Justin Wigard.
+
+The essay based on this research was [published](https://doi.org/10.22148/001c.87560) in 2023.
+
+We have one table with one row for each Peanuts comics. The last two columns
+describe the size of the scanned image of the comic in pixels.
+
+```{r}
+comics <- read_csv("../data/comics_meta.csv.bz2")
+comics
+```
+
+We have another dataset that was automatically generated using a computer vision
+algorithm. This one describes all of the panels that were detected in each
+comic strip.
+
+```{r}
+panels <- read_csv("../data/comics_panels.csv.bz2")
+panels
+```
+
+Finally, we have another automatically created datset of comic captions. These
+describe all of the locations in the comic where the computer vision algorithm
+detected text.
+
+```{r}
+captions <- read_csv("../data/comics_captions.csv.bz2")
+captions
+```
+
+### Understanding the data
+
+To start, take the `comics` data, filter to just include the single comic whose
+`image_path` is "8178d1c0fbb20130177f001dd8b71c47.jpg", and inner join it to the
+`panels` data. This will show all of the detected panels for this one comic,
+of which there should be 10.
+
+```{r, question-09}
+comics |>
+  filter(image_path == "8178d1c0fbb20130177f001dd8b71c47.jpg") |>
+  inner_join(panels, by = "image_path")
+```
+
+Now, let's visualize these panels. Starting with the data you created in the
+previous code chunk, create a plot using a [`geom_rect`](https://ggplot2.tidyverse.org/reference/geom_tile.html) layer. `geom_rect` is a layer for drawing rectangles on a plot given x and y coordinates.
+
+This layer  requires the aesthetics `xmin`, `xmax`, `ymin`, and `ymax`; these can be set the corresponding names in the data. Set the color of the rectangles to "blue"
+and the alpha to 0.
+
+```{r, question-10}
+comics |>
+  filter(image_path == "8178d1c0fbb20130177f001dd8b71c47.jpg") |>
+  inner_join(panels, by = "image_path") |>
+  ggplot() +
+  geom_rect(
+    aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
+    color = "blue",
+    alpha = 0
+  )
+```
+
+The plot above should show the layout of the comic. Let's check the output and
+our understanding of the data. Open the following link in a browser to see the
+actual comic image:
+
+  <https://assets.amuniversal.com/8178d1c0fbb20130177f001dd8b71c47.jpg>
+
+Let's take a look at the captions. In the block below, starting with your
+code from the previous question, inner join the `captions` data and add a
+`geom_point` layer showing the `xmid` and `ymid` of the captions. Go back to
+the comic to verify that these roughly match the text in the image.
+
+```{r, question-11}
+comics |>
+  filter(image_path == "8178d1c0fbb20130177f001dd8b71c47.jpg") |>
+  inner_join(panels, by = "image_path") |>
+  inner_join(captions, by = "image_path") |>
+  ggplot() +
+  geom_rect(
+    aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
+    color = "blue",
+    alpha = 0
+  ) +
+  geom_point(aes(xmid, ymid))
+```
+
+Finally, modify your previous plot by adding a
+`geom_text` layer that labels each panel with its `panel_id`. Set the position
+of the labels as follows:
+
+```r
+geom_text(
+    aes(
+      x = (xmin + xmax) / 2,
+      y = (ymin + ymax) / 2,
+      ...
+```
+
+This will position the labels in the center of each panel, and should verify that
+`panel_id` correctly corresponds to the reading order of *Peanuts* panels.
+
+```{r, question-12}
+comics |>
+  filter(image_path == "8178d1c0fbb20130177f001dd8b71c47.jpg") |>
+  inner_join(panels, by = "image_path") |>
+  inner_join(captions, by = "image_path") |>
+  ggplot() +
+  geom_rect(
+    aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
+    color = "blue",
+    alpha = 0
+  ) +
+  geom_point(aes(xmid, ymid)) +
+  geom_text(
+    aes(
+      x = (xmin + xmax) / 2,
+      y = (ymin + ymax) / 2,
+      label = panel_id
+    )
+  )
+```
+
+Now that we understand how the data describes a single comic, let's look at the
+collection as a whole.
+
+### Working with Dates
+
+Here is code to compute the total number of panels in each comic:
+
+```{r}
+panels_total <- panels |>
+  count(image_path)
+panels_total
+```
+
+For the next question, inner join the `panels_total` data to the `comics` data and
+compute the day of the week of the comic. Set `label = TRUE` to see the weekday
+names. Summarize the data to determine the average number of panels for each
+day of the week.
+
+```{r, question-13}
+panels_total |>
+  inner_join(comics, by = "image_path") |>
+  mutate(wday = wday(date, label = TRUE)) |>
+  group_by(wday) |>
+  summarize(n = mean(n))
+```
+
+You should see that most days are indistinguishable, except
+for Sunday, which is much longer.
+
+Now, draw a plot with one point for each comic from the year 1995. For each
+point, set the x-aesthetic to be the date and the y-aesthetic to by the number
+of panels. Color the points by the day of the week.
+
+```{r, question-14}
+panels_total |>
+  inner_join(comics, by = "image_path") |>
+  mutate(wday = wday(date, label = TRUE)) |>
+  filter(year(date) == 1995) |>
+  ggplot(aes(date, n)) +
+  geom_point(aes(color = wday))
+```
+
+In the code block below, modify your previous plot to have one label on the
+x-axis for each month and make the label equal to the month abbreviation.
+
+```{r, question-15}
+panels_total |>
+  inner_join(comics, by = "image_path") |>
+  mutate(wday = wday(date, label = TRUE)) |>
+  filter(year(date) == 1995) |>
+  ggplot(aes(date, n)) +
+  geom_point(aes(color = wday)) +
+  scale_x_date(
+    breaks = "1 month",
+    date_labels = "%b",
+    minor_breaks = "1 month"
+  )
+```
+
+### Last Panel Captions
+
+In this last section, we will look at one of the research questions in the essay.
+
+Usually, the punchline of a comic comes in the last panel.
+This can be a verbal punchline, but can also be a punchline described through
+the visual message. We'd like to understand when and how often the final panel
+contains a caption in order to understand how often each type of punchline
+gets used.
+
+To start, two hints:
+
+1. The following code (a rare grouped filter) returns all of the final panels in the data
+
+```{r}
+panels |>
+  group_by(image_path) |>
+  filter(panel_id == max(panel_id)) |>
+  ungroup()
+```
+
+2. The following summary function, when applied groupwise to `image_path`, will tell us what proportion of final panels contain some caption
+in them. This is a bit complicated because we need to ignore "captions" at the
+bottom of the final panel, because this is often where the date or creator's
+signature appears.
+
+```r
+summarize(
+  last_caption = 100 * as.numeric(any((xmid >= xmin & xmid <= xmax) &
+    (ymid >= (ymin * 0.3 + ymax * 0.7) &
+      ymid <= ymax)))
+)
+```
+
+Using the two hints provided, create a two-column dataset with one row for each comic. Add a column `last_caption` that equals 100 if the final panel contains a caption (excluding signatures or dates at the bottom) and 0 if it does not.
+
+```{r, question-16}
+panels |>
+  group_by(image_path) |>
+  filter(panel_id == max(panel_id)) |>
+  ungroup() |>
+  inner_join(captions, by = "image_path") |>
+  group_by(image_path) |>
+  summarize(
+    last_caption = 100 * as.numeric(any((xmid >= xmin & xmid <= xmax) &
+      (ymid >= (ymin * 0.3 + ymax * 0.7) &
+        ymid <= ymax)))
+  )
+```
+
+Modify your code from before to group the data by 
+the `panel_id` and compute the percentage of comics that have a caption
+in the final panel based on the total number of panels, which you can do by taking the mean of `last_caption`. Create a bar plot to
+visualize the relationship.
+
+```{r, question-17}
+panels |>
+  group_by(image_path) |>
+  filter(panel_id == max(panel_id)) |>
+  ungroup() |>
+  inner_join(captions, by = "image_path") |>
+  group_by(panel_id, image_path) |>
+  summarize(
+    last_caption = 100 * as.numeric(any((xmid >= xmin & xmid <= xmax) &
+      (ymid >= (ymin * 0.3 + ymax * 0.7) &
+        ymid <= ymax)))
+  ) |>
+  summarize(mu = mean(last_caption)) |>
+  ggplot(aes(panel_id, mu)) +
+  geom_col() +
+  labs(
+    x = "Total Number of Panels",
+    y = "Percentage with Caption in Final Panel"
+  )
+```
+
+Using your dataset that indicates whether each comic has a caption in the final panel (`last_caption`), join it with the comics data to get the dates. Then, calculate the percentage of comics with a caption in the final panel for each year. Finally, plot this percentage over time, with the year on the x-axis.
+
+```{r, question-18}
+panels |>
+  group_by(image_path) |>
+  filter(panel_id == max(panel_id)) |>
+  ungroup() |>
+  inner_join(captions, by = "image_path") |>
+  group_by(image_path) |>
+  summarize(
+    last_caption = 100 * as.numeric(any((xmid >= xmin & xmid <= xmax) &
+      (ymid >= (ymin * 0.3 + ymax * 0.7) &
+        ymid <= ymax)))
+  ) |>
+  inner_join(comics, by = "image_path") |>
+  mutate(year = year(date)) |>
+  group_by(year) |>
+  summarize(mu = mean(last_caption)) |>
+  ggplot(aes(year, mu)) +
+  geom_point() +
+  labs(
+    x = "Year",
+    y = "Percentage of Comics with Caption in Final Panel"
+  )
+```
+
+## **OPTIONAL** What We Eat in America
+
+Here, we will continue to look at the *What We Eat in America* dataset. We can
+read the tables in with the following:
+
+```{r}
+food <- read_csv("../data/wweia_food.csv.bz2")
+demo <- read_csv("../data/wweia_demo.csv.bz2")
+meta <- read_csv("../data/wweia_meta.csv.bz2")
+```
+
+We will do some more practice joining and reorganizing the food data, this type
+using more of the `meta` table, which we have not yet looked at.
+
+## Food Groups: Calories, Sugar, and Fat
+
+To start, create a dataset that shows the average number of calories that each
+participants consumes based on the `food_group` of the food item. The food group
+can be found in the `meta` table. Note that the easiest way to do this is to
+take the sum of the variable `kcal` and divide by `nrow(demo)` (the number of
+people).
+
+```{r, question-19}
+food |>
+  left_join(meta, by = "food_code") |>
+  group_by(food_group) |>
+  summarize(kcal = sum(kcal) / nrow(demo)) |>
+  arrange(desc(kcal))
+```
+
+Now, create a scatterplot with one dot for each food group. The x-coordinate 
+should correspond to the average number of calories participants consume from
+this group and the y-coordinate should be the average grams of sugar each 
+participant consumes from the food group. Add a text repel layer with the
+food group names.
+
+```{r, question-20}
+food |>
+  left_join(meta, by = "food_code") |>
+  group_by(food_group) |>
+  summarize(kcal = sum(kcal) / nrow(demo), sugar = sum(sugar) / nrow(demo)) |>
+  ggplot(aes(kcal, sugar)) +
+  geom_point() +
+  geom_text_repel(aes(label = food_group))
+```
+
+Below, add a linear regression line to your plot from the previous question.
+Do this using the `lm` and `augment` functions. Do not use `geom_smooth`.
+Take note of any outliers.
+
+```{r, question-21}
+temp <- food |>
+  left_join(meta, by = "food_code") |>
+  group_by(food_group) |>
+  summarize(kcal = sum(kcal) / nrow(demo), sugar = sum(sugar) / nrow(demo))
+
+model <- lm(sugar ~ kcal, data = temp)
+
+augment(model, newdata = temp) |>
+  ggplot(aes(kcal, sugar)) +
+  geom_point() +
+  geom_text_repel(aes(label = food_group)) +
+  geom_line(aes(y = .fitted), color = "red", linetype = "dashed")
+```
+
+In the next block of code, repeat the previous question but this time use the
+average amount of fat in place of the average amount of sugar.
+
+```{r, question-22}
+temp <- food |>
+  left_join(meta, by = "food_code") |>
+  group_by(food_group) |>
+  summarize(kcal = sum(kcal) / nrow(demo), fat = sum(fat) / nrow(demo))
+
+model <- lm(fat ~ kcal, data = temp)
+
+augment(model, newdata = temp) |>
+  ggplot(aes(kcal, fat)) +
+  geom_point() +
+  geom_text_repel(aes(label = food_group)) +
+  geom_line(aes(y = .fitted), color = "red", linetype = "dashed")
+```
+
+Next, you’ll create a plot that shows the shift in average calorie and fat intake between Female and Male participants for each food group. Instead of using points to represent each food group, you’ll use arrows that start from the average values for female participants and end at the averages for male participants.
+
+This question requires you to create multiple intermediary objects:
+
+	1.	Start by creating two tables, one for female and one for male participants. For each group, calculate the average kcal and fat values by food group.
+	2.	Join those tables by `food_group`.
+	3.	Create a new column representing the difference in calories between male and female calories by food group.
+	4.	Use average kcal and fat for female participants as the starting points for each line segment. Draw lines that end the average kcal and fat for male participants. Map the differences between male and female consumption to color.
+
+```{r, question-23}
+food_female <- food |>
+  left_join(meta, by = "food_code") |>
+  left_join(demo, by = "id") |>
+  filter(gender == "Female") |>
+  group_by(food_group) |>
+  summarize(
+    kcal_Female = sum(kcal) / n(),
+    fat_Female = sum(fat) / n()
+  )
+
+food_male <- food |>
+  left_join(meta, by = "food_code") |>
+  left_join(demo, by = "id") |>
+  filter(gender == "Male") |>
+  group_by(food_group) |>
+  summarize(
+    kcal_Male = sum(kcal) / n(),
+    fat_Male = sum(fat) / n()
+  )
+
+food_combined <- food_female |>
+  inner_join(food_male, by = "food_group") |>
+  mutate(diff_kcal = kcal_Male - kcal_Female)
+
+food_combined |>
+  ggplot(aes(kcal_Female, fat_Female)) +
+  geom_text_repel(aes(label = food_group), color = "grey") +
+  geom_segment(
+    aes(xend = kcal_Male, yend = fat_Male, color = diff_kcal),
+    arrow = arrow(length = unit(0.02, "npc"))
+  ) +
+  scale_color_viridis_c(option = "D") + # Viridis color scale for better contrast
+  theme_minimal() +
+  labs(
+    x = "Calories (Female)",
+    y = "Fat (Female)",
+    color = "Calorie Difference (Male - Female)"
+  )
+```
+
+## Breakfast for Boomers
+
+We have often worked in a single pipeline. But, as the previous question demonstrated, it can be necessary or beneficial to create intermediate objects on the way to an output. We're going to practice that more below.
+
+Our research question: What relationship, if any, exists between the average amount of calories consumed for breakfast within an age group and the average amount of food that was prepared from ingredients bought at a store?
+
+First, create and save a dataset that breaks the ages in the dataset into buckets
+of 5 years each using `cut()`. Then, compute the proportion of all calories within each bucket that
+were consumed at either "Breakfast" or "Desayano" (Spanish for Breakfast). 
+
+:::{.callout-tip}
+You'll probably need a pivot for this.
+:::
+
+```{r, question-24}
+tab1 <- food |>
+  left_join(demo, by = "id") |>
+  mutate(age = cut(
+    age,
+    breaks = seq(0, 80, by = 5),
+    include.lowest = TRUE
+  )) |>
+  group_by(age, meal_name) |>
+  summarize(kcal = sum(kcal)) |>
+  mutate(total_kcal = sum(kcal)) |>
+  pivot_wider(
+    names_from = c(meal_name),
+    values_from = c(kcal),
+    values_fill = 0
+  ) |>
+  mutate(
+    prop_breakfast = ((Breakfast + Desayano) / total_kcal) * 100
+  ) |>
+  select(age, prop_breakfast)
+
+tab1
+```
+
+In the code block below, create a similar table, but this time we want to
+compute the proportion of calories consumed from items bought at a Store. The
+names for the `food_source` variable are fairly messy; so as a first step, use
+the following `mutate` function to take just the first 5 characters of the food source name:
+
+```r
+mutate(food_source = str_sub(food_source, 1, 5)) |>
+```
+
+Then, the rest of the code should be similar to the answer above.
+
+```{r, question-25}
+tab2 <- food |>
+  mutate(food_source = str_sub(food_source, 1, 5)) |>
+  left_join(demo, by = "id") |>
+  mutate(age = cut(
+    age,
+    breaks = seq(0, 80, by = 5),
+    include.lowest = TRUE
+  )) |>
+  group_by(age, food_source) |>
+  summarize(kcal = sum(kcal)) |>
+  mutate(total_kcal = sum(kcal)) |>
+  pivot_wider(
+    names_from = c(food_source),
+    values_from = c(kcal), values_fill = 0
+  ) |>
+  mutate(prop_store = 100 * (Store) / total_kcal) |>
+  select(age, prop_store)
+tab2
+```
+
+Finally, join the two tables you saved from questions 7 and 8 together and plot
+the two proportions on the x- and y-axes. Include labels showing the age
+buckets. Add a linear regression line and label the plot.
+
+You will notice that my output colors the age points by the lower bound of the of the `age` buckets produced by `cut()`. If you want to reproduce that, you can get the lower 
+
+```{r, question-26}
+tab1 |>
+  left_join(tab2, by = "age") |>
+  mutate(
+    age_upper = as.numeric(str_extract(as.character(age), "(?<=,)\\d+"))
+  ) |>
+  ggplot(aes(prop_breakfast, prop_store)) +
+  geom_point(aes(color = age_upper)) +
+  geom_smooth(method = "lm", color = "red", linetype = "dashed") +
+  geom_text_repel(aes(label = age)) +
+  scale_color_viridis_c() +
+  labs(
+    x = "% of Calories Eaten at Breakfast",
+    y = "% of Calories Eaten from Grocery Store Items",
+    title = "Relationship Between Age Group Breakfast and Cooking Behaviors",
+    color = "Age Group",
+    subtitle = "Boomers have enough time and money to both eat breakfast and healthy homecooked meals",
+    caption = "Source: What We Eat in America, 2022."
+  )
+```

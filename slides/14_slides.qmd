@@ -15,18 +15,20 @@ editor_options:
     wrap: 72
 ---
 
-# DSST 289 Tutors
+# DSST 289 and quantitative resource center
 
 ## The QRC in the WLC
 
 The [Quantitative Resource Center](https://provost.richmond.edu/academic-initiatives/qrc.html) will be offering tutoring for DSST 289 starting ⏰ **today** and continuing throughout the rest of the semester.
 
-## Schedule
+Obviously, tutors *cannot* help directly with answer questions on the take-home exam. But they can help you review, understand, or practice concepts that may appear on the exam.
 
-- *What*: DSST 289 tutoring
+## QRC Schedule
+
+- *What*: DSST 289 support
 - *Where*: Adams Auditorium (on the second floor of Boatwright Library)
-- *When*: Every Wednesday until Dec. 4 from 7 to 10pm
-- *Who*: Kritim Rijal and Danna Aguilar, both of whom have previously taken DSST 289
+- *When*: Every Wednesday from today until Dec. 4, 7 to 10pm
+- *Who*: Kritim Rijal and Danna Aguilar
 - *Why*: Prepare for exams, solve notebooks, work on final projects
 
 # Open notes (take-home)
@@ -62,12 +64,12 @@ The [Quantitative Resource Center](https://provost.richmond.edu/academic-initiat
 -	Adding columns with joins
 - Filtering with joins
 -	Reshaping data with pivots
--	Plotting data with *multiple* plot layers
--	Getting distinct values
+-	Plotting data with multiple plot layers
+-	Getting unique values
 
 ## Concepts
 
--	Grouped vs. ungrouped operations
+-	Grouped operations
 - Long vs. wide data
 - Joins vs. filter joins
 - `ggplot2` layers
@@ -78,32 +80,50 @@ The [Quantitative Resource Center](https://provost.richmond.edu/academic-initiat
 
 ## Functions
 
-- `pivot_longer()`
-- `semi_join()`
+- `filter()`
+- `geom_point()`
+- `geom_smooth()`
 - `if_else()`
+- `inner_join()`
+- `labs()`
+- `left_join()`
+- `lm()`
+- `mutate()`
+- `names_prefix()`
+- `names_to()`
+- `names_transform()`
+- `pivot_longer()`
+- `round()`
+- `scale_color_viridis_d()`
+- `select()`
+- `semi_join()`
 - `tidy()`
-- TODO
+- `values_to()`
 
 ## Procedures
 
-- Applying tidy data principles
-- Data normalization to higher normal forms
-- Interpreting regression outputs
-- Calculating new variables
+- Determine inputs based on outputs
+- Determine outputs based on inputs
+- Apply and evaluate tidy data principles
+- Normalize data to higher normal forms
+- Interpret linear regression outputs
+- Calculate new variables
 
 ## Concepts
 
 - Principles of data feminism
 - Normal forms
 - Data dictionaries
+- Linear regression
 
-# Exam tips
+# General exam tips
 
-- Read the questions carefully
-- Review the tables before getting started
-- Don't skip the data dictionaries
+- Read questions carefully
+  - Exam questions are shorter than notebook questions
+- Review tables before getting started
+  - Don't skip data dictionaries
 - If you get stuck, move on, then come back
-  - (Later questions may contain pieces that will help with earlier questions)
+  - Later questions may contain information that will help with earlier questions
 
 # Tidy data review
 
@@ -118,13 +138,30 @@ The [Quantitative Resource Center](https://provost.richmond.edu/academic-initiat
 ## Tables
 
 - Tables contain comparable observations
-- Don't be scared to make another table
+  - Make another table when observations are not directly comparable
 - Manually created tables begin from cell A1, have a header row, and are rectangular
 
 ## Explicitness
 
 - Choices made in data collection should be explicit and documented
-  - Data dictionaries document those choices and assumptions
+- Data dictionaries document choices and assumptions encoded in variable names and values
+
+## Example 1
+
+| work_group | work_1_title     | work_1_artist       | work_1_museum | work_2_title    | work_2_artist     | work_2_museum | artist_1_nationality | artist_2_nationality |
+|------------|------------------|---------------------|---------------|-----------------|-------------------|---------------|----------------------|----------------------|
+| Group A    | The Starry Night  | Vincent van Gogh    | MoMA          | The Child's Bath| Mary Cassatt      | Art Institute | Dutch                | American             |
+| Group B    | Water Lilies      | Claude Monet        | Musée d'Orsay | The Frame       | Frida Kahlo       | MoMA          | French               | Mexican              |
+| Total      | 2 works in A      | -                   | -             | 2 works in B    | -                 | -             | 2 nationalities      | 2 nationalities      |
+
+## Example 2
+
+| work_id | title            | artist            | museum         | artist_nationality |
+|---------|------------------|-------------------|----------------|--------------------|
+| 1       | *The Starry Night*  | Vincent van Gogh  | MoMA           | Dutch              |
+| 2       | *The Child's Bath*  | Mary Cassatt      | Art Institute of Chicago  | American           |
+| 3       | *Water Lilies*      | Claude Monet      | Art Institute of Chicago  | French             |
+| 4       | *The Frame*         | Frida Kahlo       | Musée National d'Art Moderne           | Mexican            |
 
 # *Data Feminism* review
 
@@ -135,6 +172,11 @@ The [Quantitative Resource Center](https://provost.richmond.edu/academic-initiat
 
 Catherine D’Ignazio and Lauren F. Klein. *Data Feminism*. Strong Ideas Series. Cambridge, Massachusetts: The MIT Press, 2020, 8-9.
 :::
+
+## Big questions
+
+- How do power structures influence the creation and analysis of data?
+- Can data produced under unjust conditions be used to create a more just and equitable society?
 
 ## Principles of data feminism
 
@@ -149,11 +191,10 @@ Catherine D’Ignazio and Lauren F. Klein. *Data Feminism*. Strong Ideas Series.
 - One of the most common tasks in data science is **joining** data from two or more datasets.
 - To do this, we need to identify a **key** common between the datasets.
 - A **key** uniquely identifies an observation.
-  - Sometimes you need multiple columns to constitute a key.
+  - Sometimes you need *multiple* columns to constitute a key
+  - e.g., `year` and `tournament` for annual competitions
 
-## Tables
-
-`works`:
+## Predict output: `left_join`
 
 ```{r}
 #| echo: false
@@ -174,11 +215,7 @@ works <- tibble(
   ),
   museum_id = c(102, 104, 104, 103)
 )
-
-works
 ```
-
-`museums`:
 
 ```{r}
 #| echo: false
@@ -188,11 +225,12 @@ museums <- tibble(
   city = c("New York", "New York", "Paris", "Chicago"),
   country = c("USA", "USA", "France", "USA")
 )
-
-museums
 ```
 
-## Predict output: `left_join`
+```{r}
+works
+museums
+```
 
 ```{r}
 #| output-location: slide
@@ -201,19 +239,26 @@ museums |>
   select(museum_name, title)
 ```
 
-## Determine input 1
+## Determine input
 
-Let's plan which works to see while visiting a city:
+```{r}
+works
+museums
+```
+
+What code produced the table below?
 
 ```{r}
 #| echo: false
 
 museums |>
-  inner_join(works, by = "museum_id") |>
-  select(city, title, artist)
+  inner_join(works, by = "museum_id")
+  # select(city, title, artist)
 ```
 
-## Determine input 2
+## Input
+
+Has to be `inner_join` because there is no row for The Met.
 
 ```{r}
 museums |>
@@ -242,12 +287,27 @@ museums |>
   anti_join(works, by = "museum_id")
 ```
 
+## Joins
+
+- **left_join**: Keeps all rows from the left table, adds matching rows from the right table.
+- **right_join**: Keeps all rows from the right table, adds matching rows from the left table.
+- **inner_join**: Keeps only rows that have matches in both tables.
+- **full_join**: Keeps all rows from both tables, fills with NA where there's no match.
+
+## Filter joins
+
+- **semi_join**: Keeps all rows from the left table where there are matching values in the right table.
+- **anti_join**: Keeps all rows from the left table where there are **no** matching values in the right table.
+  - Neither filter join adds columns from the right table to the result.
+
 # Pivoting
 
 ## Why pivot?
 
-- "Wild" data often needs to be reshaped.
-- Sometimes tidy data needs to be pivoted for certain kinds of analysis or visualization.
+- "Wild-caught" data often needs to be reshaped.
+- Sometimes tidy data needs to be pivoted to...
+  - simplify certain analyses
+  - make certain visualizations possible
 
 ## Predict output: `pivot_longer` of artwork `dimensions`
 
@@ -277,7 +337,7 @@ dimensions |>
 
 ```{r}
 #| output-location: slide
-#| code-line-numbers: "7|8|9-12|14"
+#| code-line-numbers: "7|8-11|13|15-16"
 dimensions |>
   pivot_longer(
     cols = c(height, width, depth),
@@ -285,19 +345,21 @@ dimensions |>
     values_to = "value"
   ) |>
   left_join(works, by = "work_id") |>
-  filter(dimension != "depth") |>
   ggplot(aes(
     x = title, y = value,
     fill = dimension, group = dimension
   )) +
   geom_col() +
   facet_wrap(~dimension) +
-  scale_fill_viridis_d()
+  scale_fill_viridis_d() +
+  # tilt names on x-axis:
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 ## Determine input
 
-`appraisals` data:
+Artwork `appraisals` data:
+
 ```{r}
 #| echo: false
 appraisals <- tibble(
@@ -340,7 +402,9 @@ appraisals |>
   )
 ```
 
-## Tidy models
+# Tidy models
+
+## Data to model: `auction_bids` on *The Starry Night*
 
 ```{r}
 #| echo: false
@@ -351,10 +415,14 @@ set.seed(1)
 total_bids <- 50
 
 # Initial bid starting point
-starting_bid <- 10000000
+starting_bid <- 100
 
 # Generate normally distributed bid increments for each bidder
-bid_increments <- abs(rnorm(total_bids, mean = 600000, sd = 150000))
+bid_increments <- abs(rnorm(
+  total_bids,
+  mean = 0.5,
+  sd = 1
+))
 
 # Calculate the cumulative bids by adding increments
 bids <- starting_bid + cumsum(bid_increments)
@@ -365,15 +433,15 @@ bidders <- rep(c("Peggy Guggenheim", "David Geffen", "François Pinault"), lengt
 # Create a tibble with bidder names and their respective bids
 auction_bids <- tibble(
   work_id = 1,
-  bid_number= 1:total_bids,
+  bid_number = 1:total_bids,
   bidder = bidders,
   bid = bids
 )
 ```
 
 ```{r}
-auction_bids |> 
-  slice_head(n = 5)
+auction_bids |>
+  slice_sample(n = 5)
 ```
 
 ## Interpreting `lm` model outputs
@@ -381,14 +449,138 @@ auction_bids |>
 ```{r}
 model <- lm(bid ~ bid_number, data = auction_bids)
 
-model |> 
-  tidy() |> 
-  mutate(across(where(is.numeric), ~ round(., 2)) ) |>
+model |>
+  tidy()
+```
+
+- Read tilde (`~`) as "is modeled by."
+- Bid is modeled by bid number.
+- `(Intercept)` estimate predicts the value at which the auction started (bid zero).
+- `bid_number` estimate predicts how much (in millions of dollars) each additional bid adds to the value of the painting
+
+## Plotting with `geom_smooth`
+
+```{r}
+#| output-location: slide
+auction_bids |>
+  ggplot(aes(x = bid_number, y = bid)) +
+  geom_point(aes(color = bidder)) +
+  geom_smooth(
+    method = "lm",
+    se = FALSE,
+    formula = y ~ x,
+    color = "red",
+    linetype = "dashed"
+  ) +
+  scale_color_viridis_d() +
+  labs(
+    title = "Auction bids over time",
+    x = "Bid number",
+    y = "Bid value (millions USD)",
+    color = "Bidder"
+  )
+```
+
+# Data normalization
+
+## Purpose
+
+- Data normalization is a best practice: Ideally, every *fact* in a data set should be stored in one and only one place.
+  - Repeating facts in multiple locations wastes space, increases the chance of error, and makes it harder to update information.
+- **Objective**: Organize data to minimize redundancy and dependency
+- Now that we can `join` and `pivot`, we can benefit from normalization
+
+## Summary of Normal Forms
+
+- **1NF**: Data is organized in a table with each cell holding a single value. Repeated data is allowed. (Similar to tidy data.)
+- **2NF**: Eliminates partial dependencies by ensuring each non-key attribute is fully dependent on the primary key. Data is split into separate tables for different entities.
+- **3NF**: Removes transitive dependencies. Attributes depend only on the primary key, and additional tables are created to represent related data independently.
+
+## Practice
+
+Which aspects of this table should be normalized?
+
+```{r}
+#| echo: false
+needs_norm <- tibble(
+  title = c(
+    "The Starry Night", "The Child's Bath",
+    "Water Lilies", "The Boating Party"
+  ),
+  artist = c(
+    "Vincent van Gogh", "Mary Cassatt",
+    "Claude Monet", "Mary Cassatt"
+  ),
+  location = c(
+    "MoMA", "Art Institute of Chicago",
+    "Art Institute of Chicago", "National Gallery of Art"
+  ),
+  appraisal_2024 = c(200, 10, 100, 20)
+)
+
+needs_norm |> 
   kable()
 ```
 
-- `(Intercept)` predicts the value at which the auction started
-- `bid_number` predicts how much each additional bid adds to the value of the painting
+## Normalization problems with the 2024 appraisal table
 
+- Repeated values
+  - e.g., "Mary Cassatt," "Art Institute of Chicago")
+- Partial dependencies
+  - e.g., "Mary Cassatt" is only partially dependent on "Art Institute of Chicago;" she has other paintings other locations
+- Transitive dependencies
+  - e.g., `location` and `appraisal_2024` have little or no relation to one another
 
-## TODO data normalization
+## Normalized data
+
+**Artworks**
+
+| artwork_id | title             |
+|:-----------|:------------------|
+| 1          | The Starry Night   |
+| 2          | The Child's Bath   |
+| 3          | Water Lilies       |
+| 4          | The Boating Party  |
+
+**Artists**
+
+| artist_id | artist            |
+|:----------|:------------------|
+| 1         | Vincent van Gogh  |
+| 2         | Mary Cassatt      |
+| 3         | Claude Monet      |
+
+**Locations**
+
+| location_id | location                   |
+|:------------|:---------------------------|
+| 1           | MoMA                       |
+| 2           | Art Institute of Chicago   |
+| 3           | National Gallery of Art    |
+
+**Artwork Artist(s)**
+
+| artwork_id | artist_id |
+|:-----------|:----------|
+| 1          | 1         |
+| 2          | 2         |
+| 3          | 3         |
+| 4          | 2         |
+
+**Appraisals**
+
+| artwork_id | year | appraisal |
+|:-----------|-----:|----------:|
+| 1          | 2024 | 200       |
+| 2          | 2024 | 10        |
+| 3          | 2024 | 100       |
+| 4          | 2024 | 20        |
+
+**Artwork Locations**
+
+| artwork_id | location_id |
+|:-----------|:------------|
+| 1          | 1           |
+| 2          | 2           |
+| 3          | 2           |
+| 4          | 3           |

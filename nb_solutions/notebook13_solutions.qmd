@@ -188,7 +188,7 @@ temp |>
   geom_smooth(
     aes(color = gender),
     method = "lm", # i.e., use lm()
-    se = FALSE,
+    se = TRUE,
     formula = y ~ x
   ) +
   scale_color_viridis_d()

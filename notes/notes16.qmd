@@ -1,0 +1,695 @@
+---
+title: "15. Data Cleaning + Dates, Datetimes, and Times"
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: true
+format:
+  html:
+    anchor-sections: true
+    code-tools: false
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+editor:
+  markdown:
+    wrap: 72
+---
+
+## Common cleaning tasks
+
+Now that we are starting to think about final projects, we also need to think about common data cleaning tasks.
+
+Data stored in non-tidy formats sometimes follow what are called "antipatterns."
+
+> 1. The antipattern is a commonly-used process, structure or pattern of action that, despite initially appearing to be an appropriate and effective response to a problem, has more bad consequences than good ones.
+> 2. Another solution exists to the problem the antipattern is attempting to address. This solution is documented, repeatable, and proven to be effective where the antipattern is not.^[[Source](https://en.wikipedia.org/wiki/antipattern#Definition)]
+
+Hopefully your datasets will not have these issues. But if they do, we need to know how to fix them.
+
+## Antipatterns
+
+I include examples below of tables that follow common antipatterns.
+
+### Missing or bad column names
+
+This table is missing a feature name for the first column:
+
+```{r, message=FALSE}
+library(tidyverse)
+theme_set(theme_minimal())
+
+ap <- read_csv("../data/antipattern01.csv")
+ap
+```
+
+If you were to open the file in Excel, you would see that cell A1 has no value at all. R assigns it the name `...1`
+
+We can rename this using the function `rename`:
+
+```{r}
+ap |>
+  rename(name = ...1)
+```
+
+You may have noticed that there are two opaque column names (`ctry`, `pty`). We can `rename` multiple items at once:
+
+```{r}
+ap |>
+  rename(name = ...1, country = ctry, party = pty)
+```
+
+Renaming columns (and other similar transformations) in an R notebook is preferable to changing them manually because it creates a record of what was changed.
+
+### Strings pretending to be numbers
+
+People sometimes represent uncertainty about numbers with strings. For example, if you don't know a person's exact birth year but do know the decade or century, it's not uncommon to see something like this: `195X` or `18??`.
+
+This kind of thing converts the numeric column to a character column, and we lose the ability to do any sort of numerical operations on it.
+
+```{r}
+ap <- read_csv("../data/antipattern02.csv")
+ap
+```
+
+We can fix this by using the [`stringr` package](https://stringr.tidyverse.org/) and a series of mutates to recover the column to a numeric type while building a new `notes` column:
+
+```{r}
+ap |>
+  mutate(
+    notes = str_extract(birth_year, "\\?"),
+    birth_year = str_remove(birth_year, "\\?"),
+    birth_year = as.integer(birth_year)
+  )
+```
+
+:::{.callout-note}
+You will notice that you need to escape the `?` character with two backslashes. In R strings, backslashes need to be escaped, so `\\?` represents a literal `"?"` in the [regular expression](https://en.wikipedia.org/wiki/Regular_expression).
+:::
+
+A similar technique can be used if you have currency signs written into the data:
+
+```{r}
+ap |>
+  mutate(
+    notes = str_extract(birth_year, "\\?"),
+    birth_year = str_remove(birth_year, "\\?"),
+    birth_year = as.integer(birth_year),
+    currency = str_extract(avg_annual_budget, "\\$"),
+    avg_annual_budget = str_remove(avg_annual_budget, "\\$"),
+    avg_annual_budget = as.numeric(avg_annual_budget)
+  )
+```
+
+### Two tables on one sheet
+
+Sometimes people store two tables on one sheet, with either extra rows or columns spacing between them. Here's what that looks like:
+
+```{r, message=FALSE}
+ap <- read_csv("../data/antipattern03.csv")
+ap
+```
+
+If you're having trouble reading this: the first table is identified as `Trial 1` in row 1, column 2, and the second is identified as `Trial 2` in row 10, column 2.
+
+Unfortunately, this is difficult to fix in R. The trick is to use the options `skip` (how many rows to skip) and `n_max` (maximum number of rows to read) to read each table into
+R separately.
+
+Here is the first table:
+
+```{r, message=FALSE}
+ap1 <- read_csv("../data/antipattern03.csv", skip = 1, n_max = 7)
+ap1
+```
+
+And here is the second:
+
+```{r, message=FALSE}
+ap2 <- read_csv("../data/antipattern03.csv", skip = 11, n_max = 7)
+ap2
+```
+
+We can fix the bad variable name, put the tables together, and add the trial information through a pipeline like this:
+
+```{r}
+ap1 |>
+  mutate(trial = 1) |>
+  bind_rows(ap2) |>
+  mutate(trial = if_else(is.na(trial), 2, trial)) |>
+  rename(latin = ...1)
+```
+
+If we wanted to create the even better long-format of the data described in the
+slides, we can add in a pivot and select function as well:
+
+```{r}
+ap1 |>
+  mutate(trial = 1) |>
+  bind_rows(ap2) |>
+  mutate(trial = if_else(is.na(trial), 2, trial)) |>
+  rename(latin = ...1) |>
+  # Pivots, keeping the "latin" and "trial" columns as identifiers
+  pivot_longer(
+    cols = -c(latin, trial),
+    names_to = "greek",
+    values_to = "number"
+  ) |>
+  select(trial, latin, greek, number)
+```
+
+If a sheet contains many individual tables, using this method to read the data into R would be quite time-consuming.
+
+### Hierarchical column names
+
+In this antipattern, multiple rows name each column. Unfortunately, there is not always an easy fix for this. Here is an example:
+
+```{r}
+ap <- read_csv("../data/antipattern04.csv")
+ap
+```
+
+Note that `fall_semester` and `spring_semester` visually group the columns.
+
+Let's read in the data ignoring the first row as a starting point: 
+
+```{r}
+ap_tbl <- read_csv("../data/antipattern04.csv", skip = 1L)
+ap_tbl
+```
+
+We can then pivot the data to get something that might be okay:
+
+```{r}
+ap_tbl <- ap_tbl |>
+  pivot_longer(!student_name, names_to = "course", values_to = "grade")
+
+ap_tbl
+```
+
+Now, let's read in the first row of column names as a separate table:
+
+```{r, message=FALSE}
+ap_head <- read_csv("../data/antipattern04.csv", n_max = 1L)
+ap_head
+```
+
+Some manipulation, now, can turn this into a metadata table telling us when each class was offered:
+
+```{r}
+ap_head <- ap_head |>
+  select(!...1) |>
+  pivot_longer(
+    everything(),
+    names_to = "semester",
+    values_to = "course"
+  ) |>
+  mutate(semester = str_replace(semester, "_semester", "")) |>
+  mutate(
+    semester = if_else(
+      str_sub(semester, 1, 3) == "...", NA_character_, semester
+    )
+  ) |>
+  fill(semester)
+
+ap_head
+```
+
+Finally, this can be joined into the larger dataset to get the long data we wished had been stored in the first place.
+
+```{r}
+ap_tbl |>
+  left_join(ap_head, by = "course")
+```
+
+Note that the technique here only works because there is a unique semester in which each
+class was held. Otherwise we'd need any even more involved technique to get the
+data into the right format.
+
+### Multiple values per cell
+
+While you never want your data to look like this when analyzing it, sometimes putting more than one thing in a value separated by a common marker is actually an easy way to do
+data collection. Here is what this antipattern looks like:
+
+```{r}
+ap <- read_csv("../data/antipattern05.csv")
+ap
+```
+
+We can split `fav_foods` using `str_split()`, but 
+this results in a nested data table.
+
+```{r}
+ap |>
+  mutate(fav_foods = str_split(fav_foods, pattern = "; "))
+```
+
+The `unnest` function comes to the rescue, though:
+
+```{r}
+ap |>
+  mutate(fav_foods = str_split(fav_foods, pattern = "; ")) |>
+  unnest(fav_foods)
+```
+
+Note that we could easily achieve the third normal form by splitting the data into two tables using `select()`:
+
+```{r}
+ap |>
+  select(student_name, year)
+```
+
+And this:
+
+```{r}
+ap |>
+  select(!year) |>
+  mutate(fav_foods = str_split(fav_foods, pattern = "; ")) |>
+  unnest(fav_foods)
+```
+
+### Overloaded categorical variables
+
+Sometimes people store multiple categorical variables in a single column. Here's an example:
+
+```{r}
+ap <- read_csv("../data/antipattern06.csv")
+ap
+```
+
+In this case, `grading` includes both the student's grading status (i.e., letter grade or pass/fail) and their current grade after an underscore.
+
+Assuming that the whole column is consistently formatted in this manner, we can use something from the [`separate_` family in `tidyr`](https://tidyr.tidyverse.org/reference/separate.html) to correctly format this as two columns. In this case, we want to use `separate_wider_delim()` because we want to make the data wider based on a delimiter (`_`):
+
+```{r}
+ap |>
+  separate_wider_delim(
+    grading,
+    delim = "_",
+    names = c("grade_type", "grade")
+  )
+```
+
+### Troublesome placeholders
+
+Rather than leaving missing values blank, sometimes people use placeholders like `"TBD"` or `"N/A"`. This is different from the case above of numbers that contain strings because we want to remove or replace the entire value. See the example in the `exam_1` column below:
+
+```{r}
+ap <- read_csv("../data/antipattern07.csv")
+ap
+```
+
+You can use an `if_else` statement with `mutate` to replace these values with `NA`:
+
+```{r}
+ap |>
+  mutate(
+    exam_1 = if_else(exam_1 == "TBD", NA, exam_1),
+    exam_1 = as.integer(exam_1)
+  )
+```
+
+Alternatively, if there are many different placeholder strings, you can try `parse_number()`, which will replace non-numeric values with the special `NA` character and warn you about non-numeric characters
+
+```{r}
+ap |>
+  mutate(exam_1 = parse_number(exam_1))
+```
+
+Note, however, that this might not match the intention. For example, Liam's `exam_2` grade is currently represented as `8?`, which `parse_number()` converts like so:
+
+```{r}
+ap |>
+  mutate(exam_2 = parse_number(exam_2))
+```
+
+`8?` likely meant "eighty-something", not "eight."
+
+In that case, you could decide to replace all `?` with `0` or `5`, and ensuring that the column is an integer:
+
+```{r}
+ap |>
+  mutate(
+    # record if value was marked as uncertain
+    exam_2_uncertain = str_detect(exam_2, "\\?"),
+    exam_2 = str_replace(exam_2, "\\?", "5"),
+    exam_2 = as.integer(exam_2)
+  )
+```
+
+### Unneeded whitespace
+
+Sometimes people put extra whitespace (e.g., blank rows) in their data.
+
+```{r}
+ap <- read_csv("../data/antipattern08.csv")
+ap
+```
+
+The `tidyr` package makes this problem very easy to fix:
+
+```{r}
+ap |>
+  drop_na()
+```
+
+
+## Dates, times, datetimes, and data types
+
+One of the topics we covered early on in this course was the idea of a data type,
+which we defined as the type of data stored in the column of a tabular dataset.
+Most commonly these have been numbers (`<int>` or `<dbl>`) or character strings
+(`<chr>`). We've also come across the logical data type (`<lgl>`) , which can
+only be either `TRUE` or `FALSE`, and factors (`<fct>`). The latter are similar
+to character strings but have a built-in ordering of their unique values.
+
+Here, we will consider three data types specifically designed
+to work with dates and times. With some reflection, it should seem reasonable
+to have specific data type for date and times because they act somewhat like a
+number (ordered, some meaning of distances), somewhat like a categorical
+variable (there are fixed values), and have some unique properties (such as 
+issues with days of the week and timezones).
+
+The three data types we will work with are:
+
+- **date** (`<date>`) to represent a single day in time
+- **datetime** (`<S3: POSIXct>`) to represent a particular time during a particular day
+- **time** (`<S3: hms>`) to represent a time of day without reference to a specific day
+
+The first two are far more common than the last. Let's start by looking at a
+dataset with a date column and discuss unique functions for working with these
+dates. Then, we'll see how to extend this to the datetime and time objects.
+
+Within the `tidyverse`, datetime operations are largely handled by the [`lubridate` package](https://lubridate.tidyverse.org/).
+
+### Dates
+
+We're going to look at data about shark attacks. Notice that `read_csv()` has done the conversion to a date format automatically for us.
+
+```{r}
+sharks <- read_csv("../data/shark_attacks_date.csv")
+sharks
+```
+
+You can combine functions with `mutate()` to extract elements of the date. For example, we can get the year,
+month, and day of the attack as new columns with the following:
+
+```{r}
+sharks |>
+  mutate(
+    year = year(date),
+    month = month(date),
+    day = day(date),
+    wday = wday(date)
+  ) |>
+  select(date, year, month, day, wday)
+```
+
+Even though the weekday is not encoded in `date`, R can calculate it.
+
+Note that `month` and `wday` have options to return character strings rather than numbers, which can be useful:
+
+```{r}
+sharks |>
+  mutate(
+    month = month(date, label = TRUE, abbr = FALSE),
+    wday = wday(date, label = TRUE, abbr = FALSE)
+  ) |>
+  select(date, month, wday)
+```
+
+The character strings that come out of these two functions already have a built in ordering, which makes plots easier to create.
+
+Here is a bar plot of the number of shark attacks by day of the week. Note that, despite what would be their default alphabetical order, the days of the week are ordered semantically:
+
+```{r}
+sharks |>
+  mutate(
+    wday = wday(date, label = TRUE, abbr = FALSE)
+  ) |>
+  group_by(wday) |>
+  summarize(n = n()) |>
+  ggplot(aes(wday, n)) +
+  geom_col()
+```
+
+It makes sense that there would be more attacks on the weekend since people are more likely to swim in the ocean at that time.
+
+And here are the number of attacks per month as a line plot:
+
+```{r}
+sharks |>
+  mutate(
+    month = month(date, label = TRUE, abbr = TRUE),
+  ) |>
+  group_by(month) |>
+  summarize(n = n()) |>
+  ggplot(aes(month, n)) +
+  geom_point() +
+  # group = 1 is needed to connect the dots
+  geom_line(aes(group = 1))
+```
+
+In `ggplot2`, `group = 1` tells `geom_line()` to treat all the points as part of the same group, so it connects them in a single line. Without `group = 1`, `ggplot2` doesn’t know that you want one continuous line across all months, so it would try to connect points within each month individually, resulting in no visible line. 
+
+Here, `group = 1` simply means "connect all points in this plot in one continuous line."
+
+And let's do a stacked bar plot showing shark attacks per month by shark type:
+
+```{r}
+sharks |>
+  mutate(
+    month = month(date, label = TRUE, abbr = TRUE),
+  ) |>
+  group_by(month, shark_type) |>
+  summarize(n = n()) |>
+  ggplot(aes(month, n, fill = shark_type)) +
+  geom_col(position = "stack") +
+  scale_fill_viridis_d()
+```
+
+This plot suggests that there is one type of shark that that is responsible for most of the attacks, so we can use the `fct_lump_n` function to group together the other sharks and see fewer bins:
+
+```{r}
+sharks |>
+  mutate(
+    month = month(date, label = TRUE, abbr = TRUE),
+    # Keep the most common shark types, lump others as "Other"
+    shark_type = fct_lump_n(shark_type, n = 2)
+  ) |>
+  group_by(month, shark_type) |>
+  summarize(n = n()) |>
+  ggplot(aes(month, n, fill = shark_type)) +
+  geom_col(position = "stack") +
+  scale_fill_viridis_d()
+```
+
+Using a date object as the x- or y-aesthetic in a plot works without additional effort on our part. Here, we'll plot just the attacks in 1990, with `date` on the x-axis.
+
+Note that you can use the special functions we discussed above to filter:
+
+```{r}
+sharks |>
+  filter(year(date) == 1990)
+```
+
+Not many observations, but we can plot them:
+
+```{r}
+sharks |>
+  filter(year(date) == 1990) |>
+  ggplot(aes(date, shark_type)) +
+  geom_point()
+```
+
+Often with dates, it is useful to manually modify the labels on the time-based
+axis. We do this with `scale_x_date` (or its y-equivalent if time is on the
+y-axis). Adding this scale to a plot on its own will have no effect, but we can
+change the default by changing three parameters:
+
+- `date_breaks` a string describing the frequency of the labels, such as
+   "month" or "2 years"
+- `date_minor_breaks` a string describing the frequency of the grid-lines
+- `date_labels` format string: [strptime](https://rdrr.io/r/base/strptime.html)
+
+You can set just a subset of these, depending on how much control you want over
+the plot. For example, let's label the previous plot by showing a label for
+every month, and using the pattern "%B" to show (just) the full month's name.
+
+```{r}
+sharks |>
+  filter(year(date) == 1990) |>
+  ggplot(aes(date, shark_type)) +
+  geom_point() +
+  scale_x_date(
+    date_breaks = "month",
+    date_labels = "%B",
+    date_minor_breaks = "month"
+  )
+```
+
+#### Summary
+
+1. **Automatic Date Parsing**: `read_csv()` auto-converts dates, allowing easy access to date components.
+2. **Extracting Date Components**: Using `mutate()`, `year()`, `month()`, and `day()` functions to create new columns for each date component, and adding `wday()` to get the weekday, even if it’s not initially included.
+3. **Labeling and Formatting Dates**: `month()` and `wday()` can be labeled as character strings (e.g., "January" or "Monday"), which preserves semantically correct ordering in visualizations.
+4. **Creating Plots by Date Components**:
+   - A bar plot shows shark attacks by weekday, ordered semantically for intuitive reading.
+   - A line plot of attacks per month illustrates the need for `group = 1` in `geom_line()` to connect points in one continuous line.
+   - A stacked bar plot shows attacks per month by shark type, using `fill` to color by type.
+5. **Date-Based Filtering and Customizing Plots**: Using `filter()` to narrow down data by year and `scale_x_date()` to customize date-axis labels, gridlines, and formats, enabling clear monthly labeling in time-series plots.
+
+### Datetimes
+
+To explore datetimes, let's look at a version of the flights dataset, but this
+time from the three NYC airports. Reading the data into R shows that one of
+these columns, `time_hour` contains a special object for holding information
+about the time of the weather reading (`<dttm>`).
+
+```{r}
+weather <- read_csv("../data/flights_weather.csv")
+weather
+```
+
+As with the date data type, we can use a variety of functions inside a mutate 
+to extract information about the time. All of the same date functions exist as well as some extra ones specifically for time.
+
+```{r}
+weather |>
+  mutate(month = month(time_hour), hour = hour(time_hour)) |>
+  select(time_hour, month, hour)
+```
+
+Also, as with dates, we can set the time variable to the x- or y-aesthetic of a plot graphic and it will work as expected. Here is a plot showing the 
+temperature over the course of one day at JFK airport.
+
+```{r}
+weather |>
+  filter(
+    origin == "JFK",
+    year(time_hour) == 2013,
+    month(time_hour) == 5,
+    day(time_hour) == 1
+  ) |>
+  ggplot(aes(time_hour, temp, color = temp)) +
+  geom_line() +
+  # a blue-to-orange scale to match temperature conventions
+  scale_color_gradient(low = "blue", high = "orange")
+```
+
+We can modify the axis labels with `scale_x_datetime`. Note that this is a different function than that required for dates, but the options are the same.
+
+```{r}
+weather |>
+  filter(
+    origin == "JFK",
+    year(time_hour) == 2013,
+    month(time_hour) == 5,
+    day(time_hour) == 1
+  ) |>
+  ggplot(aes(time_hour, temp, color = temp)) +
+  geom_line() +
+  scale_color_gradient(low = "blue", high = "orange") +
+  scale_x_datetime(
+    date_breaks = "2 hours",
+    date_labels = "%H"
+  )
+```
+
+Here's another example showing how to label the axis with the days of the week
+and how to select a week of the year using the `isoweek` function. The resulting plot shows the temperature on each day of the week in the twelfth week (`isoweek(time_hour) == 12`) of 2013.
+
+Further, each weekday is colored differently to distinguish them on the plot.
+
+```{r}
+weather |>
+  filter(
+    origin == "JFK",
+    year(time_hour) == 2013,
+    isoweek(time_hour) == 12
+  ) |>
+  mutate(
+    weekday = wday(time_hour, label = TRUE, abbr = TRUE, week_start = 1)
+  ) |>
+  ggplot(aes(time_hour, temp, color = weekday)) +
+  geom_line() +
+  scale_color_viridis_d() +
+  scale_x_datetime(
+    date_breaks = "1 day",
+    date_labels = "%a"
+  )
+```
+
+#### Summary
+
+When using `<dttm>` datetime objects:
+
+1. **Datetime Extraction**: Using `mutate()` with functions like `month()` and `hour()` to create new columns for specific datetime elements.
+2. **Datetime in Plots**: Setting datetime variables as `x`- or `y`-aesthetics in `ggplot2` works seamlessly. For example, a line plot shows temperature changes over one day at JFK airport.
+3. **Axis Label Customization**: `scale_x_datetime()` customizes datetime axis labels with options for intervals (`date_breaks`) and label formats (`date_labels`), similar to `scale_x_date()` but tailored for datetime objects.
+4. **Weekly Plot Example**: A plot showing daily temperatures over one week, using `isoweek()` to filter for the twelfth week, and `wday()` to color by weekday, illustrating the flexibility in visualizing datetime components.
+
+### Time and conversion
+
+The `hms` package can help work with time objects, including when we need to convert datetimes into times.
+
+```{r}
+library(hms)
+
+weather |>
+  mutate(time_date = as_date(time_hour), time = as_hms(time_hour)) |>
+  select(time_hour, time_date, time)
+```
+
+`ymd()` will create a date object from a string. Putting this
+together with `as_date()`, we can simplify the code we used to 
+select a particular day of the year:
+
+```{r}
+weather |>
+  filter(as_date(time_hour) == ymd("2013-05-01"))
+```
+
+While it is rare to deal with time data without dates in the original data, this
+comes up frequently when working with certain kinds of analysis. For example,
+here we can use the `as_hms` function---which converts datetime objects to time-of-day objects---to show the daily temperature changes over
+the course of a week:
+
+```{r}
+weather |>
+  filter(
+    origin == "JFK",
+    year(time_hour) == 2013,
+    isoweek(time_hour) == 12
+  ) |>
+  mutate(
+    time = as_hms(time_hour),
+    day = wday(time_hour, label = TRUE, abbr = TRUE, week_start = 1)
+  ) |>
+  ggplot(aes(time, temp)) +
+  geom_line(aes(color = day))
+```
+
+The functionality for time objects is not as extensive as for date and datetime objects, so try to use date and datetime types whenever possible.
+
+### Homework
+
+The canonical way to store dates inside of a CSV file is to format the date as "YYYY-MM-DD". This is known as the [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+
+Datetimes can be similarly stored in the format "YYYY-MM-DD HH:MM" or "YYYY-MM-DD HH:MM:SS" and times as "HH:MM" or
+"HH:MM:SS".
+
+Write down on a piece of paper the following information in the
+ISO 8601 format:
+
+1. When you woke up this morning.
+2. The first day of this semester.
+3. The last time you attended a major event (e.g., a concert).
+4. When your alarm is currently set for.
+5. The date of your first memory of a major event in world history (e.g., a presidential election).
