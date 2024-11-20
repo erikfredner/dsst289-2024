@@ -1,0 +1,284 @@
+---
+title: "Exam 3: Open Notes"
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: false
+format:
+  html:
+    anchor-sections: true
+    code-tools: false
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+  pdf:
+    color-links: true
+    toc: true
+editor:
+  markdown:
+    wrap: 72
+---
+
+## Your Name
+
+**Name**:
+
+**UR email**:
+
+**Section start time**:
+
+## Definition of "Open Notes"
+
+For this exam, you may use notes, notebooks, notebook solutions, and slides *from this class*.
+
+You may not:
+
+- Use any resource not listed above (including notes from other classes, websites on the open internet, ChatGPT, etc.)
+- Discuss the exam with anyone, including classmates
+
+## Deadline
+
+Monday, November 18 *before* the start of class.
+
+## Setup
+
+Run this code chunk:
+
+```{r}
+# clear workspace
+rm(list = ls())
+
+# load packages
+library(ggrepel)
+library(tidyverse)
+library(sf)
+
+# set theme
+theme_set(theme_minimal())
+```
+
+1.  Navigate to Blackboard \> Course Documents \> Exams \> Exam 03
+2.  Download this exam from Blackboard: `exam03_open.qmd`
+3.  Download the data from Blackboard:
+- `storms2.csv`
+- `storm_gender.csv`
+- `storm_codes.csv`
+- `state_se.geojson`
+4.  Move the exam to the `nb` folder in your `DSST289` folder, just as we do when working on new notebooks: (`...DSST289/nb/exam03_open.qmd`)
+5.  Move the data to `...DSST289/data/`.
+
+## Instructions
+
+1. Although there are multiple ways of producing the results requested in each question, I expect to see you use patterns and techniques that we have discussed.
+
+2. If you are unable to complete a question, explain your attempt to maximize partial credit.
+
+3. If you encounter R or RStudio errors that you cannot resolve on your own, contact me ASAP. I can help you with configuration issues, but will not help you answer questions. If you run into any issues with your personal computer, use the computers in the library to complete the exam.
+
+4. When you have finished the exam, **render** your `.qmd` file to `.pdf`. If rendering fails, upload the `.qmd` file.
+
+5. Go to Blackboard > Assignments > Exam 03 (open notes). Upload your **rendered** document there.
+
+## Data: More storms
+
+We will be using data about storms in the Atlantic Ocean between 1950 and 2020. The data for this exam is a revised and expanded version of the data set used for Exam 2.
+
+### Unit of observation
+
+The unit of observation for this data set is one measurement of one storm. Storms are generally measured once every six hours. 
+
+### `storms`
+
+#### Features
+
+| Variable   | Description                                                                 |
+|------------|-----------------------------------------------------------------------------|
+| `year`     | The year in which the storm was recorded                                    |
+| `month`    | The month (1-12) of the record                                              |
+| `day`      | The day of the month (1-31) of the record                                   |
+| `hour`     | The hour of the day (0-23) of the record in Eastern time                    |
+| `name`     | A common name for the storm. Names can be reused for different storms in different years. |
+| `letter`   | The first letter of the name; storms are (usually) named in alphabetical order |
+| `doy`      | The day of the year (1-365) of the record                                   |
+| `lon`      | Longitude of the record in degrees                                          |
+| `lat`      | Latitude of the record in degrees                                           |
+| `status`   | A two-letter status code of the storm system; see `storm_codes.csv` for full names |
+| `category` | For hurricanes (`status == "HU"`), a number giving the category of the storm from 0-5 |
+| `wind`     | The observed sustained wind speed in miles per hour                         |
+
+#### Data
+
+```{r}
+storms <- read_csv(file.path("../data", "storms2.csv"))
+storms
+```
+
+
+### Metadata
+
+#### `storm_gender`
+
+This table contains an automatically determined estimate of the gender of a storm's name. The `prob` column
+gives a confidence score for the determination. A score of 1.0 means that the model is maximally confident in its prediction; a score of 0.5 means that the model is guessing randomly.
+
+```{r}
+storm_gender <- read_csv(file.path("../data", "storm_gender.csv"))
+storm_gender |>
+  slice_sample(n = 5)
+```
+
+
+#### `storm_codes`
+
+This table provides a full name for each of the two-letter status codes in the `status` column of the `storms` data set.
+
+```{r}
+storm_codes <- read_csv(file.path("../data", "storm_codes.csv"))
+storm_codes
+```
+
+
+#### `state_se`
+
+This is a geographic data set containing the multipolygon geometries for the states from the southeastern US.
+
+```{r}
+state_se <- read_sf(file.path("../data", "state_se.geojson"))
+state_se
+```
+
+## Questions
+
+### Make a datetime feature
+
+Create a new column in the `storms` data set called `time`. `time` will be a datetime object created using all of the columns that indicate when each storm was observed.
+
+Times in `storms` are all given in the "America/New_York" timezone, so you should force this timezone in `time`.
+
+Overwrite `storms` with your updated version containing the `time` column. Once you have overwritten it, show the new `time` column by selecting it from the updated `storms`.
+
+```{r, question-01}
+
+```
+
+### Plot datetime objects
+
+Filter `storms` for hurricanes observed between September 1 and September 15 of 2017 (inclusive). Group the data by your `time` variable and count the number of observations at each time.
+
+Then, use this data to create a bar plot with a datetime object on the x-axis, and the number of hurricane readings at each time on the y-axis.
+
+Scale the x-axis like so:
+
+```r
+...(
+    date_breaks = "2 days",
+    date_labels = "%b %d",
+  )
+```
+
+```{r, question-02}
+
+```
+
+### Create and plot date data
+
+Filter `storms` such that it only includes category 5 hurricanes. Find both the maximum wind speed that each storm reached, and the earliest time at which each storm reached its maximum wind speed.
+
+```{r, question-03a}
+
+```
+
+Plot the data above with the earliest time at which each storm reached its maximum wind speed on the x-axis and the maximum wind speed on the y-axis. Use a points layer, then label each point with the name of the hurricane, and repel the labels away from the points. Color the points by the predicted gender of the storm's name. Use the following color scale:
+
+```r
+scale_color_brewer(palette = "Set2")
+```
+
+```{r, question-03b}
+
+```
+
+### Storm duration
+
+Filter `storms` for every storm observed after December 31, 1959. Then, calculate the duration of each distinct storm by taking the difference between the maximum and minimum times at which each storm was observed.
+
+For this exam, we will assume that grouping by year and name is sufficient to calculate each storm's duration.^[We will ignore cases where one storm might have been recorded in multiple years, such as a storm that began in late December and ended in early January of the following year.]
+
+```{r, question-04a}
+
+```
+
+Using the data created above, plot the average duration of storms per year. Put years on the x-axis and mean duration on the y-axis. Use a point layer and a line layer. Add a line of best fit. Add custom labels. In your custom labels, indicate the units of the y-axis.
+
+```{r, question-04b}
+
+```
+
+### Spatial polygons
+
+Plot the states in `state_se` using the Coordinate Reference System 5069.
+
+```{r, question-05}
+
+```
+
+### Spatial points
+
+Filter `storms` such that it only contains observations of the 2004 storm named Jeanne. Convert that data to a spatial points data set using its longitude and latitude columns. Use the default settings we have been using in the course during the conversion to spatial points:
+
+```r
+...(coords = c("lon", "lat"), crs = 4326, remove = FALSE)
+```
+
+Next, transform those points into Coordinate Reference System 5069. 
+
+Finally, create a plot overlaying Jeanne's points on the state boundaries from `state_se`. Color Jeanne's points based on the hurricane's status name using the same Brewer color scale we used above. Display the complete status name in the legend, *not* the status code.
+
+```{r, question-06}
+
+```
+
+### Hurricane hot spots
+
+Filter `storms` to include only hurricanes. Convert the hurricane data to spatial points using the default settings indicated above. Then, perform a spatial join with `state_se`. When you spatially join `storms` to `state_se`, set the argument `left = FALSE` in the join function, which will prevent `NA` values.
+
+After joining, count the number of hurricanes observed in each state. Save that result into a new table called `state_hurricanes` with two columns: your count of the number of hurricanes in each state, and their associated spatial `geometry`. `state_hurricanes` should be a 9x2 tibble.
+
+Arrange `state_hurricanes` to show the number of hurricanes observed in each state from highest to lowest.
+
+```{r, question-07a}
+
+```
+
+Next, spatially join `state_se` to `state_hurricanes`, overwriting `state_se` with the result of the join. Output the `state` and count columns from your updated `state_se`.
+
+```{r, question-07b}
+
+```
+
+Finally, plot the points in `state_hurricanes` using Coordinate Reference System 5069. Layer those points on top of the state polygons from `state_se`. Set the shape of the points to 4 (this will produce an "x" rather than a circle). Fill the state polygons with a color determined by the number of hurricanes observed in each state. Use the following color scale:
+
+```r
+scale_fill_distiller(palette = "Spectral")
+```
+
+```{r, question-07c}
+
+```
+
+## Honor
+
+> "I pledge that I neither gave nor received unauthorized assistance during the completion of this work."
+
+**Signature (type your full name)**: 
+
+**UR email:**
+
+**Section start time:**

@@ -1,0 +1,280 @@
+---
+title: "Notebook 20"
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+execute:
+echo: true
+  warning: false
+  message: false
+format:
+  html:
+    anchor-sections: true
+    code-tools: false
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+    toc-depth: 4
+editor:
+  markdown:
+    wrap: 72
+---
+
+## Getting Started
+
+Run the following code chunk to set up the workspace and load required
+libraries:
+
+```{r}
+#| echo: true
+
+# clear workspace
+rm(list = ls())
+
+# load libraries
+library(tidyverse)
+library(sf)
+
+# set theme
+theme_set(theme_minimal())
+```
+
+## Data: Bird Observations in France
+
+This dataset includes bird observations from France collected between
+2010 and 2019. It comes from the [Global Biodiversity Information
+Facility](https://doi.org/10.15468/dl.bwuax7).
+
+### Sample
+
+We are using a random sample of 100,000 bird sightings from the 100 most
+common bird species in France.
+
+### Tables
+
+#### `birds`
+
+Below is the main dataset, with one row per observation of a bird. It
+includes the time, location, and scientific name of the bird.
+
+A geospatial attribute has been added to the dataset for use in the
+following questions.
+
+```{r}
+birds <- read_csv("../data/french_birds.csv.bz2")
+birds <- birds |>
+  st_as_sf(coords = c("lon", "lat"), crs = 4326, remove = FALSE)
+birds
+```
+
+#### `species`
+
+We also have a metadata table describing each of the bird species. You
+can join this table with the birds data using the `scientific_name` key.
+
+The most important columns for this analysis are `species_common` and
+`order_common`, which provide common names for each species and their
+respective [orders](https://en.wikipedia.org/wiki/Order_(biology)).
+
+```{r}
+species <- read_csv("../data/french_bird_species.csv.bz2")
+species
+```
+
+#### `france`
+
+We also have a spatial polygon dataset describing the 96 French
+Départements (roughly the equivalent of a county).
+
+Below, I am taking a subset to only include those regions in France
+within Europe, which corresponds to the geographic extent of the `birds`
+data.
+
+```{r}
+france <- read_sf("../data/france_departement.geojson")
+france <- slice(france, 1:96)
+france
+```
+
+#### `population`
+
+The final dataset provides the population for each *département* in
+France.
+
+```{r}
+population <- read_csv("../data/france_departement_population.csv")
+population <- slice(population, 1:96)
+population |>
+  arrange(desc(population)) |>
+  head()
+```
+
+## Analysis
+
+### Bird observations per day of the week
+
+Create a bar plot with days of the week on the x-axis and the total
+count of bird sightings on the y-axis.
+
+::: callout-warning
+We are working with a larger dataset than usual, so it may take longer
+than usual to run code.
+:::
+
+```{r, question-01}
+```
+
+### Observations over time
+
+Create a scatter plot where each point represents a day in 2015. On the x-axis put the date and on the y-axis put the number of observations of birds
+on that day in 2015.
+
+::: callout-tip
+Use the following code to scale your x-axis:
+
+``` r
+scale_x_date(
+    date_breaks = "month",
+    date_minor_breaks = "month",
+    date_labels = "%b"
+  )
+```
+:::
+
+```{r, question-02a}
+```
+
+Now that we’ve analyzed the daily bird observations for the year 2015, let’s extend our visualization to include all years available in the dataset. We’ll start by counting the number of bird observations for each combination of year and month. Then, we’ll create a stacked bar chart where each bar represents a month, and the segments within each bar represent different years. This chart will show the total number of observations for each month, with the observations from each year stacked on top of each other to compare the data across years.
+
+::: callout-tip
+Once you have counted the number of observations by year and month, you can create a stacked bar chart using the following code:
+
+```r
+geom_col(position = "stack")
+```
+:::
+
+```{r, question-02b}
+```
+
+
+### Observations by order
+
+Create a bar plot with common order names on the y-axis and the total count of birds in each order across the entire dataset. Sort
+the y-axis categories in ascending order by count.
+
+```{r, question-03}
+```
+
+### Spatial distribution of observations
+
+For this question, plot the spatial locations of the `birds` data by
+transforming the data to use [CRS projection
+`27561`](https://epsg.io/27561-8094).[^1]
+
+[^1]: EPSG 27561 is the NTF (Paris) / France I coordinate system, which
+    aligns with the French national grid system.
+
+Set the size and opacity of the points to 0.3.
+
+```{r, question-04}
+```
+
+### Distribution of observations by département
+
+Using `france`, plot the French *départements*, coloring the regions
+based on their population. Transform the spatial data to use CRS
+projection 27561.
+
+Use the following color scale:
+
+``` r
+scale_fill_distiller(
+    trans = "log2",
+    palette = "Spectral",
+    guide = "legend",
+    n.breaks = 5
+  )
+```
+
+```{r, question-05}
+```
+
+### Birds in Paris
+
+Begin by spatially joining `birds` to `france`.
+
+For each bird species, calculate the total sightings, sightings within Paris, and the proportion of each species' sightings occurring in Paris.
+
+Order the results in descending order by proportion and display the
+common species name for each species.
+
+If you find that your code is running slowly, try running `as_tibble()`
+after the `st_join()`. `as_tibble()` will remove the spatial
+information, which we only need for the spatial join, and will make the
+rest of your code run faster.
+
+::: callout-tip
+One possible answer to this question uses the following line somewhere:
+
+```r
+paris_sightings = sum(departement == "75")
+```
+
+This sums observations by group but only in cases where the `departement` is equal to `"75"`, which is the code for Paris. Under the hood, it applies a logical test to each row and sums the `TRUE` values.
+:::
+
+```{r, question-06}
+```
+
+### Distribution of bird sightings
+
+As above, spatially join `birds` to `france`. Then, for each unique
+value of `species_common` (available in `species`), compute the total
+number of *départements* where each bird was observed.
+
+Order the table in descending order to see those species that are most
+pervasive across the entire country.
+
+```{r, question-07}
+```
+
+### Spatial distribution of observations
+
+Create a new dataset called `bird_count` describing the number of birds
+observed in each *département*. Use `as_tibble()` after the join to
+remove spatial information from this intermediate dataset.
+
+Print the output of `bird_count` when you're done.
+
+```{r, question-08}
+```
+
+### Plotting spatial distribution of observations
+
+Finally, create a plot of the French *départements*, use color to represent the number of bird observations in each *département*.
+
+Inner join `france` with `bird_count` to start. Use the CRS 27561
+projection for the plot and the following fill scale:
+
+``` r
+scale_fill_distiller(
+    palette = "Spectral",
+    guide = "legend",
+    n.breaks = 10
+  )
+```
+
+::: callout-note
+This plot should highlight popular birding areas such as (1) the Camargue Natural Park in the South of France
+where the Rhône river meets the Mediterranean Sea, (2) the Médoc and
+Marais Poitevin Natural Park in the West where the Garonne and Sèvre
+rivers flow into the Atlantic Ocean, and (3) the Gâtinais Park, a large
+natural forest just to the southeast of Paris.
+:::
+
+```{r, question-09}
+```

@@ -1,0 +1,505 @@
+---
+title: "Exam 3 Closed Notes"
+subtitle: "DSST 289: Introduction to Data Science"
+author: "Erik Fredner"
+execute:
+  warning: false
+  message: false
+format:
+  pdf:
+    number-sections: true
+    df-print: default
+    header-includes: 
+      - \usepackage{fontspec}
+      - \setmainfont{Atkinson Hyperlegible}
+      - \setsansfont{Atkinson Hyperlegible}
+      - \setmonofont{IBM Plex Mono}
+      - \usepackage{sectsty}
+      - \allsectionsfont{\sffamily}
+      - \usepackage{setspace}
+  html:
+    anchor-sections: true
+    code-tools: true
+    df-print: paged
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+editor:
+  markdown:
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| echo: false
+
+library(tidyverse)
+library(ggrepel)
+library(sf)
+theme_set(theme_minimal())
+```
+
+# Name
+
+\medskip
+
+Name\hrulefill \medskip
+
+Section start time\hrulefill \medskip
+
+# Exam
+
+- You may only use a pen or pencil and scratch paper on this exam.
+- If you cannot solve a problem, write what you do know for partial credit.
+- Code will be graded on accuracy and formatting.
+
+# Questions
+
+## Data types
+
+```{r}
+#| echo: false
+traffic_violations <- tibble(
+  violation = c("Speeding", "Illegal parking", "Running red light"),
+  occurred = ymd_hms(c(
+    "2024-01-01 08:30:00",
+    "2024-01-02 14:45:00",
+    "2024-01-03 17:20:00"
+  )),
+  location = st_sfc(
+    st_point(c(37.577544, -77.535458)),
+    st_point(c(37.578414, -77.534858)),
+    st_point(c(37.572642, -77.547447))
+  ),
+  fine = c(150.0, 75.5, 200.0),
+  paid = c(TRUE, FALSE, FALSE)
+)
+```
+
+```{r}
+traffic_violations
+```
+
+Identify the data type of each column in `traffic_violations` and describe its purpose. For example: `<int>` represents the integer data type, which stores whole numbers like `1`, as distinct from decimals like `1.5`.
+
+\vspace*{0.2\textheight}
+
+## The novice
+
+Using the table above, a novice programmer is trying to calculate the total amount of unpaid fines. Here is their code so far:
+
+```r
+  traffic | > filtar(Paid %is%   FALSE) + mutate[outstanding== sun(fine) ) |>
+```
+
+Ultimately, their code should have the following output:
+
+```{r}
+#| echo: false
+traffic_violations |>
+  filter(paid == FALSE) |>
+  summarize(outstanding = sum(fine))
+```
+
+Identify problems with their code as written. You may either rewrite it correctly *or* list the issues.
+
+\pagebreak
+
+## Average fine
+
+```{r}
+#| echo: false
+officer_fines <- tibble(
+  officer_id = c(101, 102, 101, 102, 101, 102),
+  date = ymd(c(
+    "2024-01-01", "2024-01-01", "2024-01-02",
+    "2024-01-02", "2024-01-01", "2024-01-02"
+  )),
+  fine = c(100, 150, 200, 100, 300, 400),
+  paid = c(TRUE, FALSE, TRUE, TRUE, FALSE, FALSE)
+) |> arrange(date)
+```
+
+```{r}
+officer_fines
+```
+
+```{r}
+#| eval: false
+officer_fines |>
+  summarize(average_fine = mean(fine))
+```
+
+```{r}
+#| eval: false
+
+officer_fines |>
+  group_by(officer_id) |>
+  summarize(total_fines = sum(fine)) |>
+  ungroup() |>
+  summarize(average_fine = mean(total_fines))
+```
+
+Will `average_fine` differ in the two code blocks above? If so, how?
+
+\vspace*{0.2\textheight}
+
+## Ticket fees
+
+Unpaid tickets automatically incur a late fee. The late fee is one-third of the fine. Using `officer_fines`, write code that will produce the following table:
+
+```{r}
+#| echo: false
+
+officer_fines |>
+  mutate(
+    fee = if_else(paid, 0, fine * (1 / 3)),
+    total = fine + fee
+  )
+```
+
+\vspace*{0.2\textheight}
+
+
+## Flowers of Virginia
+
+```{r}
+#| echo: false
+
+flower <- c(
+  "Black-Eyed Susan", "Virginia Bluebell", "Eastern Red Columbine"
+)
+height_day_1 <- c(10, 8, 6)
+height_day_2 <- c(11, 10, 9)
+height_day_3 <- c(12, 12, 12)
+
+flowers <- tibble(
+  flower,
+  height_day_1,
+  height_day_2,
+  height_day_3
+)
+```
+
+```{r}
+flowers
+```
+
+Fill in the blanks to reshape `flowers` such that it can be used to make the plot shown below. *Nota bene*: No custom labels have been applied to the plot.
+
+\pagebreak
+
+```r
+_________________ <- flowers |>
+  _________________(
+    cols = _________________
+    names_to = _________________
+    names_prefix = "height_day_",
+    names_transform = as.integer,
+    values_to = _________________
+  )
+```
+
+```{r}
+#| echo: false
+
+flowers |>
+  pivot_longer(
+    cols = -flower,
+    names_to = "day",
+    names_prefix = "height_day_",
+    names_transform = as.integer,
+    values_to = "height"
+  ) |>
+  ggplot(aes(x = day, y = height, color = flower)) +
+  geom_line() +
+  geom_point(size = 3) +
+  scale_color_viridis_d() +
+  scale_x_continuous(breaks = 1:3)
+```
+
+## Flower plot
+
+Beginning from your reshaped `flowers`, write code to reproduce the plot above.
+
+\vspace*{0.2\textheight}
+
+## Fast cars
+
+These tables show when and where two artists performed the song "Fast Car:"
+
+```{r}
+#| echo: false
+setlists <- tibble(
+  artist = c(
+    "Tracy Chapman", "Tracy Chapman", "Tracy Chapman",
+    "Luke Combs", "Luke Combs", "Luke Combs"
+  ),
+  date = as_date(c(
+    "1988-08-01", "1990-07-05", "1995-09-10",
+    "2023-02-15", "2023-06-10", "2023-11-20"
+  )),
+  song = "Fast Car",
+  set_order = c(1, 18, 18, 6, 1, 10)
+) |>
+  arrange(date)
+```
+
+```{r}
+setlists
+```
+
+```{r}
+#| echo: false
+concert_venues <- tibble(
+  artist = c(
+    "Tracy Chapman", "Tracy Chapman", "Tracy Chapman",
+    "Luke Combs", "Luke Combs", "Luke Combs"
+  ),
+  date = as_date(c(
+    "1988-08-01", "1990-07-05", "1995-09-10",
+    "2023-02-15", "2023-06-10", "2024-07-20"
+  )),
+  venue = c(
+    "The Greek", "SummerStage",
+    "Red Rocks", "The Greek",
+    "Bridgestone Arena", "Ford Field"
+  ),
+  audience_size = c(6000, 15000, 9000, 6000, 19000, 45000)
+)
+```
+
+```{r}
+concert_venues
+```
+
+Write code that will output the following table. After piping from the table you begin with, you may only use *one* function.
+
+```{r}
+#| echo: false
+
+concert_venues |>
+  inner_join(setlists, by = c("artist", "date"))
+```
+
+\pagebreak
+
+## Coordinating changes
+
+```{r}
+#| echo: false
+#| fig-width: 5
+#| fig-cap: "First Virginia map"
+
+states <- read_sf("../data/state.geojson")
+
+states |>
+  filter(name == "Virginia") |>
+  st_transform(crs = 4326) |>
+  ggplot() +
+  geom_sf()
+```
+
+```{r}
+#| echo: false
+#| fig-width: 5
+#| fig-cap: "Second Virginia map"
+
+states |>
+  filter(name == "Virginia") |>
+  st_transform(crs = 5069) |>
+  ggplot() +
+  geom_sf()
+```
+
+These plots use the same geospatial data. Only one line of the code has been changed between them. What was it? Why does that change matter for mapmaking? You do not need to write the *exact* line of code, but you do need to explain its function.
+
+\vspace*{0.1\textheight}
+
+## Interpret residuals
+
+```{r}
+#| echo: false
+
+library(broom)
+
+hans <- read_csv("../data/hans_roslin.csv")
+
+hans_subset <- hans |>
+  filter(year == 2007, continent == "Asia") |>
+  select(country, year, gdp, life_exp)
+
+model <- lm(life_exp ~ gdp, data = hans_subset)
+
+hans_augmented <- model |>
+  augment(newdata = hans_subset) |>
+  arrange(.resid)
+
+countries <- c(
+  "Mongolia", "Iran", "Vietnam", "Afghanistan", "China", "Singapore",
+  "Japan", "Korea, Rep."
+)
+
+hans_augmented |>
+  ggplot(aes(gdp, life_exp)) +
+  geom_point(alpha = 0.5) +
+  geom_text_repel(
+    aes(label = if_else(country %in% countries, country, NA)),
+    size = 3
+  ) +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_x_continuous(labels = scales::dollar_format()) +
+  labs(
+    x = "GDP per person",
+    y = "Life expectancy",
+    title = "Life expectancy by GDP in Asian countries (2007)"
+  )
+```
+
+Among the labeled points, which residual has the largest absolute value? Interpret what the residual means for that point with respect to the linear model.
+
+\vspace*{0.2\textheight}
+
+## Extract values from `<dttm>`
+
+```{r}
+#| echo: false
+
+destinys_child <- tibble(
+  name = c("Beyoncé Knowles", "Kelly Rowland", "Michelle Williams"),
+  birth_year = c(1981, 1981, 1979),
+  birth_month = c(9, 2, 7),
+  birth_day = c(4, 11, 23),
+  birth_hour = c(3, 12, 23),
+  birth_minute = c(59, 30, 1),
+  birth_second = c(5, 28, 44)
+) |>
+  mutate(
+    birth_datetime = make_datetime(
+      birth_year,
+      birth_month,
+      birth_day,
+      birth_hour,
+      birth_minute,
+      birth_second
+    )
+  ) |>
+  select(name, birth_datetime)
+```
+
+```{r}
+destinys_child
+```
+
+Draw the output of the following code:
+
+```{r}
+#| eval: false
+destinys_child |>
+  mutate(
+    birth_year = year(birth_datetime),
+    birth_month = month(birth_datetime, label = TRUE, abbr = TRUE),
+    birth_hour = hour(birth_datetime)
+  ) |>
+  select(name, birth_year, birth_month, birth_hour)
+```
+
+\vspace*{0.2\textheight}
+
+## Coffee shop
+
+```{r}
+#| echo: false
+
+# Define operating hours in New York timezone
+start_datetime <- ymd_hms("2024-11-15 06:00:00", tz = "America/New_York")
+end_datetime <- ymd_hms("2024-11-15 15:00:00", tz = "America/New_York")
+
+# Create a sequence of times at 15-minute intervals
+times <- seq(start_datetime, end_datetime, by = "15 mins")
+
+# Create a dataframe
+coffee <- tibble(
+  start_time = times
+) %>%
+  mutate(
+    # Extract hour and minute
+    hour = hour(start_time),
+    minute = minute(start_time),
+    
+    # Calculate decimal time for easier calculations
+    decimal_time = hour + minute / 60
+  ) %>%
+  # Assign people based on time with gradual transitions
+  mutate(
+    people = case_when(
+      # Early Morning: 6 AM to 8 AM - Gradual Increase from 4 to 30
+      decimal_time >= 6 & decimal_time < 8 ~ round(
+        4 + ((decimal_time - 6) / 2) * (30 - 4) + rnorm(n(), 0, 2)
+      ),
+      
+      # Morning Peak: 8 AM to 10 AM - High occupancy
+      decimal_time >= 8 & decimal_time < 10 ~ round(
+        30 + runif(n(), 0, 10)
+      ),
+      
+      # Late Morning: 10 AM to 12 PM - Gradual Decrease from 30 to 20
+      decimal_time >= 10 & decimal_time < 12 ~ round(
+        30 - ((decimal_time - 10) / 2) * (30 - 20) + rnorm(n(), 0, 2)
+      ),
+      
+      # Noon Peak: 12 PM to 1 PM - Temporary Bump to High Occupancy
+      decimal_time >= 12 & decimal_time < 13 ~ round(
+        20 + runif(n(), 10, 20)
+      ),
+      
+      # Afternoon Decline: 1 PM to 3 PM - Gradual Decrease from 40 to 10
+      decimal_time >= 13 & decimal_time <= 15 ~ round(
+        40 - ((decimal_time - 13) / 2) * (40 - 10) + rnorm(n(), 0, 2)
+      ),
+      
+      # Default: Minimum Occupancy
+      TRUE ~ 4
+    )
+  ) %>%
+  # Ensure people counts are within the specified range
+  mutate(
+    people = pmin(pmax(people, 4), 40)
+  ) %>%
+  # Convert start_time to UTC for consistent storage
+  mutate(
+    time_utc = with_tz(start_time, "UTC")
+  ) %>%
+  # Select relevant columns
+  select(time_utc, people)
+```
+
+This dataset observes the number of people in a Richmond, VA coffee shop in 15 minute intervals over the business day, which runs from 6 AM to 3 PM.
+
+```{r}
+coffee |> 
+  slice_head(n = 3)
+```
+
+Plotting `coffee` gives the following:
+
+```{r}
+#| echo: false
+coffee |>
+  ggplot(aes(time_utc, people)) +
+  geom_line()
+```
+
+What, if anything, is wrong with this plot? How would you fix it? You do not need to write the *exact* line of code, but you do need to explain its function.
+
+\vspace*{0.2\textheight}
+
+# Honor
+
+> "I pledge that I neither gave nor received unauthorized assistance during the completion of this work."
+
+Signature\hrulefill \medskip

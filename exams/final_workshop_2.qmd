@@ -1,0 +1,65 @@
+---
+title: "Final project workshop 2"
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+execute:
+  echo: true
+  warning: false
+  message: false
+format:
+  html:
+    anchor-sections: true
+    code-tools: false
+    df-print: kable
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+    toc-depth: 4
+editor:
+  markdown:
+    wrap: 72
+  visual: true
+---
+
+## Groups
+
+Assemble into your final project workshop groups:
+
+```{r}
+#| echo: false
+
+library(tidyverse)
+
+groups <- read_csv("../exams/workshop_groups.csv")
+groups
+```
+
+## Progress reports
+
+Last class, each person determined two "next steps" for their project.
+What progress have you made on your next steps since the last
+discussion?
+
+Everyone in the group should share a brief progress update.
+
+## Reminders
+
+1.  We have our third and final workshop on **Monday, Dec. 2**.
+2.  Presentations will be on **Wednesday, Dec. 4**. All final project
+    materials will be due before the start of Wednesday's class.
+3.  Think about what you need to complete over Thanksgiving break (if
+    anything) to be prepared for the final workshop.
+4.  The [final project
+    instructions](https://alt-5fe2624770d98.blackboard.com/bbcswebdav/pid-1892956-dt-content-rid-16726067_1/courses/202410_11889/final_project_instructions%281%29.html?one_hash=B294F9105677519AE78BCE2CAA6CA8F1&f_hash=3E43BD298D8A1D4097F6467231C5BE4F)
+    include a detailed explanation of the **three** documents that you
+    need to create for your final project. Consider your progress on:
+    1.  [the
+        datasheet](https://alt-5fe2624770d98.blackboard.com/bbcswebdav/pid-1892956-dt-content-rid-16726067_1/courses/202410_11889/final_project_instructions%281%29.html?one_hash=B294F9105677519AE78BCE2CAA6CA8F1&f_hash=3E43BD298D8A1D4097F6467231C5BE4F#datasheet)
+    2.  [the
+        notebook](https://alt-5fe2624770d98.blackboard.com/bbcswebdav/pid-1892956-dt-content-rid-16726067_1/courses/202410_11889/final_project_instructions%281%29.html?one_hash=B294F9105677519AE78BCE2CAA6CA8F1&f_hash=3E43BD298D8A1D4097F6467231C5BE4F#analyze-the-data-in-a-notebook)
+    3.  [the
+        presentation](https://alt-5fe2624770d98.blackboard.com/bbcswebdav/pid-1892956-dt-content-rid-16726067_1/courses/202410_11889/final_project_instructions%281%29.html?one_hash=B294F9105677519AE78BCE2CAA6CA8F1&f_hash=3E43BD298D8A1D4097F6467231C5BE4F#presentation)

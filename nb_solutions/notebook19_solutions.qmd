@@ -1,0 +1,370 @@
+---
+title: "Notebook 19"
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+execute:
+  echo: false
+  warning: false
+  message: false
+format:
+  html:
+    anchor-sections: true
+    code-tools: false
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+editor:
+  markdown:
+    wrap: 72
+---
+
+## Getting Started
+
+1. Click **Session > Clear Workspace...**
+2. Click **Session > Restart R**
+3. Run the following code chunk:
+
+```{r}
+library(broom)
+library(tidyverse)
+library(sf)
+
+theme_set(theme_minimal())
+sf_use_s2(FALSE)
+```
+
+## Richmond Casino Vote
+
+### Context
+
+In November of 2021, there was a contentious [ballot measure](https://ballotpedia.org/Richmond,_Virginia,_Casino_Authorization_Referendum_(November_2021)) in the city of
+Richmond as to whether the city would allow developers to build a casino. The
+measure was narrowly voted down. (In 2023, there was a [second ballot measure](https://ballotpedia.org/Richmond,_Virginia,_Casino_Measure_(November_2023)) on the same issue, which was defeated by a wider margin.)
+
+Today, we'll look at the spatial component of
+the 2021 vote, with a particular focus on how support for the casino split along racial lines.
+
+### Data
+
+First, here is a table with each voting district and the results from that district. Unlike in the U.S. presidential election, where states play a role in the outcome through the electoral college, this vote was purely based on popular vote within the city. The precincts are only
+an instrument for looking at the data.
+
+```{r}
+casino <- read_csv("../data/rva_casino_vote.csv", col_types = "cdddc")
+casino
+```
+
+:::{.callout-note}
+Note the `col_types` argument to `read_csv` above, which we have not seen often before. In this argument, `c` stands for "character" and `d` stands for "double," which is the numeric type. So, `col_types = "cdddc"`  means that column 1 should be read as a character, column 2 as a double, column 3 as a double, and so on.
+:::
+
+We also have a dataset giving demographic breakdowns of each precinct from the 2020 census data, along with the population of each precinct.
+
+```{r}
+race <- read_csv("../data/rva_precinct_race.csv", col_types = "cddd")
+race
+```
+
+We also have a spatial dataset giving the location of each precinct as a spatial
+polygon.
+
+```{r}
+precinct <- read_sf("../data/rva_precinct.geojson") |>
+  # transform the geojson into a lon/lat projection
+  st_transform(crs = 4326)
+precinct
+```
+
+:::{.callout-tip}
+CRS 4326, which is also known as [WGS 84](https://en.wikipedia.org/wiki/World_Geodetic_System#WGS_84), is the most common coordinate reference system for latitude and longitude. It is the same one used for the Global Positioning System (GPS). You probably use it every day!
+:::
+
+We also have a set of spatial lines corresponding the roads in the city:
+
+```{r}
+roads <- read_sf("../data/rva_roads.geojson") |>
+  st_transform(4326)
+roads
+```
+
+Finally, here is a dataset with the approximate longitude and latitude of the proposed casino location:
+
+```{r}
+casino_location <- tibble(
+  lon = -77.43801648818494,
+  lat = 37.4631887567122
+)
+casino_location
+```
+
+### Election outcome
+
+Before we dive into anything more involved, summarize the dataset to give the
+total number of Yes votes and total number of No votes.
+
+```{r, question-01a}
+casino |>
+  summarize(votes_yes = sum(votes_yes), votes_no = sum(votes_no))
+```
+
+Then, starting from your code above, calculate the percentage of "no" votes, which prevailed. This will give you a sense of just how closely decided this issue was.
+
+```{r, question-01b}
+casino |>
+  summarize(votes_yes = sum(votes_yes), votes_no = sum(votes_no)) |>
+  mutate(percent_no = (votes_no / (votes_yes + votes_no)) * 100)
+```
+
+### Mapping the vote
+
+Now, create a spatial plot of the precincts. In that plot, use the fill aesthetic to represent the percentage of Black residents in each precinct.
+
+Use the following color scale:
+
+```r
+scale_fill_distiller(
+    palette = 9,
+    guide = "legend",
+    n.breaks = 10,
+    direction = 1
+  )
+```
+
+```{r, question-02}
+#| fig-height: 8
+precinct |>
+  left_join(race, by = "pnum") |>
+  ggplot() +
+  geom_sf(aes(fill = pblack)) +
+  scale_fill_distiller(
+    palette = 9,
+    guide = "legend",
+    n.breaks = 10,
+    direction = 1
+  )
+```
+
+Now, produce a similar plot using the fill aesthetic to represent the percentage of Yes votes in each precinct.
+
+:::{.callout-tip}
+The `casino` dataset has the number of votes for each option, and the column `percent` represents the percentage of "yes" votes.
+:::
+
+Use the following color scale:
+
+```r
+scale_fill_distiller(
+    palette = 8,
+    guide = "legend",
+    n.breaks = 10,
+    direction = 1
+  )
+```
+
+```{r, question-03}
+#| fig-height: 8
+precinct |>
+  left_join(casino, by = "pnum") |>
+  ggplot() +
+  geom_sf(aes(fill = percent)) +
+  scale_fill_distiller(
+    palette = 8,
+    guide = "legend",
+    n.breaks = 10,
+    direction = 1
+  )
+```
+
+These maps can be a bit hard to interpret relative to the city, even if you are
+somewhat familiar with Richmond. Below, add an extra layer to the previous 
+plot with the `roads` dataset to give more context. Set the `linewidth` of the roads to
+be 0.25 to make sure they do not block the rest of the data.
+
+```{r, question-04}
+#| fig-height: 8
+precinct |>
+  left_join(casino, by = "pnum") |>
+  ggplot() +
+  geom_sf(aes(fill = percent)) +
+  geom_sf(data = roads, linewidth = 0.25) +
+  scale_fill_distiller(
+    palette = 8,
+    guide = "legend",
+    n.breaks = 10,
+    direction = 1
+  )
+```
+
+Even just looking at the maps above, it seems like there might be a relationship between the proportion of Black residents in a precinct and support for the casino.
+
+### Modeling the relationship
+
+Create a scatterplot with one dot for each precinct showing the percentage of
+people in the block who identify as Black on the x-axis, the percentage who
+voted Yes on the y-axis, and make the size of the points proportional to
+the population.
+
+Add a new `scale_` to this plot to make the size of the points more accurate: `scale_size_area()`
+
+:::{.callout-note}
+`scale_size_area()` scales the point sizes so that their area is proportional to the population values. This creates a more visually accurate representation of the data, especially useful when comparing quantities, as it avoids visual misinterpretation due to radius scaling.
+:::
+
+```{r, question-05}
+casino |>
+  inner_join(race, by = "pnum") |>
+  ggplot(aes(pblack, percent)) +
+  geom_point(aes(size = population)) +
+  scale_size_area()
+```
+
+In the code block below, modify your work in the previous question by adding a linear regression line.
+
+Use the `lm` function to create a model such that the percentage of yes votes is modeled by the percentage of the population who identifies as Black.
+
+Do not use `geom_smooth` in this case. You'll need the model outputs for question 7.
+
+Additionally, we are going to **weight** this model by the population of each precinct. This means that the model will put more importance on larger precincts rather than smaller ones.
+
+To do so, set the `weights` argument within `lm()` like so:
+
+```r
+model <- lm(...weights = population)
+```
+
+```{r, question-06}
+temp <- casino |>
+  inner_join(race, by = "pnum")
+
+model <- lm(percent ~ pblack, data = temp, weights = population)
+
+augment(model, newdata = temp) |>
+  ggplot(aes(pblack, percent)) +
+  geom_point(aes(size = population)) +
+  geom_line(aes(y = .fitted), color = "red", linetype = "dashed") +
+  scale_size_area()
+```
+
+### Finding the outlier
+
+The plot above shows one large outlier. We could find out which precinct it is associated with by labeling the points. But let's find it on a map.
+
+In the  following block, create a spatial plot of the precincts, including the roads. This time, use the fill aesthetic to represent the residuals from the model (`.resid`) for each precinct.
+
+To do this, you are going to need to augment the data set used to build your model with the model residuals. Then, you are going to need to join that output to the `precinct` data.
+
+Use the following color scale for your plot:
+
+```r
+scale_fill_steps2(limits = c(-50, 50), n.breaks=10)
+```
+
+```{r, question-07}
+#| fig-height: 8
+temp <- casino |>
+  inner_join(race, by = "pnum")
+model <- lm(percent ~ pblack, data = temp, weights = population)
+
+precinct |>
+  left_join(augment(model, newdata = temp), by = "pnum") |>
+  ggplot() +
+  geom_sf(aes(fill = .resid)) +
+  geom_sf(data = roads, size = 0.25) +
+  scale_fill_steps2(limits = c(-50, 50), n.breaks = 10)
+```
+
+What's going on here? Why is this one region following a different pattern?
+
+Perhaps if we could see if we could see the proposed location of the casino that would help us better 
+understand. Below, create a spatial points dataset `casino_location_geo` by converting `casino_location` using `st_as_sf()`. (Check the notes for the model code, and preserve the parameters.)
+
+```{r, question-08}
+casino_location_geo <- casino_location |>
+  st_as_sf(coords = c("lon", "lat"), crs = 4326, remove = FALSE)
+```
+
+Now, in the code block below, modify your plot from question 7 to include a big orange dot showing the location of the proposed casino.
+
+```{r, fig.height = 8, question-09}
+precinct |>
+  left_join(augment(model, newdata = temp), by = "pnum") |>
+  ggplot() +
+  geom_sf(aes(fill = .resid)) +
+  geom_sf(data = roads, size = 0.25) +
+  geom_sf(data = casino_location_geo, color = "orange", size = 5) +
+  scale_fill_steps2(limits = c(-50, 50), n.breaks = 10)
+```
+
+This location doesn't obviously explain the voting pattern.
+
+Create a spatial plot of the precincts showing the proportion of residents that identify as *neither* white nor Black. Use the following color scale:
+
+```r
+scale_fill_distiller(
+    palette = 9,
+    guide = "legend",
+    n.breaks = 10,
+    direction = 1
+  )
+```
+
+```{r, question-10}
+#| fig-height: 8
+precinct |>
+  left_join(race, by = "pnum") |>
+  mutate(pother = 100 - pwhite - pblack) |>
+  ggplot() +
+  geom_sf(aes(fill = pother)) +
+  geom_sf(data = roads, size = 0.25) +
+  geom_sf(data = casino_location_geo, color = "orange", size = 5) +
+  scale_fill_distiller(
+    palette = 9,
+    guide = "legend",
+    n.breaks = 10,
+    direction = 1
+  )
+```
+
+### Discussion
+
+Take a moment to consider this final plot in relation to everything that we have learned about this ballot measure so far. What does it suggest? Is our analysis complete? What else would be required?
+
+More broadly, how do the considerations from *Data Feminism*---especially those related to power---impact this analysis?
+
+## Additional Spatial Practice
+
+The previous examples illustrate a real case study. Here are three extra questions for some more practice.
+
+Using a spatial join, determine which precinct number the proposed casino would have been located in.
+
+```{r, question-11}
+casino_location_geo |>
+  st_join(precinct) |>
+  pull(pnum)
+```
+
+The University of Richmond is located in precinct 101. Use a spatial join to locate all of the streets in this precinct and plot them on a spatial plot.
+
+```{r, question-12}
+roads |>
+  st_join(precinct) |>
+  filter(pnum == 101) |>
+  ggplot() +
+  geom_sf()
+```
+
+I live in precinct 113. Find all of the roads from my precinct, compute their total lengths, and sort the dataset in descending order to see the longest (and most well-known) streets in my neighborhood. (Hint: Don't forget about `st_length()`)
+
+```{r, question-13}
+roads |>
+  st_join(precinct) |>
+  filter(pnum == 113) |>
+  mutate(len = st_length(geometry)) |>
+  group_by(name) |>
+  summarize(len = sum(len)) |>
+  arrange(desc(len))
+```

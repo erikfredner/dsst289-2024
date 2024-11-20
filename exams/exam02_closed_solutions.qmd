@@ -1,7 +1,7 @@
 ---
 title: "Exam 02 Closed Notes"
 subtitle: "DSST 289: Introduction to Data Science"
-echo: false
+echo: true
 format:
   pdf:
     number-sections: true
@@ -139,7 +139,11 @@ kable(table4)
 
 table5 <- tibble(
   id = c(13, "Drizzy", 1988, 15),
-  mUSICAL_aRTIST = c("TSwift", "Drake (Aubrey Drake Graham)", "Adele (born 1988)", "Radiohead and also The Smile"),
+  mUSICAL_aRTIST = c(
+    "TSwift", "Drake (Aubrey Drake Graham)",
+    "Adele (born 1988)",
+    "Radiohead and also The Smile"
+  ),
   BILLBOARDno1YEARSsince2018 = list(
     c(2020, 2022, 2023, 2024),
     c(2018, 2020),
@@ -193,7 +197,7 @@ Draw the output of the following code chunk:
 
 ```{r}
 #| echo: true
-#| eval: false
+#| eval: true
 
 table3 |>
   pivot_longer(
@@ -224,6 +228,15 @@ table1 |>
 
 Name tidy data principles that @tbl-table5 violates and how to fix them.
 
+1. mixed values in ids
+2. non-numeric ids
+3. nonstandard artist name representation
+4. non-snake_case column names
+5. multiple values per cell in artist and billboard years
+6. mismatched genre labels (e.g., "pop" and "Pop")
+7. row highlights use color for meaning
+8. multiple datatypes per column
+
 \vspace*{0.3\textheight}
 
 ## Similar joins
@@ -231,7 +244,7 @@ Name tidy data principles that @tbl-table5 violates and how to fix them.
 Draw the output of the following code chunks.
 
 ```{r}
-#| eval: false
+#| eval: true
 #| echo: true
 
 table1 |>
@@ -241,7 +254,7 @@ table1 |>
 \vspace*{0.2\textheight}
 
 ```{r}
-#| eval: false
+#| eval: true
 #| echo: true
 
 table1 |>
@@ -303,6 +316,11 @@ Fill in the blanks in the following statements.
 :::
 \setstretch{1}
 
+0. *power* is not distributed equally in the world
+1. Use data to create *more just, equitable, and livable futures*
+2. Recognize that data *is never neutral or objective*
+3. Make *labor* visible
+
 \pagebreak
 
 ## Normalize @tbl-table2
@@ -310,7 +328,18 @@ Fill in the blanks in the following statements.
 Draw tables demonstrating how to normalize @tbl-table2 to the highest available normal form.
 
 ```{r}
-#| eval: false
+#| eval: true
+
+artists <- tibble(
+  artist_id = 1:5,
+  artist = c(
+    "Taylor Swift", "Drake", "Adele",
+    "Radiohead", "The Smile"
+  )
+)
+
+artists
+
 performers <- tibble(
   performer_id = 1:4,
   lead_performer = c("Taylor Swift", "Drake", "Adele", "Thom Yorke")
@@ -325,17 +354,19 @@ genres <- tibble(
 
 genres
 
-artists <- tibble(
+artist_lead <- tibble(
   artist_id = 1:5,
-  artist = c(
-    "Taylor Swift", "Drake", "Adele",
-    "Radiohead", "The Smile"
-  ),
-  performer_id = c(1, 2, 3, 4, 4),
+  performer_id = c(1, 2, 3, 4, 4)
+)
+
+artist_lead
+
+artist_genre <- tibble(
+  artist_id = 1:5,
   genre_id = c(1, 2, 1, 3, 3)
 )
 
-artists
+artist_genre
 ```
 
 \pagebreak
@@ -346,6 +377,7 @@ Interpret the trends in the faceted plot below. How do the trends differ by genr
 
 ```{r}
 #| message: false
+#| echo: false
 
 set.seed(1)
 
@@ -392,6 +424,7 @@ The following tables contain the output of `tidy()` for the linear models shown 
 **Hip-hop:**
 
 ```{r}
+#| echo: false
 streaming_data %>%
   filter(genre == "Hip-Hop") %>%
   lm(streams ~ year, data = .) %>%
@@ -401,6 +434,7 @@ streaming_data %>%
 **Rock:**
 
 ```{r}
+#| echo: false
 streaming_data %>%
   filter(genre == "Rock") %>%
   lm(streams ~ year, data = .) %>%
@@ -410,3 +444,20 @@ streaming_data %>%
 1. Explain what the `estimate` for the `term` `year` means in each table. How and why do they differ?
 
 2. Both estimates for the `term` `year` are positive. Which real-world phenomena about music streaming might explain this? Identify at least two possibilities.
+
+\pagebreak
+
+## Question values
+
+| Question Title                 | Points |
+|--------------------------------|--------|
+| 1. Write input                 | 3      |
+| 2. Draw output                 | 4      |
+| 3. Songs by English people     | 4      |
+| 4. Tidy up `table5`            | 6      |
+| 5. Similar joins               | 6      |
+| 6. Song length                 | 5      |
+| 7. Principles of data feminism | 4      |
+| 8. Normalize `table2`          | 6      |
+| 9. Interpret trends            | 6      |
+| 10. Interpret `tidy()`         | 6      |

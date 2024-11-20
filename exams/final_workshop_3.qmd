@@ -1,0 +1,105 @@
+---
+title: "Final project workshop 3"
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+execute:
+  echo: true
+  warning: false
+  message: false
+format:
+  html:
+    anchor-sections: true
+    code-tools: false
+    df-print: kable
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+    toc-depth: 4
+editor:
+  markdown:
+    wrap: 72
+  visual: true
+---
+
+## About course evaluations
+
+-   Known problems with student evaluations of teaching
+
+-   "Student evaluations of teaching in the US are..."
+
+    -   [Not correlated with teaching
+        effectiveness](https://www.scienceopen.com/document/read?vid=818d8ec0-5908-47d8-86b4-5dc38f04b23e)
+
+    -   [Sexist](https://benschmidt.org/profGender/#%7B%22database%22%3A%22RMP%22%2C%22plotType%22%3A%22pointchart%22%2C%22method%22%3A%22return_json%22%2C%22search_limits%22%3A%7B%22word%22%3A%5B%22his%20kids%22%2C%22her%20kids%22%5D%2C%22department__id%22%3A%7B%22%24lte%22%3A25%7D%7D%2C%22aesthetic%22%3A%7B%22x%22%3A%22WordsPerMillion%22%2C%22y%22%3A%22department%22%2C%22color%22%3A%22gender%22%7D%2C%22counttype%22%3A%5B%22WordCount%22%2C%22TotalWords%22%5D%2C%22groups%22%3A%5B%22unigram%22%5D%2C%22testGroup%22%3A%22D%22%7D)
+
+    -   [Racist](https://www.tandfonline.com/doi/full/10.1080/02602938.2021.1888075#abstract)
+
+    -   [Homophobic and
+        transphobic](https://link.springer.com/article/10.1007/s10734-022-00831-x)
+
+    -   [Biased against instructors who are not
+        American](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0209749)
+
+    -   [Biased against instructors whose first language is not
+        English](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0209749)
+
+-   Nevertheless, course evaluations remain widely used
+
+    -   Administrators at all universities use them to make hiring and
+        promotion decisions
+
+    -   They provide an opportunity for students to tell instructors and
+        administrators what they want from their education
+
+    -   They can help individual instructors better understand what went
+        well and what could have gone better in their course
+
+-   Bear these points in mind when completing *all* of your course
+    evaluations
+
+    -   We can't eliminate these biases, but being aware of them may
+        change behavior
+
+### Doing the course evaluation
+
+Please take five to ten minutes to complete the course evaluation:
+
+<http://www.richmond.edu/evalsys>
+
+## Groups
+
+Assemble into your final project workshop groups:
+
+```{r}
+#| echo: false
+
+library(tidyverse)
+
+groups <- read_csv("../exams/workshop_groups.csv")
+groups
+```
+
+## Progress reports
+
+We will be giving final presentations on **Wednesday**.
+
+Each group member should update the group by responding to the following
+questions:
+
+1.  What is the *most important* thing that you have not yet completed
+    for your final project?
+2.  Do you feel confident that you have a good answer to the question
+    "so what?" If not, what do you need to do to improve your answer?
+3.  In addition to giving the presentation, each person must submit
+    three documents to complete the final project. Report your general
+    progress on:
+    1.  [the
+        datasheet](https://alt-5fe2624770d98.blackboard.com/bbcswebdav/pid-1892956-dt-content-rid-16726067_1/courses/202410_11889/final_project_instructions%281%29.html?one_hash=B294F9105677519AE78BCE2CAA6CA8F1&f_hash=3E43BD298D8A1D4097F6467231C5BE4F#datasheet)
+    2.  [the
+        notebook](https://alt-5fe2624770d98.blackboard.com/bbcswebdav/pid-1892956-dt-content-rid-16726067_1/courses/202410_11889/final_project_instructions%281%29.html?one_hash=B294F9105677519AE78BCE2CAA6CA8F1&f_hash=3E43BD298D8A1D4097F6467231C5BE4F#analyze-the-data-in-a-notebook)
+    3.  [the
+        presentation](https://alt-5fe2624770d98.blackboard.com/bbcswebdav/pid-1892956-dt-content-rid-16726067_1/courses/202410_11889/final_project_instructions%281%29.html?one_hash=B294F9105677519AE78BCE2CAA6CA8F1&f_hash=3E43BD298D8A1D4097F6467231C5BE4F#presentation)

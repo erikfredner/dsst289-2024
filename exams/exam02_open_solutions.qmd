@@ -73,6 +73,7 @@ The data for this exam consists of information about tropical storms in the Atla
 ```{r}
 #| message: false
 library(tidyverse)
+theme_set(theme_minimal())
 
 storms <- read_csv("../data/storms.csv")
 
@@ -194,7 +195,7 @@ Using the table you just created, make a bar plot that shows the number of hurri
 Add a layer on top of that bar plot that highlights the days of the year with the *median* number of hurricanes observed at midnight. Color the bars for the median days `"#440154"` and the non-median days `"#fde725"`. Label the axes and title the plot.
 
 ```{r, question-03b}
-median_days <- storms |> 
+median_days <- storms |>
   filter(status == "HU", hour == 0) |>
   count(doy) |>
   filter(n == median(n))
@@ -229,8 +230,8 @@ storms |>
   group_by(year) |>
   arrange(desc(letter)) |>
   slice(1) |>
-  group_by(letter) |>
-  summarize(n = n())
+  ungroup() |>
+  count(letter)
 ```
 
 ### Average max storm wind speed by storm name gender
@@ -316,15 +317,12 @@ storms |>
   summarize(avg_wind = mean(wind)) |>
   ggplot(aes(year, avg_wind, color = gender)) +
   geom_point() +
-  geom_smooth(
-    method = "lm",
-    se = FALSE,
-    linetype = "dashed"
-  ) +
+  geom_smooth(method = "lm", se = FALSE) +
   scale_color_viridis_d() +
   labs(
     x = "Year",
     y = "Average Wind Speed",
-    title = "Trend in Average Storm Wind Speed Over Years by Storm Name Gender"
+    title = "Trend in Average Storm Wind Speed Over Years
+    by Storm Name Gender"
   )
 ```

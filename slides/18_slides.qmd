@@ -1,0 +1,390 @@
+---
+title: "Spatial Joins"
+subtitle: "DSST 289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+echo: true
+format:
+  revealjs:
+    logo: "images/by-sa.png"
+    footer: "https://fredner.org"
+    embed-resources: true
+    scrollable: true
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+# Final project dataset
+
+:::{.r-fit-text}
+<https://richmond.ca1.qualtrics.com/jfe/form/SV_3mfO7kRMNIoIDRA>
+:::
+
+# Exam 2 closed notes review
+
+## Conceptual questions
+
+- tidy data principles
+- interpreting trends
+- interpreting model outputs
+- principles of data feminism
+
+## Pivoting `table3`
+
+```{r}
+#| echo: false
+
+library(tidyverse)
+
+table3 <- tibble(
+  artist = c("Taylor Swift", "Drake", "Adele"),
+  song = c("Blank Space", "Hotline Bling", "Easy On Me"),
+  streams_2015 = c(500, 700, NA),
+  streams_2024 = c(600, 900, 1000)
+)
+
+table3
+```
+
+## `pivot_longer` review
+
+```{r}
+#| output-location: slide
+#| code-line-numbers: "|2|3|4|5|6|7"
+table3 |>
+  pivot_longer(
+    cols = starts_with("streams_"),
+    names_to = "year",
+    names_prefix = "streams_",
+    names_transform = as.integer,
+    values_to = "streams"
+  )
+```
+
+## Multiple joins
+
+`table1`
+
+```{r}
+#| echo: false
+
+table1 <- tibble(
+  artist = c(
+    "Taylor Swift", "Drake", "Adele",
+    "Radiohead", "The Smile"
+  ),
+  song = c(
+    "Blank Space", "Hotline Bling", "Easy On Me",
+    "The National Anthem", "Thin Thing"
+  ),
+  star_rating = c(2, 3, 4, 5, 5)
+)
+
+table1
+```
+
+`table2`
+
+```{r}
+#| echo: false
+table2 <- tibble(
+  artist = c(
+    "Taylor Swift", "Drake", "Adele",
+    "Radiohead", "The Smile"
+  ),
+  lead_performer = c(
+    "Taylor Swift", "Drake", "Adele",
+    "Thom Yorke", "Thom Yorke"
+  ),
+  genre = c("Pop", "Hip-Hop", "Pop", "Rock", "Rock")
+)
+
+table2
+```
+
+`table4`
+
+```{r}
+#| echo: false
+table4 <- tibble(
+  lead_performer = c(
+    "Taylor Swift", "Drake", "Adele", "Thom Yorke"
+  ),
+  birth_country = c(
+    "United States", "Canada", "England", "England"
+  )
+)
+
+table4
+```
+
+## Songs by English people
+
+```{r}
+#| output-location: fragment
+#| code-line-numbers: "|2|3|4"
+table1 |>
+  left_join(table2 |> select(artist, lead_performer), by = "artist") |>
+  left_join(table4, by = "lead_performer") |>
+  filter(birth_country == "England")
+```
+
+## Similar joins
+
+`table1`
+
+```{r}
+#| echo: false
+table1
+```
+
+`table3`
+```{r}
+#| echo: false
+table3
+```
+
+## Similar joins: `inner_join`
+
+```{r}
+#| output-location: fragment
+table1 |>
+  inner_join(table3, by = c("artist", "song"))
+```
+
+## Similar joins: `semi_join`
+
+```{r}
+#| output-location: fragment
+table1 |>
+  semi_join(table3, by = c("artist", "song"))
+```
+
+## Tables
+
+`table1`
+
+```{r}
+#| echo: false
+table1
+```
+
+`table6`
+
+```{r}
+#| echo: false
+table6 <- tibble(
+  song = c(
+    "Blank Space", "Hotline Bling", "Easy On Me",
+    "The National Anthem", "Thin Thing"
+  ),
+  minutes = c(3, 4, 3, 5, 4),
+  seconds = c(51, 27, 44, 51, 30)
+)
+
+table6
+```
+
+
+
+## Calculating song length
+
+```{r}
+table1 |>
+  left_join(table6, by = "song") |>
+  mutate(
+    length = minutes * 60 + seconds,
+    long_song = if_else(length > 240, TRUE, FALSE)
+  ) |>
+  select(artist, song, length, long_song)
+```
+
+## Data normalization 1
+
+`table2`
+
+```{r}
+#| echo: false
+table2
+```
+
+## Data normalization 2
+
+```{r}
+#| echo: false
+artists <- tibble(
+  artist_id = 1:5,
+  artist = c(
+    "Taylor Swift", "Drake", "Adele",
+    "Radiohead", "The Smile"
+  )
+)
+
+artists
+
+performers <- tibble(
+  performer_id = 1:4,
+  lead_performer = c("Taylor Swift", "Drake", "Adele", "Thom Yorke")
+)
+
+performers
+
+genres <- tibble(
+  genre_id = 1:3,
+  genre = c("Pop", "Hip-Hop", "Rock")
+)
+
+genres
+
+artist_lead <- tibble(
+  artist_id = 1:5,
+  performer_id = c(1, 2, 3, 4, 4)
+)
+
+artist_lead
+
+artist_genre <- tibble(
+  artist_id = 1:5,
+  genre_id = c(1, 2, 1, 3, 3)
+)
+
+artist_genre
+```
+
+## Diagram
+
+```{mermaid}
+%%| echo: false
+erDiagram
+    ARTISTS {
+        int artist_id PK
+        string artist
+    }
+    PERFORMERS {
+        int performer_id PK
+        string lead_performer
+    }
+    GENRES {
+        int genre_id PK
+        string genre
+    }
+    ARTIST_LEAD {
+        int artist_id FK
+        int performer_id FK
+    }
+    ARTIST_GENRE {
+        int artist_id FK
+        int genre_id FK
+    }
+
+    ARTISTS ||--o{ ARTIST_LEAD : "has lead performer"
+    PERFORMERS ||--o{ ARTIST_LEAD : "is lead for artist"
+    ARTISTS ||--o{ ARTIST_GENRE : "associated with genre"
+    GENRES ||--o{ ARTIST_GENRE : "is genre of artist"
+```
+
+## Data normalization: Key points
+
+1. Express each fact once and only once
+2. Where possible, eliminate dependencies
+3. Usually one table per entity or concept
+4. Data ontologies reflect judgments about the world (e.g., relations between `genre`, `artist`, and/or `lead_performer`)
+
+# Spatial Joins
+
+## Overview
+
+- **Spatial joins** combine spatial datasets using keys or spatial features.
+- Joining can be based on:
+  - A common key (e.g., state codes).
+  - Spatial relationships (e.g., points within polygons).
+
+## Joining with a Key
+
+- Example: Joining US cities data with state polygons using state abbreviations.
+- **Issue**: `left_join()` discards spatial metadata.
+- **Solution**: Use `st_as_sf()` to add spatial metadata after `left_join()`.
+
+## US Data
+
+```{r}
+library(sf)
+
+us <- read_csv("../data/us_city_population.csv") |>
+  filter(year == 2010, !is.na(lon), !is.na(lat))
+us
+```
+
+## State Geospatial Data
+
+```{r}
+state <- read_sf("../data/geo_states.geojson")
+state |> 
+  slice_sample(n = 1)
+```
+
+:::{.callout-note title=`fips`?}
+ `fips` refers to a Federal Information Processing Standards code used to uniquely identify geographic areas in the United States.
+:::
+
+## Joining by key without `st_as_sf()`
+
+Note the missing header:
+
+```{r}
+us |>
+  left_join(state, by = c("state" = "abb"))
+```
+
+## Joining by key with `st_as_sf()`
+
+```{r}
+us |>
+  left_join(state, by = c("state" = "abb")) |>
+  st_as_sf()
+```
+
+## Spatial Joins
+
+- Spatial joins use spatial data to combine datasets.
+- **Example**: Determining which state a city is in with the city's coordinates.
+
+## Performing a Spatial Join
+
+- Convert to spatial points with `st_as_sf()`
+- Use `st_join()` to join datasets based on location.
+
+```{r}
+#| code-line-numbers: "|2|3|5-6"
+#| output-location: fragment
+us_sf <- us |>
+  select(city, lon, lat) |>
+  st_as_sf(coords = c("lon", "lat"), crs = 4326, remove = FALSE)
+
+us_spatial_join <- us_sf |>
+  st_join(state)
+
+us_spatial_join
+```
+
+## Visualizing Spatial Data
+
+- Use `ggplot2` with `geom_sf()` to plot spatial data.
+- Overlay points (cities) on polygons (states).
+
+```{r}
+#| output-location: slide
+#| code-line-numbers: "|2|4-8|9|10|11"
+us_spatial_join |>
+  filter(abb %in% c("VA", "NC", "MD")) |>
+  ggplot() +
+  geom_sf(
+    data = state |> filter(abb %in% c("VA", "NC", "MD")),
+    fill = NA,
+    color = "black"
+  ) +
+  geom_sf(aes(color = name)) +
+  geom_sf_text(aes(label = city), size = 2, nudge_y = 0.1) +
+  theme_void()
+```

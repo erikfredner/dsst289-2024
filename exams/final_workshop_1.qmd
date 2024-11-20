@@ -1,0 +1,68 @@
+---
+title: "Final project workshop 1"
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+execute:
+  echo: true
+  warning: false
+  message: false
+format:
+  html:
+    anchor-sections: true
+    code-tools: false
+    df-print: kable
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+    toc-depth: 4
+editor:
+  markdown:
+    wrap: 72
+  visual: true
+---
+
+## Groups
+
+Assemble into your final project workshop groups:
+
+```{r}
+#| echo: false
+
+library(tidyverse)
+
+groups <- read_csv("../exams/workshop_groups.csv")
+groups
+```
+
+## Discussion questions
+
+Each group member should respond to the following questions and prompts
+with their group.
+
+Before beginning discussion, everyone should take a few minutes to
+prepare their answers.
+
+1.  Show your dataset to your group.
+2.  Explain why you chose to study this dataset.
+3.  Why was this dataset originally created?
+4.  What have the people who created this data set already used it to
+    study or create?
+5.  What would you like to do with this dataset?
+6.  What do you expect to be the result of your analysis? What is your
+    hypothesis?
+7.  *So what*? Why would your analysis of the dataset matter? To whom
+    would it matter?
+8.  Next steps: What are the first two things that you need to do to
+    answer your question?
+9.  Group discussion: Discuss questions or comments that other group
+    members have about each person's dataset or analysis.
+
+## After discussion
+
+After everyone in your group has responded to the discussion questions,
+begin working on the next steps on your project that you determined with
+your group.

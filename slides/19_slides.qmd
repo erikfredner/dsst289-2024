@@ -1,0 +1,501 @@
+---
+title: "Time Zones"
+subtitle: "DSST 289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+echo: true
+format:
+  revealjs:
+    logo: "images/by-sa.png"
+    footer: "https://fredner.org"
+    embed-resources: true
+    scrollable: true
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+# Final project dataset
+
+:::{.r-fit-text}
+<https://richmond.ca1.qualtrics.com/jfe/form/SV_3mfO7kRMNIoIDRA>
+:::
+
+# Exam 2 open notes review
+
+## Know your data
+
+```{r}
+#| echo: false
+
+library(tidyverse)
+theme_set(theme_minimal())
+
+storms <- read_csv("../data/storms.csv")
+```
+
+```{r}
+#| output-location: fragment
+#| code-line-numbers: "|2|3"
+storms |>
+  distinct(year, name) |>
+  count(name, sort = TRUE) |>
+  slice_head(n = 5)
+```
+
+## Read the data dictionary
+
+| Variable   | Description                                                                 |
+|------------|-----------------------------------------------------------------------------|
+| `year`     | The year in which the storm was recorded                                                      |
+| `name`     | A common name for the storm. **Names can be reused** for different storms in different years. |
+| `letter`   | The first letter of the name; storms are **(usually)** named in alphabetical order |
+
+## Know your data: filter when necessary
+
+"storms" `!=` "hurricanes"
+
+```{r}
+#| code-line-numbers: "2"
+storms |>
+  filter(status == "HU") |>
+  group_by(year, category) |>
+  summarize(wind_avg = mean(wind))
+```
+
+## Convert categorical variables to factors for plotting
+
+```{r}
+#| output-location: slide
+#| code-line-numbers: "5"
+storms |>
+  filter(status == "HU") |>
+  group_by(year, category) |>
+  summarize(wind_avg = mean(wind)) |>
+  ggplot(aes(year, wind_avg, color = as_factor(category))) +
+  geom_line() +
+  geom_point() +
+  scale_color_viridis_d() +
+  labs(
+    x = "Year",
+    y = "Average wind speed",
+    color = "Hurricane category"
+  )
+```
+
+## If you don't...
+
+```{r}
+#| output-location: slide
+#| code-line-numbers: "5"
+storms |>
+  filter(status == "HU") |>
+  group_by(year, category) |>
+  summarize(wind_avg = mean(wind)) |>
+  ggplot(aes(year, wind_avg, color = category)) +
+  geom_line() +
+  geom_point() +
+  scale_color_viridis_c() +
+  labs(
+    x = "Year",
+    y = "Average wind speed",
+    color = "Hurricane category"
+  )
+```
+
+## `median()` works like `mean()`
+
+`doy` = "day of the year." Not a "day" typo.
+
+```{r}
+#| output-location: slide
+#| code-line-numbers: "|1-4|6-8|10|11"
+median_days <- storms |>
+  filter(status == "HU", hour == 0) |>
+  count(doy) |>
+  filter(n == median(n))
+
+storms |>
+  filter(status == "HU", hour == 0) |>
+  count(doy) |>
+  ggplot(aes(doy, n)) +
+  geom_col(fill = "#fde725") +
+  geom_col(data = median_days, fill = "#440154") +
+  labs(
+    x = "Day of the year",
+    y = "Hurricanes",
+    title = "Hurricanes observed at midnight by day of the year"
+  )
+```
+
+## Disadvantage of `left_join`: missing values
+
+```{r}
+#| echo: false
+storm_gender <- read_csv("../data/storm_gender.csv")
+```
+
+```{r}
+#| output-location: fragment
+#| code-line-numbers: "4"
+storms |>
+  group_by(year, name) |>
+  summarize(wind_max = max(wind)) |>
+  left_join(storm_gender, by = "name") |>
+  group_by(gender) |>
+  summarize(wind_max_average = mean(wind_max))
+```
+
+## Advantage of `inner_join`: no `NA` values
+
+```{r}
+#| output-location: fragment
+#| code-line-numbers: "4"
+storms |>
+  group_by(year, name) |>
+  summarize(wind_max = max(wind)) |>
+  inner_join(storm_gender, by = "name") |>
+  group_by(gender) |>
+  summarize(wind_max_average = mean(wind_max))
+```
+
+## `geom_smooth()` vs. `lm()`
+
+- `geom_smooth()` fits one linear model *per level* of the `color` aesthetic (here, storm name gender).
+- If you wanted to do this with `lm()`, you could:
+  - fit two models
+  - fit one model with an interaction term
+
+```r
+model <- lm(avg_wind ~ year * gender, data = storms)
+```
+
+## `geom_smooth()` exam solution
+
+```{r}
+#| output-location: slide
+#| code-line-numbers: "|1-4|5|7"
+storms |>
+  inner_join(storm_gender, by = "name") |>
+  group_by(year, gender) |>
+  summarize(avg_wind = mean(wind)) |>
+  ggplot(aes(year, avg_wind, color = gender)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_viridis_d() +
+  labs(
+    x = "Year",
+    y = "Average Wind Speed",
+    title = "Wind Speed Over Time by Storm Name Gender"
+  )
+```
+
+## Formatting
+
+- Spacing
+  - Bad: `x=year`, `x= year`, `x =year`
+  - Good: `x = year`
+- Assigning variables
+  - Bad: `new_data = data |>...`
+  - Good: `new_data <- data |>...`
+- Setting arguments
+  - Bad: `ggplot(aes(x <- year...`
+  - Good: `ggplot(aes(x = year...`
+
+## Long lines
+
+Long lines have 80 or more characters.
+
+If the arguments to a function don’t all fit on one line, put each argument on its own line and indent.^[[Source](https://style.tidyverse.org/pipes.html#long-lines)]
+
+```r
+# Good
+iris |>
+  summarise(
+    Sepal.Length = mean(Sepal.Length),
+    Sepal.Width = mean(Sepal.Width)
+  )
+
+# Bad
+iris |>
+  summarise(Sepal.Length = mean(Sepal.Length), Sepal.Width = mean(Sepal.Width))
+```
+
+# Exam 3 prep
+
+## Tips
+
+1. Know your data
+2. Don't make assumptions about the data without checking the dataset, the data dictionary, or both
+3. Read *everything*
+4. When finished, double check your output against the instructions
+
+## Open note exam topics
+
+- Focuses on new material since Exam 2
+  - Dates, times, datetimes, spatial data, etc.
+- Includes *frequent* material since the beginning of class
+
+## Open note functions
+
+- `make_datetime()`, `as_datetime()`, `force_tz()`, `scale_x_datetime()`
+- `select()`, `filter()`, `mutate()`, 
+- `count()`, `mean()`
+- `ggplot()`, `aes()`, `geom_col()`, `geom_point()`, `geom_text_repel()`, `geom_line()`, `geom_smooth()`, `labs()`, 
+- `group_by()`, `filter()`, `max()`, `min()`, `summarize()`
+- `arrange()`, `desc()`
+- `st_transform()`, `geom_sf()`
+- `left_join()`, `inner_join()`
+
+## Closed note exam topics
+
+- Reviews frequent material since the beginning
+- Less writing and more code than Exam 2
+- You will **not** be asked to write any datetime or spatial code from scratch
+
+## Closed note question types
+
+- Given output, write input
+- Given input, write output
+- Fill in the blank
+- Explain code differences between plots
+- Evaluate a dataset
+- Join and reshape data
+
+# Time zones
+
+```{r}
+#| echo: false
+library(tidyverse)
+library(hms)
+
+theme_set(theme_minimal())
+```
+
+- Time zones account for the rotation of the Earth
+- Local time is aligned with the position of the sun, with noon (roughly) corresponding to the point when the sun is highest in the sky in each time zone.
+
+## `datetime` time zones
+
+All `datetime` objects have:
+
+- An underlying time in a fixed coordinate system called UTC (Coordinated Universal Time).
+  - UTC counts time since 1970-01-01
+- A time zone attribute that specifies the **local** time zone associated with the time.
+
+## If all rows are in the same time zone
+
+- If time zone not specified, UTC assumed
+- If all times are in the same time zone, time comparisons will work as expected
+
+## If not all rows are in the same time zone
+
+- UTC assumption breaks
+- May need to specify or force time zone
+
+## `make_datetime()` example
+
+Pass year, month, day, and time values to create a `datetime` object.
+
+```{r}
+#| echo: false
+
+destinys_child <- tibble(
+  name = c("Beyoncé Knowles", "Kelly Rowland", "Michelle Williams"),
+  birth_year = c(1981, 1981, 1979),
+  birth_month = c(9, 2, 7),
+  birth_day = c(4, 11, 23),
+  birth_hour = c(3, 12, 23),
+  birth_minute = c(59, 30, 1),
+  birth_second = c(5, 28, 44)
+)
+
+destinys_child |>
+  select(name, birth_year, birth_month, birth_day)
+```
+
+## Convert values to datetimes
+
+```{r}
+#| output-location: fragment
+#| code-line-numbers: "|3|4-12"
+
+destinys_child |>
+  mutate(
+    birth_datetime = make_datetime(
+      birth_year,
+      birth_month,
+      birth_day,
+      birth_hour,
+      birth_minute,
+      birth_second
+    )
+  ) |>
+  select(name, birth_datetime)
+```
+
+## How old are the members of Destiny's Child right now?
+
+```{r}
+#| output-location: fragment
+#| code-line-numbers: "|2-11|12"
+destinys_child |>
+  mutate(
+    birth_datetime = make_datetime(
+      birth_year,
+      birth_month,
+      birth_day,
+      birth_hour,
+      birth_minute,
+      birth_second
+    )
+  ) |>
+  mutate(age = now() - birth_datetime) |>
+  select(name, birth_datetime, age)
+```
+
+## `with_tz()` RVA temperature over time
+
+- If a data set was collected in one time zone, but needs to be represented to another, use `with_tz()`
+
+```{r}
+dt <- read_csv("../data/other_forecast_rva_hourly.csv")
+dt
+```
+
+## Plotting temperature *without* time zone conversion
+
+```{r}
+#| code-line-numbers: "|2|4|5"
+#| output-location: slide
+dt |>
+  filter(date(start_time) == as_date("2021-10-21")) |>
+  ggplot(aes(start_time, temperature)) +
+  geom_line(aes(color = temperature)) +
+  scale_color_gradient(low = "#195eca", high = "#fc5e02")
+```
+
+## Plotting temperature *with* time zone conversion
+
+```{r}
+#| code-line-numbers: "|2"
+#| output-location: slide
+dt |>
+  mutate(start_time = with_tz(start_time, tz = "America/New_York")) |>
+  filter(date(start_time) == as_date("2021-10-21")) |>
+  ggplot(aes(start_time, temperature)) +
+  geom_line(aes(color = temperature)) +
+  scale_color_gradient(low = "#195eca", high = "#fc5e02")
+```
+
+## Mixed timezones
+
+Midnight trains goin' anywhere:
+
+```{r}
+#| echo: false
+#| output-location: slide
+#| code-line-numbers: "|3|12-21|24-26"
+train_schedule <- tibble(
+  train_id = 1:8,
+  utc_departure = make_datetime(2024, 11, 13, 0, tz = "UTC"),
+  city = c(
+    "London", "New York", "Tokyo", "Sydney", "Paris",
+    "Los Angeles", "Moscow", "Dubai"
+  ),
+  country = c(
+    "UK", "USA", "Japan", "Australia", "France",
+    "USA", "Russia", "UAE"
+  ),
+  timezone = c(
+    "Europe/London",
+    "America/New_York",
+    "Asia/Tokyo",
+    "Australia/Sydney",
+    "Europe/Paris",
+    "America/Los_Angeles",
+    "Europe/Moscow",
+    "Asia/Dubai"
+  )
+)
+
+train_schedule
+```
+
+## Midnight trains in New York and Tokyo
+
+```{r}
+train_schedule |>
+  filter(city == "New York") |>
+  mutate(local_departure = with_tz(utc_departure, tz = timezone)) |>
+  select(city, utc_departure, local_departure)
+
+train_schedule |>
+  filter(city == "Tokyo") |>
+  mutate(local_departure = with_tz(utc_departure, tz = timezone)) |>
+  select(city, utc_departure, local_departure)
+```
+
+## Midnight trains in East Africa
+
+```{r}
+#| echo: false
+
+eat_trains <- tibble(
+  train_id = 1:5,
+  local_departure = make_datetime(2024, 11, 13, 0,
+    tz = "Africa/Nairobi"
+  ),
+  city = c(
+    "Nairobi", "Addis Ababa", "Kampala",
+    "Mogadishu", "Djibouti"
+  ),
+  country = c("Kenya", "Ethiopia", "Uganda", "Somalia", "Djibouti"),
+  timezone = "Africa/Nairobi"
+)
+
+eat_trains |>
+  select(train_id, city, country, timezone, local_departure)
+```
+
+## Using `with_tz()`, underlying times are the same
+
+```{r}
+eat_trains |>
+  mutate(utc_departure = with_tz(local_departure, tz = "UTC")) |>
+  mutate(departure_diff = local_departure - utc_departure) |>
+  select(local_departure, utc_departure, departure_diff)
+```
+
+## Sunset at the Grand Canyon
+
+- Drive time from University of Richmond (EST) to Grand Canyon: 33 hours
+- To see sunset at Grand Canyon, arrive at 5:00 PM Mountain Time in November
+  - Arizona does not observe Daylight Saving Time
+- When **exactly** to leave UR to see sunset at the Grand Canyon?
+
+## When to leave for sunset?
+
+```{r}
+#| output-location: fragment
+#| code-line-numbers: "|1-4|6|8-11|13|15"
+current_time <- ymd_hms(
+  "2024-11-14 09:55:00",
+  tz = "America/New_York"
+)
+
+drive_time <- hours(33)
+
+latest_arrival <- ymd_hms(
+  "2024-11-15 17:00:00",
+  tz = "America/Phoenix"
+)
+
+latest_departure <- latest_arrival - drive_time
+
+latest_departure - current_time
+```
+
+---
+
+![Sunset at the Grand Canyon](images/sunset.jpg)

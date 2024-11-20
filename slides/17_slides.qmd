@@ -1,0 +1,152 @@
+---
+title: "Spatial Data"
+subtitle: "DSST 289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+echo: true
+output-location: slide
+format:
+  revealjs:
+    logo: "images/by-sa.png"
+    footer: "https://fredner.org"
+    embed-resources: true
+    scrollable: true
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+# Spatial data with `sf`
+
+- Converting datasets with longitude and latitude into spatial objects
+- Plotting spatial data using `ggplot2`
+- Changing map projections
+- Computing spatial summaries
+- Visualizing real-world examples
+
+# Setting Up
+
+Load the necessary libraries:
+
+```{r}
+library(tidyverse)
+library(sf)
+theme_set(theme_minimal())
+```
+
+# What is `sf`?
+
+The `sf` package implements the Simple Features standard, providing tools to work with spatial vector data.
+
+## Make `lon` and `lat` spatial
+
+```{r}
+us_cities <- read_csv("../data/us_city_population.csv") |>
+  filter(
+    year == 2010,
+    !is.na(lon),
+    !is.na(lat),
+    population >= 2000
+  ) |>
+  select(city, population, lon, lat, state)
+
+us_cities_sf <- us_cities |>
+  st_as_sf(coords = c("lon", "lat"), crs = 4326, remove = FALSE)
+```
+
+- `coords`: Specifies the coordinate columns.
+- `crs`: Sets the Coordinate Reference System.
+- `remove = FALSE`: Keep original columns.
+
+## Spatial Points
+
+Can you tell which point is which city?
+
+```{r}
+us_cities_sf |>
+  ggplot() +
+  geom_sf()
+```
+
+## Changing Projections
+
+```{r}
+us_cities_sf |>
+  st_transform(us_cities_sf, crs = 5069) |>
+  ggplot() +
+  geom_sf()
+```
+
+[EPSG:5069](https://epsg.io/5069) is the US National Atlas Equal Area projection.
+
+## Adding Labels
+
+Label spatial points using `geom_sf_text()`:
+
+```{r}
+us_cities_sf |>
+  st_transform(us_cities_sf, crs = 5069) |>
+  ggplot() +
+  geom_sf() +
+  geom_sf_text(aes(label = city), nudge_x = 2e5, color = "blue")
+```
+
+# What are Spatial Polygons?
+
+Spatial polygons represent areas like states or countries.
+
+## Plotting Spatial Polygons
+
+```{r}
+states <- read_sf("../data/state.geojson")
+
+states |>
+  ggplot() +
+  geom_sf()
+```
+
+```{r}
+states |>
+  st_transform(states, crs = 5069) |>
+  ggplot() +
+  geom_sf()
+```
+
+## Combining Spatial Objects
+
+```{r}
+us_cities_sf |>
+  st_transform(us_cities_sf, crs = 5069) |>
+  ggplot() +
+  geom_sf() +
+  geom_sf(data = states, fill = "transparent", color = "black") +
+  geom_sf_text(aes(label = city), color = "blue")
+```
+
+## Filling Polygons Based on Attributes
+
+Compute the area of each state and fill the polygons accordingly:
+
+```{r}
+states |>
+  mutate(area_km2 = as.numeric(st_area(geometry) / 1e6)) |>
+  ggplot() +
+  geom_sf(aes(fill = area_km2)) +
+  geom_sf_text(data = us_cities_sf, aes(label = city)) +
+  scale_fill_distiller(
+    trans = "log2",
+    palette = "Spectral",
+    guide = "legend",
+    n.breaks = 10
+  )
+```
+
+# Conclusion
+
+We have explored methods for working with spatial data in R:
+
+- Converting tabular data with coordinates into spatial objects
+- Visualizing spatial points, lines, and polygons
+- Changing map projections to improve representation
+- Computing spatial summaries like area and length
+- Applying these techniques to real-world datasets
