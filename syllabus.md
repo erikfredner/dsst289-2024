@@ -1,28 +1,38 @@
 ---
 title: DSST 289
 subtitle: Introduction to Data Science
+author: Erik Fredner
 bibliography: /Users/erik/book/references.bib
-csl: /Users/erik/code/styles/chicago-fullnote-bibliography-short-title-subsequent.csl
+csl: "/Users/erik/code/styles/chicago-fullnote-bibliography.csl"
+output: pdf_document
+citeproc: true
 fontsize: 12pt
-fontfamily: ebgaramond
 geometry: margin=1in
 papersize: letter
 documentclass: article
 indent: true
 link-citations: true
 link-bibliography: true
-lang: en-US
+lang: "en-US"
 colorlinks: true
 linkcolor: Blue
 nocite: |
-    @arnoldHumanitiesDataExploring2015
-    @brucePracticalStatisticsData2020
-    @cottonLearning2013
-    @grolemundHandsonProgramming2014
-    @jockersTextAnalysisStudents2020
-    @kuhnTidyModelingFramework2022
-    @silgeTextMiningTidy2017
-    @wickhamDataScienceImport2023
+  @arnoldHumanitiesDataExploring2015
+  @brucePracticalStatisticsData2020
+  @cottonLearning2013
+  @grolemundHandsonProgramming2014
+  @jockersTextAnalysisStudents2020
+  @kuhnTidyModelingFramework2022
+  @silgeTextMiningTidy2017
+  @wickhamDataScienceImport2023
+header-includes:
+  - \usepackage{fontspec}
+  - \setmainfont{Atkinson Hyperlegible}
+  - \setsansfont{Atkinson Hyperlegible}
+  - \setmonofont{IBM Plex Mono}
+  - \usepackage{sectsty}
+  - \allsectionsfont{\sffamily}
+  - \usepackage{setspace}
 ---
 
 -----           -----
@@ -103,7 +113,7 @@ If we spend time reviewing material that you already know, remember that it may 
 
 ## Grades
 
-The tables below show the weights of each assignment and the associated ranges. I do not offer extra credit. I round fractional grades (e.g., 92.5% → 93%; 92.4% → 92%).
+The tables below show the weights of each assignment and the associated ranges. I do not offer extra credit. I round fractional grades.
 
 Assignment      Percentage
 ------          ------
@@ -124,7 +134,10 @@ B-              80-82
 C+              77-79
 C               73-76
 C-              70-72
-F               0-69
+D+              67-69
+D               63-66
+D-              60-62
+F               0-59
 
 ## Schedule
 
@@ -165,6 +178,8 @@ Bb No. | Date  | Topic
 --          | 12-04 | **Final projects**
 
 ## Assignments
+
+Late assignments are penalized one letter grade (i.e., -10 points) per day.
 
 ### Homework
 

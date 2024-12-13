@@ -160,15 +160,20 @@ state_se
 
 Create a new column in the `storms` data set called `time`. `time` will be a datetime object created using all of the columns that indicate when each storm was observed.
 
-Times in `storms` are all given in the "America/New_York" timezone, so you should force this timezone in `time`.
+Times in `storms` are all given in the "America/New_York" timezone, so you should set this timezone in `time`.
 
 Overwrite `storms` with your updated version containing the `time` column. Once you have overwritten it, show the new `time` column by selecting it from the updated `storms`.
 
 ```{r, question-01}
 storms <- storms |>
   mutate(
-    time = make_datetime(year, month, day, hour),
-    time = force_tz(time, tz = "America/New_York")
+    time = make_datetime(
+      year,
+      month,
+      day,
+      hour,
+      tz = "America/New_York"
+    )
   )
 
 storms |>
@@ -195,7 +200,7 @@ storms |>
   filter(
     status == "HU",
     time >= as_datetime("2017-09-01"),
-    time <= as_datetime("2017-09-15")
+    time < as_datetime("2017-09-16")
   ) |>
   count(time) |>
   ggplot(aes(time, n)) +
@@ -230,7 +235,7 @@ storms |>
   filter(status == "HU", category == 5) |>
   group_by(year, name) |>
   filter(wind == max(wind)) |>
-  summarize(max_wind = max(wind), earliest_max = min(time)) |> 
+  summarize(max_wind = max(wind), earliest_max = min(time)) |>
   inner_join(storm_gender, by = "name") |>
   ggplot(aes(earliest_max, max_wind, color = gender)) +
   geom_point() +
@@ -246,27 +251,18 @@ For this exam, we will assume that grouping by year and name is sufficient to ca
 
 ```{r, question-04a}
 storms |>
-  filter(time > as_datetime("1959-12-31")) |>
+  filter(year > 1959) |>
   group_by(year, name) |>
-  summarize(
-    min_time = min(time),
-    max_time = max(time),
-    duration = max_time - min_time,
-  ) |>
-  arrange(desc(duration))
+  summarize(duration = max(time) - min(time))
 ```
 
 Using the data created above, plot the average duration of storms per year. Put years on the x-axis and mean duration on the y-axis. Use a point layer and a line layer. Add a line of best fit. Add custom labels. In your custom labels, indicate the units of the y-axis.
 
 ```{r, question-04b}
 storms |>
-  filter(time > as_datetime("1959-12-31")) |>
+  filter(year > 1959) |>
   group_by(year, name) |>
-  summarize(
-    min_time = min(time),
-    max_time = max(time),
-    duration = max_time - min_time,
-  ) |>
+  summarize(duration = max(time) - min(time)) |>
   group_by(year) |>
   summarize(mean_duration = mean(duration)) |>
   ggplot(aes(year, mean_duration)) +
@@ -324,20 +320,21 @@ state_hurricanes <- storms |>
   filter(status == "HU") |>
   st_as_sf(coords = c("lon", "lat"), crs = 4326, remove = FALSE) |>
   st_join(state_se, left = FALSE) |>
-  count(state) |>
+  group_by(state) |>
+  summarize(n = n_distinct(year, name)) |>
   select(n)
 
-state_hurricanes |> 
+state_hurricanes |>
   arrange(desc(n))
 ```
 
 Next, spatially join `state_se` to `state_hurricanes`, overwriting `state_se` with the result of the join. Output the `state` and count columns from your updated `state_se`.
 
 ```{r, question-07b}
-state_se <- state_se |> 
+state_se <- state_se |>
   st_join(state_hurricanes)
 
-state_se |> 
+state_se |>
   select(state, n)
 ```
 
@@ -348,7 +345,7 @@ scale_fill_distiller(palette = "Spectral")
 ```
 
 ```{r, question-07c}
-state_hurricanes |> 
+state_hurricanes |>
   st_transform(5069) |>
   ggplot() +
   geom_sf(data = state_se, aes(fill = n)) +
@@ -365,3 +362,19 @@ state_hurricanes |>
 **UR email:**
 
 **Section start time:**
+
+## Question values
+
+| Question | Value |
+|-----------------|-------------|
+| 1               | 4           |
+| 2               | 5           |
+| 3a              | 5           |
+| 3b              | 5           |
+| 4a              | 5           |
+| 4b              | 5           |
+| 5               | 3           |
+| 6               | 6           |
+| 7a              | 5           |
+| 7b              | 3           |
+| 7c              | 4           |

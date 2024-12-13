@@ -1,0 +1,44 @@
+---
+title: "Final project presentation order"
+subtitle: "DSST289: Introduction to Data Science"
+author: "Erik Fredner"
+date: today
+execute:
+  echo: true
+  warning: false
+  message: false
+format:
+  html:
+    anchor-sections: true
+    code-tools: false
+    df-print: kable
+    embed-resources: true
+    link-external-icon: true
+    link-external-newwindow: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+    toc-depth: 4
+editor:
+  markdown:
+    wrap: 72
+  visual: true
+---
+
+```{r}
+#| echo: false
+
+library(tidyverse)
+
+groups <- read_csv("../exams/workshop_groups.csv")
+
+
+# group by section and randomize order
+groups <- groups |>  
+  group_by(section) |>  
+  mutate(order = sample(1:n(), n(), replace = FALSE)) |>
+  arrange(section, order)
+
+groups |> 
+  select(first, last_initial, section, order)
+```

@@ -99,7 +99,7 @@ Using the table above, a novice programmer is trying to calculate the total amou
 Ultimately, their code should have the following output:
 
 ```{r}
-#| echo: false
+#| echo: true
 traffic_violations |>
   filter(paid == FALSE) |>
   summarize(outstanding = sum(fine))
@@ -129,13 +129,13 @@ officer_fines
 ```
 
 ```{r}
-#| eval: false
+#| eval: true
 officer_fines |>
   summarize(average_fine = mean(fine))
 ```
 
 ```{r}
-#| eval: false
+#| eval: true
 
 officer_fines |>
   group_by(officer_id) |>
@@ -153,11 +153,11 @@ Will `average_fine` differ in the two code blocks above? If so, how?
 Unpaid tickets automatically incur a late fee. The late fee is one-third of the fine. Using `officer_fines`, write code that will produce the following table:
 
 ```{r}
-#| echo: false
+#| echo: true
 
 officer_fines |>
   mutate(
-    fee = if_else(paid, 0, fine * (1 / 3)),
+    fee = if_else(paid, 0, fine / 3),
     total = fine + fee
   )
 ```
@@ -205,7 +205,7 @@ _________________ <- flowers |>
 ```
 
 ```{r}
-#| echo: false
+#| echo: true
 
 flowers |>
   pivot_longer(
@@ -280,7 +280,7 @@ concert_venues
 Write code that will output the following table. After piping from the table you begin with, you may only use *one* function.
 
 ```{r}
-#| echo: false
+#| echo: true
 
 concert_venues |>
   inner_join(setlists, by = c("artist", "date"))
@@ -291,7 +291,7 @@ concert_venues |>
 ## Coordinating changes
 
 ```{r}
-#| echo: false
+#| echo: true
 #| fig-width: 5
 #| fig-cap: "First Virginia map"
 
@@ -305,7 +305,7 @@ states |>
 ```
 
 ```{r}
-#| echo: false
+#| echo: true
 #| fig-width: 5
 #| fig-cap: "Second Virginia map"
 
@@ -398,7 +398,7 @@ destinys_child
 Draw the output of the following code:
 
 ```{r}
-#| eval: false
+#| eval: true
 destinys_child |>
   mutate(
     birth_year = year(birth_datetime),
@@ -503,3 +503,20 @@ What, if anything, is wrong with this plot? How would you fix it? You do not nee
 > "I pledge that I neither gave nor received unauthorized assistance during the completion of this work."
 
 Signature\hrulefill \medskip
+
+
+# Question values
+
+| Question Number | Points |
+|-----------------|--------|
+| 1      | 5      |
+| 2      | 4      |
+| 3      | 4      |
+| 4      | 4      |
+| 5      | 5      |
+| 6      | 5      |
+| 7      | 5      |
+| 8      | 5      |
+| 9      | 5      |
+| 10     | 4      |
+| 11     | 4      |
